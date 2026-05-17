@@ -1,0 +1,27 @@
+# R
+.Rproj.user
+.RData
+.Rhistory
+.Renviron
+*.Rproj
+.Rcache/
+
+# Output files
+simulation/output/
+*.rds
+*.RData
+
+# System
+.DS_Store
+Thumbs.db
+
+# LaTeX
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+
+# Temp
+/tmp/

@@ -1,0 +1,70 @@
+# Conda environment for the simulation study
+# Usage:
+#   conda env create -f environment.yml
+#   conda activate ph2cal-sim
+#
+# This works on Linux, macOS, and Windows.
+# For GPU acceleration (NumPyro/JAX on NVIDIA GPU), install CUDA toolkit separately:
+#   conda install -c conda-forge cudatoolkit=11.8
+
+name: ph2cal-sim
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  # Core R
+  - r-base >=4.3
+  - r-essentials
+
+  # Statistical modeling
+  - r-survival
+  - r-glmnet
+  - r-ranger
+  - r-xgboost
+  - r-superlearner
+  - r-origami                 # Cross-validation utilities
+
+  # Bayesian modeling
+  - r-stanheaders
+  - r-bh
+  - r-rcpp
+  - r-rcppparallel
+  - r-rstan                    # Bayesian Cox model calibration
+  - r-loo                      # MCMC diagnostics
+
+  # Survival analysis
+  - r-riskRegression           # Pseudo-observations for RMST
+  - r-prodlim                  # Kaplan-Meier with IPCW
+
+  # Parallel computation
+  - r-furrr
+  - r-future
+  - r-future.apply
+
+  # Pipeline / reproducibility
+  - r-targets
+  - r-withr
+  - r-yaml
+  - r-here
+  - r-renv
+
+  # Data manipulation
+  - r-tidyverse
+  - r-data.table
+  - r-magrittr
+
+  # Reporting
+  - r-knitr
+  - r-rmarkdown
+  - r-tinylabels
+
+  # Python (for GPU-accelerated NumPyro alternative)
+  - python >=3.10
+  - pip
+  - pip:
+    - numpyro>=0.15
+    - jax>=0.4
+    - jaxlib>=0.4
+    - arviz>=0.18
+    - pandas>=2.0
+    - scipy>=1.11
