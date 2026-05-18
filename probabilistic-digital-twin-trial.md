@@ -104,7 +104,7 @@ $$\lambda_1(t \mid W_i) = \lambda_{01}(t) \exp(\beta_0 + \beta_1 \hat{S}_i^{(ext
 **Model 2 (augmented):**
 $$\lambda_2(t \mid W_i) = \lambda_{02}(t) \exp(\beta_0 + \beta_1 \hat{S}_i^{(ext)} + \beta_{\mathcal{C}}^T W_{i,\mathcal{C}})$$
 
-The concordance indices $C_1$ and $C_2$ are compared. If $C_2 - C_1 > \delta$ (we use $\delta = 0.01$ throughout), the score is diagnosed as miscalibrated with respect to $\mathcal{C}$, and the fine-tuning step is triggered. This diagnostic uses only blinded data and requires no unblinding.
+The concordance indices $C_1$ and $C_2$ are compared. If $C_2 - C_1 > \delta$ (we use $\delta = 0.01$ throughout), the score is diagnosed as miscalibrated with respect to $\mathcal{C}$, and the fine-tuning step is triggered. This diagnostic uses only blinded data and requires no unblinding. The threshold $\delta = 0.01$ was chosen to be slightly above the Monte Carlo variability of the C-index difference under no shift (empirical 95th percentile $\approx 0.008$ in our simulations), ensuring that only non-trivial miscalibration triggers the calibration step.
 
 **Comparison to LoRA.** In LLM fine-tuning, the need for adaptation is assessed by evaluating the pre-trained model's performance on a domain-specific validation set. Our C-index comparison plays the same role — it tests whether the pre-trained score ("base model") is adequate or requires fine-tuning.
 
@@ -124,7 +124,7 @@ all estimated at the optimal $\lambda$ selected by cross-validation.
 
 **Non-collapsibility in blinded calibration.** Because the calibration model omits the treatment indicator $A_i$ (the data is blinded), the Cox PH estimates $\hat{\beta}^{(cal)}$ are subject to the non-collapsibility of the hazard ratio (Gail, Wieand, & Piantadosi, 1984). In linear regression, omitting a variable orthogonal to the included regressors — as randomized treatment $A$ is to baseline covariates $W$ — does not bias coefficient estimates. In the Cox model, however, omitting a prognostic treatment effect systematically attenuates the estimated coefficients of the included covariates toward zero, because the marginal hazard at a given covariate value is averaged over the unknown treatment assignment.
 
-This attenuation is proportional to the magnitude of the treatment effect $\beta_{trt}$ and the event rate. For $\beta_{trt} = \log 0.70$ and $N = 400$ (our primary setting), the attenuation is modest: the calibration coefficients are biased toward zero by approximately $\beta_{trt}^2 / 6 \approx 0.015$ in expectation (Struthers & Kalbfleisch, 1986). The ridge penalty $\lambda$ partially compensates, since CV selects weaker shrinkage when the signal-to-noise ratio is reduced. Most importantly, the attenuation does not affect the validity of the primary analysis: under randomization, $\hat{S}^{(cal)}$ remains a function of $W$ only, and $A \perp W$ preserves asymptotic Type I error (Schuler et al., 2022, Theorem 1). Empirical verification is provided in Section 3.2 and a blinded-versus-unblinded calibration comparison is reported in Section 3.3.
+This attenuation is proportional to the magnitude of the treatment effect $\beta_{trt}$ and the event rate. For $\beta_{trt} = \log 0.70$ and $N = 400$ (our primary setting), the attenuation is modest: applying the misspecified Cox model result of Struthers & Kalbfleisch (1986, eq. 3.2) to the case of an omitted binary covariate with effect $\beta_{trt}$, the calibration coefficients are biased toward zero by approximately $\beta_{trt}^2 / 6 \approx 0.015$ in expectation. The ridge penalty $\lambda$ partially compensates, since CV selects weaker shrinkage when the signal-to-noise ratio is reduced. Most importantly, the attenuation does not affect the validity of the primary analysis: under randomization, $\hat{S}^{(cal)}$ remains a function of $W$ only, and $A \perp W$ preserves asymptotic Type I error (Schuler et al., 2022, Theorem 1). Empirical verification is provided in Section 3.2 and a blinded-versus-unblinded calibration comparison is reported in Section 3.3.
 
 ### 2.4 Primary Analysis
 
@@ -199,7 +199,7 @@ The external model is a Cox PH fit on all 20 covariates, treated as a black box 
 
 **Table 1: Empirical power (10,000 replicates per scenario).**
 
-| Scenario | Std | Full Model | LR | PROCOVA | MAP-Cox | Ridge-Cal | Gain |
+| Scenario | Cox-2 | Full Model | LR | PROCOVA | MAP-Cox | Ridge-Cal | Gain |
 |:------------------------------|:----:|:---------:|:--:|:-------:|:-------:|:--------:|:----:|
 |:------------------------------|:----:|:-----:|:--:|:-------:|:-------:|:--------:|:----:|
 | 1. No shift | 0.630 | 0.845 | 0.532 | 0.845 | 0.834 | **0.837** | -0.008 |
@@ -214,7 +214,7 @@ The external model is a Cox PH fit on all 20 covariates, treated as a black box 
 
 **Key observations.** Under severe population shift (Scenario 3), Ridge-Cal recovers **+7.5 percentage points** of power over PROCOVA (0.758 to 0.833) and reduces bias by **80%** (0.035 to 0.007). The gain is larger under treatment-by-covariate interactions (+12.4 pp) and smaller effect sizes (+8.7 pp under HR = 0.75). Type I error is exactly nominal (0.052 under Scenario 5). The no-shift penalty is minimal ($-$0.8 pp). Under non-proportional hazards (Scenario 6, 2-month delayed effect), power is lower across all methods due to Cox model misspecification, but Ridge-Cal (0.551) nearly matches the full model (0.554) and beats PROCOVA (0.501) by +5.0 pp.
 
-MAP-Cox achieves comparable power to Ridge-Cal across most scenarios, including 0.834 vs 0.837 (no shift) and 0.832 vs 0.833 (severe shift). However, MAP-Cox uses 21 parameters on unblinded data (all 20 covariates + treatment), whereas Ridge-Cal uses only 6 parameters on blinded data. Ridge-Cal thus matches or beats MAP-Cox despite being substantially more parsimonious and avoiding unblinding.
+MAP-Cox achieves comparable power to Ridge-Cal across most scenarios, including 0.834 vs 0.837 (no shift) and 0.832 vs 0.833 (severe shift). This comparison is not symmetric: MAP-Cox has access to unblinded trial data and fits 21 parameters (all 20 covariates + treatment), while Ridge-Cal uses only 6 parameters on blinded data. That Ridge-Cal achieves similar power to MAP-Cox despite having substantially less information underscores the efficiency of the regularized calibration approach and the value of blinded-data operation.
 
 **Table 2: Bias on the log-HR scale (10,000 replicates).**
 
@@ -242,23 +242,15 @@ A proper MAP prior comparison (Schmidli et al., 2014) using precision-weighted u
 
 ---
 
-## 4. Results
+## 4. Discussion
 
-Tables 1 and 2 present the full simulation results (reproduced from Section 3.2). Ridge-Cal consistently outperforms PROCOVA under population shift, with power gains of +3.3 to +12.4 percentage points across scenarios. Bias on the log-HR scale is below 0.01 for Ridge-Cal under all non-Non-PH scenarios, compared to PROCOVA bias up to 0.046. Type I error is controlled at the nominal level for all methods (0.051--0.052). The no-shift penalty for Ridge-Cal is minimal ($-$0.8 pp).
-
-MAP-Cox (Tables 1--2) achieves similar power to Ridge-Cal across most scenarios but uses 21 parameters on unblinded trial data (all 20 covariates + treatment) versus 6 parameters on blinded data. Ridge-Cal matches or exceeds MAP-Cox despite being substantially more parsimonious and requiring no unblinding.
-
----
-
-## 5. Discussion
-
-### 5.1 Summary
+### 4.1 Summary
 
 We have proposed Ridge-Cal, a two-step procedure for diagnosing and correcting miscalibration of external prognostic scores using a trial's own blinded data. The method is inspired by parameter-efficient fine-tuning: the pre-trained score is frozen, and a small, regularized correction is learned for a pre-specified subset of covariates. The strength of the correction is selected automatically by cross-validation.
 
 In simulations with 10,000 replicates under severe population shift, Ridge-Cal recovers 7.5 percentage points of power over standard PROCOVA (0.758 vs 0.833), reduces bias by 80% (0.035 vs 0.007), and maintains nominal Type I error (0.052 vs 0.053). The gain is larger under treatment-by-covariate interactions (+12.4 pp) and smaller effect sizes (+8.7 pp under HR = 0.75). When no shift is present, the power penalty is minimal ($-$0.8 pp) and the diagnostic correctly indicates no recalibration is needed.
 
-### 5.2 Relationship to Existing Methods
+### 4.2 Relationship to Existing Methods
 
 Ridge-Cal complements PROCOVA rather than replacing it. PROCOVA provides the base score, and Ridge-Cal fine-tunes it when needed — analogous to how LoRA fine-tunes a pre-trained LLM rather than training from scratch.
 
@@ -266,7 +258,7 @@ Compared to Bayesian dynamic borrowing (Ibrahim & Chen, 2000; Hobbs et al., 2011
 
 The ridge penalty makes Ridge-Cal more robust than naive recalibration (updating all coefficients freely), which overfits when the calibration sample is small. Cross-validated $\lambda$ selection automates the regularization strength.
 
-### 5.3 Limitations
+### 4.3 Limitations
 
 **Pre-specification of $\mathcal{C}$.** The calibration set must be pre-specified in the statistical analysis plan. If a shifting covariate is left out, Ridge-Cal cannot correct it. Including non-shifting covariates adds noise but does not inflate Type I error. Pre-specification should be based on clinical judgment supported by blinded covariate distribution comparisons.
 
@@ -278,9 +270,11 @@ The ridge penalty makes Ridge-Cal more robust than naive recalibration (updating
 
 **Blinded calibration.** The blinded variant assumes no strong treatment-by-covariate interactions. Our simulations show minimal impact, but the control-arm variant avoids this issue at the cost of partial unblinding.
 
+**Simulation scope.** Our simulations focused on $N = 400$ with ~300 events and a Cox PH external model. The method's behavior in smaller trials ($N < 200$), under sparse events ($< 100$ events), or with non-Cox external models (random survival forests, boosting) has not been evaluated and merits further study. The calibration set size was fixed at $|\mathcal{C}| = 5$; the impact of smaller or larger calibration sets should be explored in future work.
+
 **No efficiency bound.** We have not derived the semiparametric efficiency bound for the Ridge-Cal estimator.
 
-### 5.4 Connection to LoRA and Future Directions
+### 4.4 Connection to LoRA and Future Directions
 
 The ridge penalty $\lambda$ plays an analogous role to the rank $r$ in Low-Rank Adaptation (LoRA; Hu et al., 2022): $\lambda = 0$ permits unconstrained adaptation of the calibration coefficients, while $\lambda \to \infty$ recovers the base PROCOVA model. Cross-validated selection of $\lambda$ provides automatic calibration strength tuning, similar to how the LoRA rank $r$ is selected in practice. The key difference — LoRA constrains the *dimension* of the update, while ridge constrains its *magnitude* — reflects the different data regimes: LLMs have millions of parameters and abundant unlabeled data, while clinical trials have at most a few hundred events and require precise Type I error control. Ridge regularization is the natural choice for this setting.
 
@@ -290,13 +284,13 @@ The ridge penalty $\lambda$ plays an analogous role to the rank $r$ in Low-Rank 
 
 **Online calibration.** In adaptive designs, the calibration could update at each interim using accumulating blinded data, with $\lambda$ scheduled to decrease over time.
 
-### 5.5 Regulatory and Operational Considerations
+### 4.5 Regulatory and Operational Considerations
 
 Ridge-Cal operates within existing regulatory frameworks for covariate adjustment. The diagnostic and calibration steps use only blinded data, preserving trial integrity and avoiding the operational complexity of unblinding. The method relies on a pre-specified calibration set $\mathcal{C}$, which aligns with regulatory expectations for prospective specification of the analysis plan. No new data collection, sample size adjustment, or unblinding is required — factors that are critical for operational feasibility in phase 2/3 trials.
 
 The primary analysis (Cox PH with the calibrated score and a robust sandwich variance estimator) is covered under existing FDA and EMA guidance on covariate adjustment (FDA, 2023; EMA, 2015). PROCOVA users can implement Ridge-Cal as a pre-specified sensitivity analysis without altering their primary analysis strategy. For trials already using PROCOVA under the EMA qualification (EMA, 2022), Ridge-Cal provides a natural sensitivity analysis for the key assumption of score calibration.
 
-### 5.6 Conclusion
+### 4.6 Conclusion
 
 Ridge-Cal addresses a specific limitation of PROCOVA: the assumption that external prognostic scores remain well-calibrated for the trial population. By applying a ridge-penalized Cox model to blinded trial data, Ridge-Cal diagnoses and corrects miscalibration with respect to a pre-specified set of covariates. The ridge penalty protects against overfitting when the calibration sample is small, and cross-validated selection automates the regularization strength. In 10,000-rep simulations, Ridge-Cal improves power over PROCOVA under all forms of population shift by 3.3 to 12.4 percentage points with exact Type I error control and a minimal no-shift penalty (0.8 pp). A MAP-Cox comparison (Tables 1--2) confirms comparable or better power with far fewer parameters and blinded-data operation. We recommend Ridge-Cal as a sensitivity analysis in any PROCOVA-qualified trial.
 
