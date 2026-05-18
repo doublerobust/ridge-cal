@@ -31,3 +31,4 @@ simulation/*.log
 # Temp
 /tmp/
 __pycache__/
+merck-internal/
