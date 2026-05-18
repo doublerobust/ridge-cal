@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Yue Shentu">
+  <meta name="dcterms.date" content="2026-05-18">
+  <title>From Concept to Submission in 8 Hours</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@4.3.1/dist/reset.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@4.3.1/dist/reveal.css">
+  <style>
+    .reveal .sourceCode {  /* see #7635 */
+      overflow: visible;
+    }
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@4.3.1/dist/theme/solarized.css" id="theme">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">From Concept to Submission in 8 Hours</h1>
+  <p class="subtitle">Ridge-Cal, Digital Twins, and the Birth of a
+Statistical Research Skill</p>
+  <p class="author">Yue Shentu</p>
+  <p class="date">May 18, 2026</p>
+</section>
+
+<section>
+<section id="the-spark" class="title-slide slide level1">
+<h1>The Spark</h1>
+
+</section>
+<section id="the-problem-that-started-it-all" class="slide level2">
+<h2>The Problem That Started It All</h2>
+<ul>
+<li><strong>PROCOVA</strong> is EMA-qualified for improving trial
+efficiency via prognostic scores</li>
+<li>But it assumes the <strong>external score is perfectly
+calibrated</strong> for the trial population</li>
+<li><strong>Population shift</strong> is the rule, not the exception —
+especially in oncology</li>
+<li><strong>No existing method</strong> diagnoses or corrects
+miscalibration using blinded trial data</li>
+</ul>
+<p><strong>The question:</strong> Can we fine-tune a prognostic score
+using only the trial’s own blinded data?</p>
+</section>
+<section id="the-ridge-cal-idea" class="slide level2">
+<h2>The Ridge-Cal Idea</h2>
+<p>Simple insight: treat the external score as a <strong>pre-trained
+model</strong> and apply a <strong>regularized correction</strong> on
+blinded data:</p>
+<ol type="1">
+<li><strong>Diagnose:</strong> Compare C-index of score alone vs. score
++ calibration covariates</li>
+<li><strong>Calibrate:</strong> Ridge-penalized Cox regression on
+blinded data, λ selected by CV</li>
+<li><strong>Analyze:</strong> Standard Cox PH with calibrated score +
+robust sandwich SE</li>
+</ol>
+<p>6 parameters, blinded data, no additional data collection needed.</p>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="the-8-hour-journey" class="title-slide slide level1">
+<h1>The 8-Hour Journey</h1>
+
+</section>
+<section id="timeline-may-17-18-2026" class="slide level2">
+<h2>Timeline: May 17-18, 2026</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Time</th>
+<th style="text-align: left;">Milestone</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">~21:00</td>
+<td style="text-align: left;">Initial concept: TMLE + Bayesian MCMC (too
+complex)</td>
+</tr>
+<tr>
+<td style="text-align: center;">~22:00</td>
+<td style="text-align: left;">Pivot to ridge regression on 5
+covariates</td>
+</tr>
+<tr>
+<td style="text-align: center;">~23:00</td>
+<td style="text-align: left;">First simulation — bug found (non-PH
+wrong)</td>
+</tr>
+<tr>
+<td style="text-align: center;">~00:00</td>
+<td style="text-align: left;">10K-rep simulation running</td>
+</tr>
+<tr>
+<td style="text-align: center;">~01:00</td>
+<td style="text-align: left;">MAP-Cox bug found (k applied after
+pooling)</td>
+</tr>
+<tr>
+<td style="text-align: center;">~06:00</td>
+<td style="text-align: left;">Manuscript drafted, code audit done</td>
+</tr>
+<tr>
+<td style="text-align: center;">~07:00</td>
+<td style="text-align: left;">Reviewer 2 (Gemini): Major Revision → 7
+point fixes</td>
+</tr>
+<tr>
+<td style="text-align: center;">~08:00</td>
+<td style="text-align: left;">Revised, Qwen review: Major → Minor →
+Accept</td>
+</tr>
+<tr>
+<td style="text-align: center;">~09:00</td>
+<td style="text-align: left;">Digital twin landscape report for
+SVPs</td>
+</tr>
+<tr>
+<td style="text-align: center;">~10:00</td>
+<td style="text-align: left;">JBS formatting, Times New Roman, all
+checks</td>
+</tr>
+<tr>
+<td style="text-align: center;">~14:00</td>
+<td style="text-align: left;">Small strata investigation: voice note →
+white paper</td>
+</tr>
+<tr>
+<td style="text-align: center;">~15:00</td>
+<td style="text-align: left;">Skill refined, presentation ready</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="what-actually-got-built" class="slide level2">
+<h2>What Actually Got Built</h2>
+<table>
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 23%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">Deliverable</th>
+<th style="text-align: left;">Format</th>
+<th style="text-align: left;">Audience</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Ridge-Cal manuscript</td>
+<td style="text-align: left;">PDF, 12 pages</td>
+<td style="text-align: left;">JBS submission</td>
+</tr>
+<tr>
+<td style="text-align: left;">Response to Reviewer 2</td>
+<td style="text-align: left;">Markdown</td>
+<td style="text-align: left;">Journal</td>
+</tr>
+<tr>
+<td style="text-align: left;">Digital twin landscape survey</td>
+<td style="text-align: left;">PDF, 12 pages, 3 diagrams</td>
+<td style="text-align: left;">Merck SVPs</td>
+</tr>
+<tr>
+<td style="text-align: left;">Small strata white paper</td>
+<td style="text-align: left;">Markdown</td>
+<td style="text-align: left;">Internal stat leads</td>
+</tr>
+<tr>
+<td style="text-align: left;">Research workflow skill</td>
+<td style="text-align: left;">SKILL.md</td>
+<td style="text-align: left;">Future projects</td>
+</tr>
+<tr>
+<td style="text-align: left;">Code + simulations</td>
+<td style="text-align: left;">GitHub (public)</td>
+<td style="text-align: left;">Reproducibility</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="the-multi-model-review-loop"
+class="title-slide slide level1">
+<h1>The Multi-Model Review Loop</h1>
+
+</section>
+<section id="why-one-ai-isnt-enough" class="slide level2">
+<h2>Why One AI Isn’t Enough</h2>
+<p>Same-model reviewers share the same <strong>blind spots</strong> and
+<strong>hallucination patterns</strong>.</p>
+<p><strong>Our solution:</strong> Two-loop review with different model
+architectures.</p>
+<h3 id="loop-1-internal-openclaw">Loop 1: Internal (OpenClaw)</h3>
+<ul>
+<li><strong>Writer:</strong> DeepSeek v4 Flash</li>
+<li><strong>Reviewer:</strong> Qwen (different architecture, different
+training)</li>
+<li><strong>Cost:</strong> Internal to platform, essentially free</li>
+<li><strong>Caught:</strong> Section 4 redundancy, δ justification,
+missing data, table headers</li>
+</ul>
+<h3 id="loop-2-external-gemini-pro">Loop 2: External (Gemini Pro)</h3>
+<ul>
+<li><strong>Reviewer:</strong> Gemini Pro (completely separate AI,
+separate company)</li>
+<li><strong>Cost:</strong> Free tier / pasted manuscript</li>
+<li><strong>Caught:</strong> Non-collapsibility, tone, event rates, LoRA
+framing</li>
+</ul>
+</section>
+<section id="the-convergence" class="slide level2">
+<h2>The Convergence</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Round</th>
+<th style="text-align: left;">Reviewer</th>
+<th style="text-align: left;">Verdict</th>
+<th style="text-align: left;">Issues Found</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Gemini</td>
+<td style="text-align: left;">Major Revision</td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Gemini</td>
+<td style="text-align: left;"><strong>Accept</strong></td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">Qwen</td>
+<td style="text-align: left;">Major Revision</td>
+<td style="text-align: left;">7 (different!)*</td>
+</tr>
+<tr>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">Qwen</td>
+<td style="text-align: left;">Minor Revision</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">Qwen</td>
+<td style="text-align: left;"><strong>Accept</strong></td>
+<td style="text-align: left;">—</td>
+</tr>
+</tbody>
+</table>
+<p>Qwen caught issues Gemini missed: Section 4 redundancy, δ
+justification, table header ambiguity, MAP-Cox framing, sandwich
+variance scope, missing data, reference formatting.</p>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="the-demo-voice-note-white-paper"
+class="title-slide slide level1">
+<h1>The Demo: Voice Note → White Paper</h1>
+
+</section>
+<section id="the-workflow-in-10-minutes" class="slide level2">
+<h2>The Workflow in 10 Minutes</h2>
+<p><strong>Input:</strong> Voice note while driving (transcribed by
+Whisper)</p>
+<blockquote>
+<p>“Do we need to pool small strata for CMH and MN methods?”</p>
+</blockquote>
+<p><strong>Output:</strong> White paper with simulation results,
+proposed SAP language, and mathematical appendix</p>
+</section>
+<section id="what-happened" class="slide level2">
+<h2>What Happened</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Step</th>
+<th style="text-align: center;">Time</th>
+<th style="text-align: left;">Tool</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Voice transcription</td>
+<td style="text-align: center;">&lt; 1 min</td>
+<td style="text-align: left;">Whisper (tiny model)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Problem scoping</td>
+<td style="text-align: center;">1 min</td>
+<td style="text-align: left;">Phase 0 proposal</td>
+</tr>
+<tr>
+<td style="text-align: left;">Independent review</td>
+<td style="text-align: center;">1 min</td>
+<td style="text-align: left;">Qwen (isolated)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Revision</td>
+<td style="text-align: center;">1 min</td>
+<td style="text-align: left;">Refine scope</td>
+</tr>
+<tr>
+<td style="text-align: left;">Code + simulation</td>
+<td style="text-align: center;">3 min</td>
+<td style="text-align: left;">R, 5K reps</td>
+</tr>
+<tr>
+<td style="text-align: left;">Code review v1</td>
+<td style="text-align: center;">1 min</td>
+<td style="text-align: left;">Caught 3 bugs</td>
+</tr>
+<tr>
+<td style="text-align: left;">Code review v2</td>
+<td style="text-align: center;">1 min</td>
+<td style="text-align: left;">Verified fixes</td>
+</tr>
+<tr>
+<td style="text-align: left;">Final review</td>
+<td style="text-align: center;">1 min</td>
+<td style="text-align: left;">White paper + code</td>
+</tr>
+<tr>
+<td style="text-align: left;">Push to GitHub</td>
+<td style="text-align: center;">&lt; 1 min</td>
+<td style="text-align: left;">Public repo</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Total</strong></td>
+<td style="text-align: center;"><strong>~10 min</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="the-three-code-reviews" class="slide level2">
+<h2>The Three Code Reviews</h2>
+<table>
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 27%" />
+<col style="width: 48%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">Review</th>
+<th style="text-align: left;">Verdict</th>
+<th style="text-align: left;">What It Caught</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">v1</td>
+<td style="text-align: left;">Minor Issues</td>
+<td style="text-align: left;">Scenario 4 duplicated, CMH RR variance
+unstratified, Wald mislabeled as MN</td>
+</tr>
+<tr>
+<td style="text-align: left;">v2</td>
+<td style="text-align: left;">Minor Issues</td>
+<td style="text-align: left;">Scenario 4 label misleading, MN SE
+approximation (acknowledged)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Final</td>
+<td style="text-align: left;">Pass</td>
+<td style="text-align: left;">Verified against bootstrap empirical
+variance</td>
+</tr>
+</tbody>
+</table>
+<p>All bugs fixed before delivery. <strong>Never trust your own code
+without independent review.</strong></p>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="the-emergent-workflow" class="title-slide slide level1">
+<h1>The Emergent Workflow</h1>
+
+</section>
+<section id="the-skill-file-skill.md" class="slide level2">
+<h2>The Skill File (SKILL.md)</h2>
+<p>A complete pipeline from concept to submission:</p>
+<h3 id="phase-0-topic-id">Phase 0: Topic ID</h3>
+<p>Identify gap, map literature, define “before” and “after”</p>
+<h3 id="phase-1-initial-writeup">Phase 1: Initial Writeup</h3>
+<p>Write proposal → spawn isolated reviewer → iterate</p>
+<h3 id="phase-2-simulation">Phase 2: Simulation</h3>
+<p>Test (2 reps) → Validate (20 reps) → Confirm (200 reps) → Full (10K
+reps)</p>
+<h3 id="phase-3-multi-agent-qc">Phase 3: Multi-Agent QC</h3>
+<p><strong>Code review before big simulations — DO NOT SKIP</strong></p>
+<h3 id="phase-4-full-run">Phase 4: Full Run</h3>
+<p>Background, cron scheduling, monitoring</p>
+<h3 id="phase-4.5-reproducibility-audit">Phase 4.5: Reproducibility
+Audit</h3>
+<p>Does the code match the manuscript?</p>
+<h3 id="phase-5-manuscript">Phase 5: Manuscript</h3>
+<p>Write, verify references, PDF self-check, senior review</p>
+<h3 id="phase-6-revision">Phase 6: Revision</h3>
+<p>Critique Parser → Math Reconciliation → Re-Simulation → Diff
+Check</p>
+<h3 id="phase-7-pre-submission-loop">Phase 7: Pre-Submission Loop</h3>
+<p>Independent reviewer → Revise → Loop (max 3) until Accept</p>
+</section>
+<section id="key-rules-that-emerged" class="slide level2">
+<h2>Key Rules That Emerged</h2>
+<ol type="1">
+<li><strong>Isolate reviewers</strong> —
+<code>context="isolated"</code>, no discussion history</li>
+<li><strong>Diversify models</strong> — Different AIs catch different
+bugs</li>
+<li><strong>PDF self-verify</strong> — Programmatic checks before
+sending to human</li>
+<li><strong>Clean up cruft</strong> — Every iteration leaves stale
+code/language</li>
+<li><strong>Push at milestones</strong> — GitHub for external review
+access</li>
+<li><strong>Batch deliveries</strong> — Don’t send incremental fixes,
+pace yourself</li>
+</ol>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="key-lessons" class="title-slide slide level1">
+<h1>Key Lessons</h1>
+
+</section>
+<section id="what-went-right" class="slide level2">
+<h2>What Went Right</h2>
+<ul>
+<li><strong>Independent reviewers caught more bugs than
+expected</strong> — 3 citation errors, 1 broken method, 1
+non-collapsibility issue, and several framing weaknesses</li>
+<li><strong>Small tests before big runs</strong> — ~5 dead ends
+avoided</li>
+<li><strong>Human-in-the-loop</strong> — 8 reframing cycles, each
+improved the method</li>
+<li><strong>LoRA analogy won</strong> — Both AI and human reviewers
+found it helpful</li>
+</ul>
+</section>
+<section id="what-went-wrong" class="slide level2">
+<h2>What Went Wrong</h2>
+<ul>
+<li><strong>PDF verification was a disaster</strong> — 5 failed attempts
+before getting it right. Images silently failed (RGBA→RGB, code block
+markers, missing paths). <strong>Now has a verification
+script.</strong></li>
+<li><strong>Code review was skipped initially</strong> — Would have
+delivered buggy results. <strong>Now has a “🚨 DO NOT SKIP” in the
+skill.</strong></li>
+<li><strong>Fast iteration exhausted the human</strong> — I was sending
+too many incremental fixes. <strong>Now batching is built into the
+workflow.</strong></li>
+<li><strong>Stale artifacts accumulated</strong> — Old PDFs, old labels,
+old comments. <strong>Now has explicit cleanup at every
+milestone.</strong></li>
+</ul>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="qa" class="title-slide slide level1">
+<h1>Q&amp;A</h1>
+
+</section>
+<section id="thank-you" class="slide level2">
+<h2>Thank You</h2>
+<p>Questions? </p>
+<p><strong>Repos:</strong> - Ridge-Cal:
+<code>github.com/doublerobust/ridge-cal</code> - Small strata:
+<code>github.com/doublerobust/small-strata-pooling</code></p>
+<p><strong>The skill:</strong> Lives in my OpenClaw workspace — can be
+shared.</p>
+</section></section>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@4.3.1/dist/reveal.js"></script>
+
+  <!-- reveal.js plugins -->
+  <script src="https://unpkg.com/reveal.js@4.3.1/plugin/notes/notes.js"></script>
+  <script src="https://unpkg.com/reveal.js@4.3.1/plugin/search/search.js"></script>
+  <script src="https://unpkg.com/reveal.js@4.3.1/plugin/zoom/zoom.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // reveal.js plugins
+        plugins: [
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>
