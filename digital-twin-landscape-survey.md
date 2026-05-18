@@ -113,29 +113,7 @@ The regulatory path for digital twin-derived methodologies exists but is rigorou
 The digital twin space in clinical development has four segments:
 
 ```
-                    ┌─────────────────────────────────────┐
-                    │     DTaaS (Digital Twin as a         │
-                    │         Service)                     │
-                    │  Unlearn.AI, Altis Labs, Phesi,      │
-                    │  InSilico Medicine                    │
-                    │  Revenue: $500K–$2M per trial        │
-                    └──────────┬──────────────────────────┘
-                               │
-         ┌─────────────────────┼─────────────────────┐
-         │                     │                     │
-         ▼                     ▼                     ▼
-┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
-│ MIDD Software   │  │  CRO Services   │  │ Academic/Open   │
-│ Platforms       │  │                  │  │ Source Groups   │
-│                 │  │                  │  │                  │
-│ Certara         │  │ IQVIA MIDD      │  │ Imperial College │
-│ SimulationsPlus │  │ Parexel/QS      │  │ JHU              │
-│ Pumas-AI        │  │ Labcorp/Covance │  │ Seattle Children's│
-│ Rosa & Co       │  │ PPD/ThermoFisher│  │ NIH Consortia    │
-│                 │  │                  │  │                  │
-│ Revenue: License │  │ Revenue:        │  │ Revenue: Grants  │
-│ $500K/yr        │  │ $500–2000/hr    │  │ (free software)  │
-└─────────────────┘  └─────────────────┘  └─────────────────┘
+![Vendor Ecosystem](figures/vendor-ecosystem.png)
 ```
 
 ### 3.2 Segment Profiles
@@ -201,34 +179,7 @@ Critical gaps that vendors underemphasize:
 ### 4.1 Taxonomy of Methods
 
 ```
-Digital Twin / Synthetic Control Methods
-│
-├── Statistical Approaches
-│   ├── PROCOVA (Schuler 2021, 2022)
-│   │   └── Prognostic score as covariate, EMA qualified
-│   └── Internal calibration methods (Shentu 2026)
-│   │   └── Regularized calibration on blinded data
-│   ├── Bayesian Dynamic Borrowing
-│   │   ├── Power Priors (Ibrahim & Chen 2000)
-│   │   ├── Commensurate Priors (Hobbs 2011, 2012)
-│   │   └── MAP Priors (Schmidli 2014)
-│   ├── Propensity Score Matching
-│   │   └── Match trial patients to external controls
-│   └── Neural Boltzmann Machines (Unlearn)
-│       └── Deep generative models for counterfactual prediction
-│
-├── Mechanistic Approaches
-│   ├── ODE-based physiological models
-│   │   ├── Virtual heart (JHU, FDA pilot)
-│   │   └── Antibody kinetics (vaccine trials)
-│   ├── PK/PD models
-│   │   └── Standard pharmacometric approach
-│   └── Agent-based models
-│       └── Tumor growth / immune response
-│
-└── Hybrid Approaches
-    ├── Mechanistic + AI (recommended by Roche)
-    └── PK/PD + ML correction
+![Methodological Taxonomy](figures/method-taxonomy.png)
 ```
 
 ### 4.2 PROCOVA in Detail
@@ -308,6 +259,8 @@ Based on vendor marketing, industry press, and consulting reports:
 > "Every patient can have a personalized digital twin."
 
 ### 6.2 What the Evidence Actually Shows
+
+![Hype vs Reality](figures/hype-reality.png)
 
 | Claim | Reality Check |
 |-------|--------------|
