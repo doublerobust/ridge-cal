@@ -4,6 +4,20 @@ subtitle: "Ridge-Cal, Digital Twins, and the Birth of a Statistical Research Ski
 author: "Yue Shentu"
 date: "May 18, 2026"
 ---
+# The Tech Stack Journey
+
+## Building the Infrastructure Before the Research Could Start
+
+- **OpenClaw setup:** Configuration, agents, skills, Telegram channel
+- **Local models (LM Studio):** Tool calling was unreliable — models would understand requests but fail to execute tool calls consistently
+- **DeepSeek API:** The breakthrough. Cheap (~$0.15/M input), fast, reliable tool calling
+- **Qwen via Ollama:** Different architecture for model-diverse reviews — catches different bugs
+- **Whisper:** Added speech-to-text for voice notes. Tiny model on CPU
+- **Dependencies:** R + glmnet/furrr, Python + matplotlib/whisper, pandoc + LaTeX
+
+Key lesson: start with the API that works, optimize later.
+
+
 
 # The Spark
 

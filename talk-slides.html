@@ -48,6 +48,32 @@ Statistical Research Skill</p>
 </section>
 
 <section>
+<section id="the-tech-stack-journey" class="title-slide slide level1">
+<h1>The Tech Stack Journey</h1>
+
+</section>
+<section
+id="building-the-infrastructure-before-the-research-could-start"
+class="slide level2">
+<h2>Building the Infrastructure Before the Research Could Start</h2>
+<ul>
+<li><strong>OpenClaw setup:</strong> Configuration, agents, skills,
+Telegram channel</li>
+<li><strong>Local models (LM Studio):</strong> Tool calling was
+unreliable — models would understand requests but fail to execute tool
+calls consistently</li>
+<li><strong>DeepSeek API:</strong> The breakthrough. Cheap (~$0.15/M
+input), fast, reliable tool calling</li>
+<li><strong>Qwen via Ollama:</strong> Different architecture for
+model-diverse reviews — catches different bugs</li>
+<li><strong>Whisper:</strong> Added speech-to-text for voice notes. Tiny
+model on CPU</li>
+<li><strong>Dependencies:</strong> R + glmnet/furrr, Python +
+matplotlib/whisper, pandoc + LaTeX</li>
+</ul>
+<p>Key lesson: start with the API that works, optimize later.</p>
+</section></section>
+<section>
 <section id="the-spark" class="title-slide slide level1">
 <h1>The Spark</h1>
 
@@ -301,8 +327,8 @@ class="title-slide slide level1">
 </section>
 <section id="the-workflow-in-10-minutes" class="slide level2">
 <h2>The Workflow in 10 Minutes</h2>
-<p><strong>Input:</strong> Voice note while driving (transcribed by
-Whisper)</p>
+<p><strong>Input:</strong> Voice note pacing in the kitchen (transcribed
+by Whisper)</p>
 <blockquote>
 <p>“Do we need to pool small strata for CMH and MN methods?”</p>
 </blockquote>
