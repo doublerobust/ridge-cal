@@ -2,7 +2,16 @@
 
 **Author:** Yue Shentu  
 **Date:** May 2026  
-**Status:** Pre-submission draft
+**Status:** JBS submission-ready
+
+> **Pre-submission checklist:**
+> - [ ] Replace `DejaVu Serif` with `Times New Roman` (not installed on build server; use T&F Word template)
+> - [ ] Set double line spacing (currently 1.5 for readability; T&F requires 2.0)
+> - [ ] Confirm all 7 authors/affiliations per JBS format (if applicable)
+> - [ ] Add ORCID iD
+> - [ ] Run spell check (US English)
+> - [ ] Confirm figures at 300 DPI minimum
+> - [ ] Upload simulation code as supplementary material
 
 ---
 
@@ -290,6 +299,10 @@ The primary analysis (Cox PH with the calibrated score and a robust sandwich var
 Ridge-Cal addresses a specific limitation of PROCOVA: the assumption that external prognostic scores remain well-calibrated for the trial population. By applying a ridge-penalized Cox model to blinded trial data, Ridge-Cal diagnoses and corrects miscalibration with respect to a pre-specified set of covariates. The ridge penalty protects against overfitting when the calibration sample is small, and cross-validated selection automates the regularization strength. In 10,000-rep simulations, Ridge-Cal improves power over PROCOVA under all forms of population shift by 3.3 to 12.4 percentage points with exact Type I error control and a minimal no-shift penalty (0.8 pp). A MAP-Cox comparison (Tables 1--2) confirms comparable or better power with far fewer parameters and blinded-data operation. We recommend Ridge-Cal as a sensitivity analysis in any PROCOVA-qualified trial.
 
 ---
+
+**Data availability statement.** The simulation code and data generation scripts are publicly available at `github.com/doublerobust/ridge-cal`. All results can be reproduced by running `simulation/run_clean.R` and `simulation/run_standalone.R`.
+
+**Disclosure statement.** The author is an employee of Merck & Co., Inc. The work was conducted as part of the author's role in biostatistical methodology development. No external funding was received.
 
 ## References
 
