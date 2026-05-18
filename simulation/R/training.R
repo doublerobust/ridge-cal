@@ -33,7 +33,7 @@ calibrate_prognostic <- function(W_ext, T_ext, delta_ext,
   ext_model <- train_external_model(W_ext, T_ext, delta_ext)
   beta_ext <- coef(ext_model$fit)
 
-  # Step 2: Phase II controls
+  # Step 2: Control arm patients
   II_ctrl <- A_II == 0
   n_ctrl <- sum(II_ctrl)
 

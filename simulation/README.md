@@ -1,43 +1,35 @@
-# Phase II Calibration Simulation
+# Ridge-Cal Simulation
 
-Simulation code for "Phase II-Calibrated Prognostic Scores with
-Semiparametric Efficient Estimation for Seamless Phase II/III Clinical Trials."
+Simulation code for "Ridge-Cal: Efficient Regularized Calibration of External Prognostic Scores Using Blinded Trial Data."
 
 ## Quick Start
 
 ```bash
 cd simulation
 
-# Quick test (100 reps each, all scenarios)
-Rscript run_all.R --quick
+# Full 10K × 7 scenarios (5 methods, ~27 min on 12 cores)
+Rscript run_clean.R
 
-# Full run (1000 reps each, all scenarios, ~8-10 hours)
-Rscript run_all.R
-
-# Single scenario
-Rscript scripts/run_simulation.R --scenario 1 --n_sim 100
-
-# View results
-Rscript scripts/report.R
-
-# LaTeX tables
-Rscript scripts/report.R --latex
+# Interactive version with MAP-Cox (6 methods, ~35 min)
+Rscript run_standalone.R
 ```
 
 ## Directory Layout
 
 ```
 simulation/
-├── run_all.R                  # Master runner (all scenarios, parallel)
+├── run_clean.R                  # 10K × 7 scenarios (5 methods: Std, Orac, LR, PRO, RCal)
+├── run_standalone.R             # Interactive version (6 methods, includes MAP-Cox)
 ├── R/
-│   ├── data_generation.R      # Covariate generation, survival times, censoring
-│   ├── training.R             # External model training, Bayesian calibration
-│   └── analysis_methods.R     # All 11 comparison methods
+│   ├── data_generation.R        # Covariate generation, survival times, censoring
+│   ├── training.R               # External model training
+│   ├── analysis_methods.R       # All analysis functions
+│   └── map_proper.R             # Proper MAP prior precision-weighted implementation
 ├── scripts/
-│   ├── run_simulation.R       # Single-scenario runner + aggregation
-│   └── report.R               # Results tabulation
-├── output/                    # Saved .rds results
-└── _targets/                  # Targets cache (optional)
+│   └── report.R                 # Legacy report generation (for .rds-based output)
+├── map_cox_results.txt          # Pre-computed MAP-Cox results
+├── launch_now.sh                # Quick launch (detached)
+└── launch_sim.sh                # Cron-ready launch
 ```
 
 ## Environment Setup
@@ -45,8 +37,8 @@ simulation/
 ### Option A: Conda (cross-platform, recommended)
 
 ```bash
-conda env create -f ../setup/environment.yml -n ph2cal-sim
-conda activate ph2cal-sim
+conda env create -f ../setup/environment.yml -n ridgecal-sim
+conda activate ridgecal-sim
 ```
 
 ### Option B: Manual R installation (Linux/macOS via brew)
@@ -61,42 +53,39 @@ bash ../setup/setup.sh
 powershell -ExecutionPolicy Bypass -File ..\setup\setup_windows.ps1
 ```
 
-## GPU Acceleration (Optional)
-
-The RTX 1080 can speed up the Bayesian calibration via NumPyro/JAX:
-
-```bash
-conda activate ph2cal-sim
-# JAX will detect CUDA automatically if NVIDIA drivers are installed
-python3 -c "import jax; print(jax.devices())"
-```
-
-Replace `calibrate_bayesian()` in `R/training.R` with `calibrate_numpyro()`
-(see `scripts/gpu_calibration.py`).
-
 ## Scenarios
 
-| ID | Name | Key variation |
-|----|------|--------------|
-| 1 | No shift | External model correctly specified |
-| 2 | Moderate shift | 1.25× baseline hazard, 15% β shift |
-| 3 | Severe shift | 2× baseline hazard, 40% β shift |
-| 4 | Small Phase II | n₁ = 50 |
-| 5 | Large Phase II | n₁ = 200 |
-| 6 | Delayed effect | HR=1 for 0-4mo, then HR=0.6 (PH violation) |
-| 7 | Diminishing effect | HR=0.5 for 0-6mo, then HR=0.9 (PH violation) |
-| 8 | Informative censoring | Censoring depends on tumor volume |
-| 9 | Small external data | n_ext = 200 |
-| 10 | High-dimensional | p = 100, 8 true signals |
-| 11 | Null case | β_trt = 0 (Type I error) |
+| ID | Name | Treatment effect | Key variation |
+|:--:|:-----|:---------------:|--------------|
+| 1 | No shift | HR = 0.70 | External model correctly specified |
+| 2 | Moderate shift | HR = 0.70 | Small coefficient differences |
+| 3 | Severe shift | HR = 0.70 | Marker X flips, sex becomes prognostic |
+| 4 | Interaction | HR = 0.70 | Marker X × treatment interaction |
+| 5 | Null | HR = 1.00 | Type I error assessment |
+| 6 | Non-PH | HR = 0.70 (delayed) | 2-month onset delay |
+| 7 | Smaller effect | HR = 0.75 | Weaker treatment effect |
 
 ## Comparison Methods
 
-1. Cox-Standard — pre-specified covariates
-2. Stratified Log-Rank — baseline comparison
-3. PROCOVA (Ext Score) — external score, no calibration
-4. Cox-Calibrated — proposed primary analysis
-5. AIPW-Calibrated — doubly-robust sensitivity
-6. TMLE-Calibrated — proposed efficient analysis
-7. RMST-Calibrated — restricted mean survival time
-8. MAP-Cox — Bayesian dynamic borrowing
+1. Cox-2 — Standard Cox with 2 stratification variables (ECOG, sex)
+2. Oracle Cox — All 20 covariates (theoretical upper bound)
+3. Stratified Log-Rank — Non-parametric baseline
+4. PROCOVA — External prognostic score, no calibration
+5. Ridge-Cal (proposed) — Ridge-penalized Cox with CV-selected λ
+6. MAP-Cox (sensitivity) — Bayesian MAP prior borrowing
+
+## Running the Simulation
+
+```bash
+# Full 10K × 7 (5 methods, ~27 min on 12 cores)
+Rscript run_clean.R
+
+# Interactive with MAP-Cox (6 methods, ~35 min)
+Rscript run_standalone.R
+```
+
+## Reproducibility
+
+- Seed-based: `set.seed(20260517 + scenario_id * 100000 + replicate_id)`
+- All code at `github.com/doublerobust/ridge-cal`
+- Results reproducible via `run_clean.R` (10K reps)

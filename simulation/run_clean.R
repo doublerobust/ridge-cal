@@ -18,7 +18,7 @@ for (s in 1:7) {
   shift <- c("none","moderate","severe","severe","moderate","severe","severe")[s]
   btrt <- if (s == 5) 0 else if (s == 7) log(0.75) else log(0.70)
   inter <- (s == 4)
-  nm <- c("No shift","Moderate","Severe","Interaction","Null","Non-PH","Small HR")[s]
+  nm <- c("No shift","Moderate","Severe","Interaction","Null","Non-PH","Smaller effect")[s]
   t0 <- Sys.time()
 
   reps <- future_map(1:n, function(i, s_val=s, shift_val=shift, btrt_val=btrt, inter_val=inter) {

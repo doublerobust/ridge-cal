@@ -1,5 +1,5 @@
 # ============================================================
-# R/data_generation.R — Data generation for simulation study
+# R/data_generation.R — Data generation for Ridge-Cal simulation
 # ============================================================
 # Author: Yue Shentu
 #
@@ -7,11 +7,9 @@
 # - External data: 20 baseline covariates, many prognostic.
 #   External model is strongly predictive (C-index ~0.80).
 # - Trial data: same covariates, but some coefficients shift.
-#   Phase II calibration detects the largest shifts.
-# - Cox-Standard: only 2 stratification vars (ECOG, sex).
-#   Represents limited traditional covariate adjustment.
-# - Within-trial ML (TMLE-SL): uses 20 covariates but only n=400,
-#   so it cannot match the external model's predictive accuracy.
+#   Ridge-Cal detects and corrects the largest shifts.
+# - Cox-Standard: limited traditional covariate adjustment with
+#   8 strong clinically relevant covariates.
 # ============================================================
 
 library(survival)
@@ -19,8 +17,8 @@ library(survival)
 # ---- Global defaults ----
 default_params <- list(
   n_ext     = 2000,      # External dataset size (large for good external model)
-  n_1       = 100,       # Phase II sample size
-  n_2       = 400,       # Phase III sample size
+  n_1       = 100,       # (unused placeholder)
+  n_2       = 400,       # (unused placeholder)
   n_sim     = 1000,      # Number of simulation replicates
   alpha     = 0.05,      # Two-sided significance level
   tau       = 12,        # Time horizon for marginal effects (months)
@@ -218,4 +216,4 @@ generate_external_data <- function(n_ext, beta_ext, shape, scale) {
 # The simulation runners (run_clean.R, run_standalone.R) hardcode their
 # 7 scenarios directly, with scenario IDs mapping to:
 #   1 = No shift, 2 = Moderate, 3 = Severe, 4 = Interaction,
-#   5 = Null, 6 = Non-PH, 7 = Small HR
+#   5 = Null, 6 = Non-PH, 7 = Smaller effect

@@ -21,7 +21,7 @@ for (s in 1:7) {
   shift <- c("none","moderate","severe","severe","moderate","severe","severe")[s]
   btrt <- if (s == 5) 0 else if (s == 7) log(0.75) else log(0.70)
   inter <- (s == 4)
-  nm <- c("No shift","Moderate","Severe","Interaction","Null","Non-PH","Small HR")[s]
+  nm <- c("No shift","Moderate","Severe","Interaction","Null","Non-PH","Smaller effect")[s]
   seed_b <- 20260517 + s * 100000
 
   t0 <- Sys.time()

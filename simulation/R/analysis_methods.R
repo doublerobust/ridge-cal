@@ -72,6 +72,8 @@ analyze_cox_with_score <- function(A, T, delta, S) {
 }
 
 # ---- 3. IPCW estimator (unbiased, model-free) ----
+# NOTE: Legacy function — not called by run_clean.R or run_standalone.R.
+# Retained for reference.
 analyze_ipcw <- function(A, T, delta, tau = 12) {
   n <- length(A)
   pi_hat <- mean(A)
@@ -97,6 +99,8 @@ analyze_ipcw <- function(A, T, delta, tau = 12) {
 }
 
 # ---- 4. AIPW estimator (IPCW + outcome regression augmentation) ----
+# NOTE: Legacy function — not called by run_clean.R or run_standalone.R.
+# Retained for reference.
 analyze_aipw <- function(W, A, T, delta, S_cal, tau = 12) {
   n <- length(A)
   pi_hat <- mean(A)
@@ -133,6 +137,8 @@ analyze_aipw <- function(W, A, T, delta, S_cal, tau = 12) {
 }
 
 # ---- 5. TMLE for marginal survival difference ----
+# NOTE: Legacy function — not called by run_clean.R or run_standalone.R.
+# Retained for reference.
 analyze_tmle <- function(W, A, T, delta, S_cal, tau = 12) {
   n <- length(A)
   df <- data.frame(T = T, delta = delta, A = A, S = as.numeric(S_cal))
@@ -181,6 +187,8 @@ analyze_tmle <- function(W, A, T, delta, S_cal, tau = 12) {
 }
 
 # ---- 6. RMST via IPCW (no bootstrap needed) ----
+# NOTE: Legacy function — not called by run_clean.R or run_standalone.R.
+# Retained for reference.
 analyze_rmst <- function(A, T, delta, tau = 12) {
   # IPCW-based RMST: E[w · min(T*, tau)] where T* is the death time
   # and w = I(A=1)/π - I(A=0)/(1-π) is the treatment weight.
@@ -235,6 +243,9 @@ analyze_rmst <- function(A, T, delta, tau = 12) {
 }
 
 # ---- 7. MAP prior borrowing (Bayesian competitor) ----
+# NOTE: Legacy function — not called by run_clean.R or run_standalone.R.
+# The current MAP-Cox implementation is in R/map_proper.R.
+# Retained for reference.
 analyze_map_cox <- function(W_II, A_II, T_II, delta_II,
                              W_III, A_III, T_III, delta_III,
                              W_ext = NULL, T_ext = NULL, delta_ext = NULL) {

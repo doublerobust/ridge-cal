@@ -67,7 +67,7 @@ The analogy highlights a key insight: **calibration of a prognostic score should
 
 2. **Regularized recalibration (Ridge-Cal).** A ridge-penalized Cox model on blinded trial data that learns a calibration correction for a pre-specified subset of covariates, with the penalty strength selected automatically by cross-validation.
 
-3. **Demonstrated effectiveness.** Under severe population shift, Ridge-Cal recovers 8.0 percentage points of power over standard PROCOVA with nominal Type I error and minimal penalty when no shift is present.
+3. **Demonstrated effectiveness.** Under severe population shift, Ridge-Cal recovers 7.5 percentage points of power over standard PROCOVA with nominal Type I error and minimal penalty when no shift is present.
 
 ---
 
@@ -162,11 +162,9 @@ The external model is a Cox PH fit on all 20 covariates, treated as a black box 
 | 2. Moderate shift | Small differences | $\sim$0.1--0.2 per coefficient | 400 | $\log 0.70$ |
 | 3. Severe shift | Marker X flips, sex becomes prognostic | $\Delta\beta \approx 0.3$--0.75 | 400 | $\log 0.70$ |
 | 4. Treatment $\times$ covariate | Severe shift + marker X interacts with treatment | $\gamma = 0.5$ | 400 | $\log 0.70$ |
-| 5. Small sample | Moderate shift, $N = 200$ | $\sim$0.1--0.2 | 200 | $\log 0.70$ |
-| 6. Small external data | Moderate shift, $N_{ext} = 500$ | $\sim$0.1--0.2 | 400 | $\log 0.70$ |
-| 7. Null | Moderate shift, no treatment effect | $\sim$0.1--0.2 | 400 | 0 |
-| 8. Non-PH | Severe shift, delayed onset (HR=1 for 0--2 months, then HR=0.70) | $\Delta\beta \approx 0.3$--0.75 | 400 | $\log 0.70$ |
-| 9. Smaller effect | Severe shift, HR = 0.75 | $\Delta\beta \approx 0.3$--0.75 | 400 | $\log 0.75$ |
+| 5. Null | Moderate shift, no treatment effect | $\sim$0.1--0.2 | 400 | 0 |
+| 6. Non-PH | Severe shift, delayed onset (HR=1 for 0--2 months, then HR=0.70) | $\Delta\beta \approx 0.3$--0.75 | 400 | $\log 0.70$ |
+| 7. Smaller effect | Severe shift, HR = 0.75 | $\Delta\beta \approx 0.3$--0.75 | 400 | $\log 0.75$ |
 
 **Methods compared:**
 

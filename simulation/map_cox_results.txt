@@ -5,5 +5,5 @@ Severe | power=0.832 bias=-0.0155 [0.9 min]
 Interaction | power=0.856 bias=-0.0244 [0.9 min]
 Null | power=0.059 bias=-0.0003 [0.8 min]
 Non-PH | power=0.550 bias=0.0843 [0.9 min]
-Small HR | power=0.665 bias=-0.0108 [0.8 min]
+Smaller effect | power=0.665 bias=-0.0108 [0.8 min]
 Done.
