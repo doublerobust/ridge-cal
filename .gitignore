@@ -30,3 +30,4 @@ simulation/*.log
 
 # Temp
 /tmp/
+__pycache__/

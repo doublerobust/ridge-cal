@@ -350,75 +350,48 @@ Based on vendor marketing, industry press, and consulting reports:
 
 ---
 
-## 7. Where Ridge-Cal Fits
+## 7. Practical Considerations
 
-### 7.1 The Gap We Identified
+### 7.1 Calibration of Vendor Scores Using Internal Data
 
-The digital twin ecosystem has a blind spot: **every vendor assumes the prognostic model is well-calibrated.** But population shift between the historical training data and the trial is the rule, not the exception, in clinical development.
+A recurring theme across the digital twin landscape is the assumption that vendor-provided prognostic scores are well-calibrated for the target trial population. In practice, this assumption is often violated. Population shift between the historical data used to build a vendor's model and the actual trial — due to evolving standard of care, changing eligibility criteria, biomarker drift, or simple demographic differences — can substantially reduce the efficiency gain that PROCOVA or similar methods promise.
 
-Ridge-Cal addresses exactly this gap:
+A pragmatic approach is to treat any externally-provided prognostic score as a starting point rather than a final product. The score can be evaluated and, if needed, fine-tuned using internal data:
 
-| Issue | PROCOVA (Unlearn, etc.) | Ridge-Cal |
-|-------|------------------------|-----------|
-| Calibration assumption | Assumes perfect calibration | Diagnoses and corrects miscalibration |
-| Use of trial data | Score only (from external model) | Uses blinded trial data for calibration |
-| Adaptation to shift | None | Ridge-penalized recalibration |
-| Diagnostic | None | C-index comparison test |
-| Regularization | None needed (score is fixed) | Cross-validated ridge penalty |
-| Blinding requirement | No unblinding | No unblinding |
-| Model complexity | 2 parameters (intercept + score) | c+2 parameters (intercept + score + c covariates) |
-| Type I error | Nominal (ANCOVA theory) | Nominal (verified in simulation) |
+- **Within a trial (blinded).** A calibration model can be fitted on the trial's own blinded data to detect and correct miscalibration. This approach preserves trial integrity (no unblinding needed) and tailors the score to the actual enrolled population. The ridge penalty protects against overfitting when the calibration sample is limited.
 
-### 7.2 Positioning
+- **Outside a trial (historical internal data).** If a company has a rich repository of completed trial data, it can pre-calibrate vendor scores against its own internal benchmark before deploying them in new trials.
 
-Ridge-Cal is not a competitor to digital twins — it's a **complement** that makes any prognostic score approach more robust. It could be used:
+Neither approach requires trusting the vendor's claims about calibration. Both leverage the one asset that large pharmaceutical companies have that vendors typically do not: extensive, internally-validated clinical trial data.
 
-- **On top of Unlearn's PROCOVA** — if Unlearn provides a black-box score, Ridge-Cal can diagnose and correct miscalibration using blinded trial data
-- **With Altis/Phesi ECAs** — as a calibration layer for external control arms
-- **With internal Merck models** — any prognostic score (Cox, ML, ensemble) can be calibrated with Ridge-Cal
-- **As a standalone method** — for trials where you have an external score and want to guard against shift
+### 7.2 Ongoing Internal Work
 
-### 7.3 What Makes Ridge-Cal Different
-
-1. **Simplicity.** Six parameters (score + 5 calibration covariates), ridge penalty on blinded data. Any statistician can implement it in R/glmnet.
-
-2. **Transparency.** No black boxes — the method, its assumptions, and its limitations are fully documented.
-
-3. **Comprehensive validation.** 10,000 reps × 7 scenarios covering no shift, moderate shift, severe shift, interactions, null, non-PH, and small effects. Type I error, power, and bias reported.
-
-4. **Regulatory readiness.** It's a Cox PH model with pre-specified covariates and a pre-specified penalty selection procedure — well within existing regulatory frameworks for covariate adjustment.
-
-5. **Blinded.** Unlike MAP-Cox (which requires unblinded data), Ridge-Cal uses only blinded trial data.
+A program of work is underway to develop and validate this calibration framework, including simulation studies, retrospective analyses on completed trials, and regulatory engagement strategy. Early results are promising (the approach recovers the majority of power lost to miscalibration under realistic shift scenarios), and a manuscript is in preparation.
 
 ---
 
 ## 8. What This Means for Merck
 
-### 8.1 Strategic Recommendations
+### 8.1 Key Takeaways
 
-1. **Separate the hype from the substance.** The "digital twin" label is heavily marketed but the actual methods (PROCOVA, synthetic control arms, prognostic score adjustment) are well-understood statistical techniques. Focus on what each method actually does.
+1. **The "digital twin" label is heavily marketed** but the actual methods are well-understood statistical techniques (prognostic score adjustment, synthetic control arms, Bayesian borrowing). Don't let terminology drive strategy.
 
-2. **PROCOVA is real but limited.** EMA qualification is genuine, and PROCOVA can improve trial efficiency in well-understood indications. But it breaks under population shift — which is common in oncology, where eligibility criteria and standard of care evolve rapidly.
+2. **Vendor scores should be treated as inputs, not oracles.** Any score — from Unlearn, Altis, Phesi, or an academic group — can be miscalibrated for a specific trial population. Internal validation and calibration are essential.
 
-3. **Ridge-Cal is a practical addition to the toolkit.** It addresses PROCOVA's biggest weakness, uses only blinded data, and requires minimal additional infrastructure. It could be implemented as a standard operating procedure for any trial using an external prognostic score.
+3. **Your own data is your biggest asset.** Merck's repository of completed trial data is something no vendor can match. Using it to validate, calibrate, or challenge vendor claims is the most defensible strategy.
 
-4. **Don't buy a full "digital twin" service for a single trial.** The $500K–$2M per-trial cost is hard to justify when simpler methods (Ridge-Cal, standard covariate adjustment) achieve much of the same benefit at lower cost and complexity.
+4. **Blinded calibration within a trial is the cleanest approach.** It avoids unblinding, preserves trial integrity, and addresses population shift at the point of use.
 
-5. **Build internal capability, don't outsource the methodology.** The core statistical methods (prognostic score adjustment, calibration, ridge regression) are well within the capabilities of Merck's biostatistics group. The value is in understanding when and how to apply them — not in a vendor's black-box model.
-
-6. **Engage regulators early.** For any novel use of prognostic scores or synthetic controls, early FDA/EMA engagement (MIDD Paired Meeting, ISTAND, qualification opinion) is essential.
+5. **Don't overpay for black-box services.** Full-service "digital twin" offerings at $500K–$2M per trial are hard to justify when simpler statistical methods achieve comparable gains.
 
 ### 8.2 Potential Next Steps
 
-| Action | Timeline | Effort | Impact |
-|--------|----------|--------|--------|
-| Internal Ridge-Cal implementation | 1-2 months | Low (R package) | High — immediate capability |
-| Pilot on a completed Merck trial | 2-3 months | Medium | High — internal validation |
-| PROCOVA + Ridge-Cal SOP | 3-4 months | Medium | High — operational readiness |
-| Vendor evaluation framework | 1 month | Low | High — avoid overpaying |
-| Regulatory engagement (MIDD) | 6-12 months | High | High — regulatory pathway |
-| Expand Ridge-Cal to time-to-event | Done | Already done | Published (this paper) |
-| Expand Ridge-Cal to continuous | 2-3 months | Low | Natural extension |
+| Action | Timeline | Effort | Notes |
+|--------|----------|--------|-------|
+| Internal calibration pilot | 2-3 months | Medium | Retrospective on completed trials |
+| Vendor score evaluation framework | 1 month | Low | Standardized validation protocol |
+| Engagement with regulators | 6-12 months | Medium | MIDD meeting for calibration methodology |
+| Internal capability building | 3-6 months | Medium | R package, SOP, training
 
 ---
 
