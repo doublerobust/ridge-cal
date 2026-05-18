@@ -10,7 +10,7 @@
 
 Digital twins — computational models of individual patients used to simulate treatment responses — have become one of the most hyped concepts in clinical development. Vendors promise shorter trials, smaller control arms, and billions in savings. Regulators have responded with frameworks for AI credibility and model qualification. Meanwhile, most real applications remain in pilot settings, and the gap between the "full physiological twin" vision and what is actually feasible remains wide.
 
-This survey maps the current landscape: regulatory guidance, vendor offerings, methodological approaches, case studies with real evidence, and an honest assessment of where the hype outruns the reality. Ridge-Cal, our recently developed method, is positioned within this landscape as a concrete innovation that addresses a specific, well-defined gap in existing PROCOVA methodology.
+This survey maps the current landscape: regulatory guidance, vendor offerings, methodological approaches, case studies with real evidence, and an honest assessment of where the hype outruns the reality.
 
 ---
 
@@ -22,7 +22,7 @@ This survey maps the current landscape: regulatory guidance, vendor offerings, m
 4. [Methodological Approaches](#4-methodological-approaches)
 5. [Evidence: What Has Actually Been Done?](#5-evidence-what-has-actually-been-done)
 6. [The Hype-Reality Gap](#6-the-hype-reality-gap)
-7. [Where Ridge-Cal Fits](#7-where-ridge-cal-fits)
+7. [Practical Considerations](#7-practical-considerations)
 8. [What This Means for Merck](#8-what-this-means-for-merck)
 9. [References](#9-references)
 
@@ -39,7 +39,7 @@ The terminology around digital twins in healthcare is muddled — different vend
 | **Digital Twin** | A dynamic computational model of an individual patient that is updated with real-time data. Originates from NASA/engineering (physical asset + digital replica + data link). | None fully exist in clinical trials yet |
 | **Virtual Patient** | A static computational model of a patient, typically built from historical data. Not dynamically updated. | Most of what vendors call "digital twins" |
 | **Synthetic Control Arm** | A counterfactual cohort constructed from historical or real-world data to replace or supplement a randomized control group. | Phesi's cGvHD twin, Unlearn's placebo predictions |
-| **Prognostic Score** | A single numerical summary of a patient's predicted outcome under control, derived from a predictive model. | PROCOVA's score, Ridge-Cal's calibrated score |
+| **Prognostic Score** | A single numerical summary of a patient's predicted outcome under control, derived from a predictive model. | Any vendor-provided or internally developed score |
 | **External Control Arm (ECA)** | Control group sourced from outside the trial (historical data, RWD), used when randomization is unethical or impractical. | FDA draft guidance on externally controlled trials |
 | **Model-Informed Drug Development (MIDD)** | Umbrella term for using models in drug development; digital twins are a subset. | FDA MIDD Paired Meeting Program |
 
@@ -85,7 +85,7 @@ The FDA released a 7-step risk-based process for establishing AI model credibili
 6. **Document** — transparent reporting
 7. **Maintain** — monitor performance over time
 
-**Key insight:** The FDA doesn't require perfection — it requires that the model's limitations are understood and documented relative to its context of use. This is the same framework we applied in our Ridge-Cal simulations (transparent reporting of bias, power, Type I error under multiple scenarios).
+**Key insight:** The FDA doesn't require perfection — it requires that the model's limitations are understood and documented relative to its context of use.
 
 ### 2.3 FDA/EMA "Guiding Principles of Good AI Practice" (Jan 2026)
 
@@ -150,7 +150,7 @@ The digital twin space in clinical development has four segments:
 - **Limitations:** 
   - Requires abundant historical placebo data → doesn't work well for novel mechanisms or pandemic scenarios
   - Statistical (not mechanistic) → less generalizable
-  - PROCOVA assumes perfect calibration → our simulations show this fails under population shift
+  - PROCOVA assumes perfect calibration → simulations show this fails under population shift
   - Not transparent about the generative model architecture or validation data
 
 **Altis Labs** (Toronto)
@@ -206,7 +206,7 @@ Digital Twin / Synthetic Control Methods
 ├── Statistical Approaches
 │   ├── PROCOVA (Schuler 2021, 2022)
 │   │   └── Prognostic score as covariate, EMA qualified
-│   ├── Ridge-Cal (Shentu 2026) ← This paper
+│   └── Internal calibration methods (Shentu 2026)
 │   │   └── Regularized calibration on blinded data
 │   ├── Bayesian Dynamic Borrowing
 │   │   ├── Power Priors (Ibrahim & Chen 2000)
@@ -233,7 +233,7 @@ Digital Twin / Synthetic Control Methods
 
 ### 4.2 PROCOVA in Detail
 
-Since PROCOVA is the most advanced DT methodology (and the foundation for Ridge-Cal), it deserves close examination.
+Since PROCOVA is the most advanced DT methodology, it deserves close examination.
 
 **How it works:**
 1. Historical data → train prognostic model → produces score S(W) for any patient
@@ -247,7 +247,7 @@ Since PROCOVA is the most advanced DT methodology (and the foundation for Ridge-
 - EMA qualified, FDA acknowledged
 - Flexible — any predictive model can generate the score
 
-**Limitations (addressed by Ridge-Cal):**
+**Limitations:**
 - **Assumes perfect calibration.** If S(W) is miscalibrated (population shift), power gains are reduced or reversed.
 - **No diagnostic.** No way to detect miscalibration from trial data.
 - **No adaptation.** The score is fixed — no mechanism to update it using trial data.
@@ -279,7 +279,7 @@ Since PROCOVA is the most advanced DT methodology (and the foundation for Ridge-
 | JHU Virtual Heart | 2025 | Mechanistic cardiac model | 80% success (vs ~60% typical) | FDA pilot, n=10, promising but tiny |
 | Altis MYSTIC ECA | 2025 | Imaging AI matching | ECA for Ph3 NSCLC | ISPOR poster, limited detail |
 | Unlearn PROCOVA | 2022–24 | Bayesian + PROCOVA | Multiple trials, undisclosed | Limited public validation data |
-| Ridge-Cal Simulation | 2026 | Ridge-calibrated Cox | 7 scenarios × 10K reps | Comprehensive simulation (this paper) |
+| Internal calibration research | 2026 | Regularized score calibration | Simulation study | Ongoing internal work, manuscript in prep |
 
 **Key observation:** There is not a single published case of a digital twin methodology being used as the **primary analysis** in a successful regulatory submission. Every application is either a simulation, a proof of concept, or a sensitivity analysis.
 
@@ -289,14 +289,7 @@ Three simulation studies are particularly relevant:
 
 1. **Schuler et al. (2021)** — PROCOVA proof of concept. 1,000 reps, limited scenarios. Showed power gains under ideal conditions (no shift).
 
-2. **Ridge-Cal (this paper, 2026)** — 10,000 reps × 7 scenarios + MAP-Cox sensitivity. Most comprehensive simulation of prognostic score calibration in the literature. Shows that:
-   - Under no shift, PROCOVA is fine (Ridge-Cal penalty <1pp)
-   - Under severe shift, PROCOVA loses 9pp → Ridge-Cal recovers nearly all of it
-   - Under interaction, the gap widens (Ridge-Cal +12.4pp over PROCOVA)
-   - Type I error is nominal across all scenarios
-   - Ridge-Cal bias < 0.01 log-HR under all non-NonPH scenarios
-
-3. **MAP-Cox sensitivity (this paper)** — Precision-weighted Bayesian borrowing. Comparable power to Ridge-Cal but uses 21 parameters on unblinded data vs Ridge-Cal's 6 on blinded data.
+2. **Ongoing internal calibration research.** Preliminary simulation results suggest that regularized calibration of prognostic scores can recover most of the power lost to population shift, with minimal penalty when no shift is present. A manuscript is in preparation.
 
 ---
 
@@ -350,7 +343,7 @@ Based on vendor marketing, industry press, and consulting reports:
 
 ---
 
-## 7. Practical Considerations
+## 7. Practical Considerations for Internal Use
 
 ### 7.1 Calibration of Vendor Scores Using Internal Data
 
@@ -366,11 +359,11 @@ Neither approach requires trusting the vendor's claims about calibration. Both l
 
 ### 7.2 Ongoing Internal Work
 
-A program of work is underway to develop and validate this calibration framework, including simulation studies, retrospective analyses on completed trials, and regulatory engagement strategy. Early results are promising (the approach recovers the majority of power lost to miscalibration under realistic shift scenarios), and a manuscript is in preparation.
+Work is underway to develop and validate this calibration framework.
 
 ---
 
-## 8. What This Means for Merck
+## 8. Strategic Implications
 
 ### 8.1 Key Takeaways
 
@@ -424,9 +417,9 @@ A program of work is underway to develop and validate this calibration framework
 - Walsh et al. (2025). *Digital twins to improve efficiency and accuracy in clinical research.* Applied Clinical Trials.
 - Li et al. (2024). *Digital twin model of first-line prednisone therapy in cGvHD.* Bone Marrow Transplantation.
 
-### This Paper
+### Internal Research
 
-- Shentu Y (2026). *Ridge-Cal: Efficient Regularized Calibration of External Prognostic Scores Using Blinded Trial Data.* GitHub: doublerobust/ridge-cal.
+- Shentu Y (2026). Internal technical report on regularized calibration of external prognostic scores using blinded trial data.
 
 ---
 
