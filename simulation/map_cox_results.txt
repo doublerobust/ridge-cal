@@ -1,0 +1,9 @@
+=== MAP-Cox: 10000 reps x 7 scenarios ===
+No shift | power=0.834 bias=-0.0148 [1.0 min]
+Moderate | power=0.834 bias=-0.0145 [0.8 min]
+Severe | power=0.832 bias=-0.0155 [0.9 min]
+Interaction | power=0.856 bias=-0.0244 [0.9 min]
+Null | power=0.059 bias=-0.0003 [0.8 min]
+Non-PH | power=0.550 bias=0.0843 [0.9 min]
+Small HR | power=0.665 bias=-0.0108 [0.8 min]
+Done.

@@ -1,12 +1,10 @@
-#!/usr/bin/env Rscript
-# run_full.R — Ridge-Cal: 10,000 reps x 7 scenarios
-# Methods: Std, Oracle, Log-Rank, PROCOVA, Ridge-Cal, MAP-Cox
 library(furrr); library(future); library(glmnet)
-plan(multisession, workers = future::availableCores() - 1)
 source("R/data_generation.R"); source("R/training.R")
 source("R/analysis_methods.R"); source("R/map_proper.R")
-tp <- get_weibull_params("trial"); n_sim <- 10000
-cat(sprintf("Full sim: %d reps x 7 scenarios, 6 methods\n", n_sim))
+# Note: run with working directory set to project root
+# Or: cd /path/to/simulation && Rscript run_standalone.R
+plan(multisession, workers = min(11, future::availableCores() - 1))
+n_sim <- 10000
 
 ridge_cal <- function(W, T, d, S_all, cc = c("sex","marker_x","crp","albumin","ldh")) {
   cv <- intersect(cc, names(W))
@@ -16,6 +14,9 @@ ridge_cal <- function(W, T, d, S_all, cc = c("sex","marker_x","crp","albumin","l
        lam = cv_fit$lambda.min)
 }
 
+cat("Full sim: n_sim=", n_sim, " x 7 scenarios x 6 methods\n", sep="")
+flush(stdout())
+
 for (s in 1:7) {
   shift <- c("none","moderate","severe","severe","moderate","severe","severe")[s]
   btrt <- if (s == 5) 0 else if (s == 7) log(0.75) else log(0.70)
@@ -23,6 +24,7 @@ for (s in 1:7) {
   nm <- c("No shift","Moderate","Severe","Interaction","Null","Non-PH","Small HR")[s]
   seed_b <- 20260517 + s * 100000
 
+  t0 <- Sys.time()
   reps <- future_map(1:n_sim, function(i) {
     set.seed(seed_b + i)
     be <- get_beta_ext(shift); bp <- get_beta_prog()
@@ -48,7 +50,6 @@ for (s in 1:7) {
     C <- pmin(rep(24, n), rexp(n, rate = -log(1 - 0.03) / 12))
     To <- pmin(Td, C); d <- as.numeric(Td <= C)
 
-    # All methods
     cs <- analyze_cox_standard(W, A, To, d)
     lr <- analyze_logrank(W, A, To, d)
     cvars <- names(W)
@@ -63,7 +64,7 @@ for (s in 1:7) {
 
     c(cs_p = cs$p, lr_p = lr$p, or_p = summary(ffit)$coefficients["A","Pr(>|z|)"],
       pr_p = pr$p, rc_p = cc$p, mp_p = mp$p,
-      pr_b = pr$beta, rc_b = cc$beta, or_b = coef(ffit)["A"], mp_b = mp$beta,
+      pr_b = pr$beta, rc_b = cc$beta, or_b = unname(coef(ffit)["A"]), mp_b = mp$beta,
       lam = rc$lam)
   }, .options = furrr_options(seed = TRUE, chunk_size = 200))
 
@@ -72,8 +73,10 @@ for (s in 1:7) {
 
   cat(sprintf("%-12s | Std=%.3f Orac=%.3f PRO=%.3f RCal=%.3f MAP=%.3f LR=%.3f\n",
               nm, p("cs_p"), p("or_p"), p("pr_p"), p("rc_p"), p("mp_p"), p("lr_p")))
-  cat(sprintf("  bias: PRO=%.4f RCal=%.4f Orac=%.4f MAP=%.4f lam=%.4f\n",
-              b("pr_b")-btrt, b("rc_b")-btrt, b("or_b")-btrt, b("mp_b")-btrt, mean(sapply(reps,`[[`,"lam"))))
+  cat(sprintf("  bias: PRO=%.4f RCal=%.4f Orac=%.4f MAP=%.4f lam=%.4f  [%.1f min]\n",
+              b("pr_b")-btrt, b("rc_b")-btrt, b("or_b")-btrt, b("mp_b")-btrt,
+              mean(sapply(reps,`[[`,"lam")), as.numeric(difftime(Sys.time(), t0, units="mins"))))
+  flush(stdout())
 }
 
-cat("\n✅ Done.\n")
+cat("\nDone.\n")

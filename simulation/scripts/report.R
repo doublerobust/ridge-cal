@@ -3,7 +3,11 @@
 # ============================================================
 # Part of: Phase II-Calibrated Prognostic Scores with TMLE
 # Author: Yue Shentu
-# Usage:
+# NOTE: This script expects .rds files in output/ from the old run_all.R
+# pipeline. The current simulation (run_clean.R / run_standalone.R)
+# writes tabular results to results.txt and stdout, not .rds files.
+# This script is retained for reference / the .rds-based output format.
+# Usage (legacy):
 #   cd simulation
 #   Rscript scripts/report.R                    # all scenarios
 #   Rscript scripts/report.R --scenario 3       # single scenario
@@ -25,7 +29,7 @@ rds_files <- list.files(output_dir, pattern = "^scenario_.*\\.rds$")
 if (length(rds_files) == 0) {
   cat("❌ No result files found in output/\n")
   cat("   Run the simulation first:\n")
-  cat("   Rscript run_all.R --quick\n")
+  cat("   Rscript run_clean.R\n")
   quit(status = 1)
 }
 

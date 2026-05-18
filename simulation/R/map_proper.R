@@ -148,10 +148,9 @@ map_proper <- function(W_ext, T_ext, d_ext, W, A, T, d, calib_covs) {
     #       (1/prec_ext⁻¹ + 1/prec_trial⁻¹) × k
     # where prec_ext⁻¹ = Σ_ext_jj and prec_trial⁻¹ = Σ_trial_jj
 
-    pooled <- (beta_ext[cv] * prec_ext + beta_trial[cv] * prec_trial) /
-              (prec_ext + prec_trial)
-
-    beta_updated[cv] <- pooled * k
+    # Correct Schmidli-style: scale external precision by k in both numerator and denominator
+    beta_updated[cv] <- (k * beta_ext[cv] * prec_ext + beta_trial[cv] * prec_trial) /
+                        (k * prec_ext + prec_trial)
   }
 
   # ---- Step 4: Treatment effect ----

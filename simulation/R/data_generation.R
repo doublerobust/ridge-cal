@@ -214,28 +214,8 @@ generate_external_data <- function(n_ext, beta_ext, shape, scale) {
   list(W = W, T = T_obs, delta = delta)
 }
 
-# ---- 8. Scenario configuration ----
-get_scenario_config <- function(scenario_id) {
-  config <- list(
-    id = scenario_id,
-    n_sim = default_params$n_sim,
-    n_ext = default_params$n_ext,
-    n_1 = default_params$n_1,
-    n_2 = default_params$n_2,
-    tau = default_params$tau,
-    beta_trt = log(0.70),
-    name = "Unknown"
-  )
-
-  switch(as.character(scenario_id),
-    "1"  = { config$shift <- "none";     config$name <- "No population shift" },
-    "2"  = { config$shift <- "moderate"; config$name <- "Moderate population shift" },
-    "3"  = { config$shift <- "severe";   config$name <- "Severe population shift" },
-    "4"  = { config$shift <- "moderate"; config$n_1 <- 50;  config$n_2 <- 450; config$name <- "Small phase II (n1=50)" },
-    "5"  = { config$shift <- "moderate"; config$n_1 <- 200; config$n_2 <- 300; config$name <- "Large phase II (n1=200)" },
-    "6"  = { config$shift <- "moderate"; config$n_ext <- 500;  config$name <- "Small external data (next=500)" },
-    "7"  = { config$shift <- "moderate"; config$beta_trt <- 0; config$name <- "Null case" },
-    stop("Unknown scenario: ", scenario_id)
-  )
-  config
-}
+# ---- 8. (removed: get_scenario_config — superseded by per-runner scenario definitions)
+# The simulation runners (run_clean.R, run_standalone.R) hardcode their
+# 7 scenarios directly, with scenario IDs mapping to:
+#   1 = No shift, 2 = Moderate, 3 = Severe, 4 = Interaction,
+#   5 = Null, 6 = Non-PH, 7 = Small HR
