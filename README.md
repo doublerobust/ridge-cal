@@ -1,7 +1,7 @@
 # Ridge-Cal: Regularized Calibration of External Prognostic Scores
 
 **Author:** Yue Shentu  
-**Status:** Submission-ready for Journal of Biopharmaceutical Statistics  
+
 **Date:** May 2026
 
 ---
@@ -79,9 +79,6 @@ Rscript run_clean.R     # 10K × 7 scenarios (~27 min)
 Rscript run_standalone.R  # Interactive with MAP-Cox (~35 min)
 ```
 
-## Acknowledgments
-
-This work was conducted as part of the author's role in biostatistical methodology development at Merck & Co., Inc.
 
 ## References
 
