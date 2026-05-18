@@ -112,9 +112,7 @@ The regulatory path for digital twin-derived methodologies exists but is rigorou
 
 The digital twin space in clinical development has four segments:
 
-```
-![Vendor Ecosystem](figures/vendor-ecosystem.png){ width=100% }
-```
+![Vendor Ecosystem](vendor-ecosystem.png)
 
 ### 3.2 Segment Profiles
 
@@ -178,9 +176,7 @@ Critical gaps that vendors underemphasize:
 
 ### 4.1 Taxonomy of Methods
 
-```
-![Methodological Taxonomy](figures/method-taxonomy.png){ width=100% }
-```
+![Methodological Taxonomy](method-taxonomy.png)
 
 ### 4.2 PROCOVA in Detail
 
@@ -260,7 +256,7 @@ Based on vendor marketing, industry press, and consulting reports:
 
 ### 6.2 What the Evidence Actually Shows
 
-![Hype vs Reality](figures/hype-reality.png){ width=100% }
+![Hype vs Reality](hype-reality.png)
 
 | Claim | Reality Check |
 |-------|--------------|
