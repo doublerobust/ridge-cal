@@ -68,7 +68,7 @@ Simple insight: treat the external score as a **pre-trained model** and apply a 
 |:------------|:------|:---------|
 | Ridge-Cal manuscript | PDF, 12 pages | JBS submission |
 | Response to Reviewer 2 | Markdown | Journal |
-| Digital twin landscape survey | PDF, 12 pages, 3 diagrams | Merck SVPs |
+| Digital twin landscape survey | PDF, 12 pages, 3 diagrams | BARDS leadership |
 | Small strata white paper | Markdown | Internal stat leads |
 | Research workflow skill | SKILL.md | Future projects |
 | Code + simulations | GitHub (public) | Reproducibility |
