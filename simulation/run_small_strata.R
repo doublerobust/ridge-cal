@@ -112,9 +112,22 @@ for (scenario in 1:4) {
     reps <- future_map(1:n_sim, function(i) {
       set.seed(20260518 + scenario*100000 + i*10 + round(event_rate*100))
       
-      # Assign strata
+      # Assign strata + stratified block randomization
       stratum <- sample(1:4, n, replace = TRUE, prob = p_strata)
-      A <- rbinom(n, 1, p_trt)
+      A <- integer(n)
+      for (s in unique(stratum)) {
+        idx <- which(stratum == s)
+        n_s <- length(idx)
+        for (b in seq_len(ceiling(n_s / 4))) {
+          start <- (b-1)*4 + 1
+          end <- min(b*4, n_s)
+          if (start <= end) {
+            bn <- end - start + 1
+            n_trt <- floor(bn / 2)
+            A[idx[start:end]] <- sample(c(rep(1, n_trt), rep(0, bn - n_trt)))
+          }
+        }
+      }
       
       # Generate binary outcome (same rate in both arms = null)
       Y <- rbinom(n, 1, event_rate)

@@ -72,4 +72,6 @@ For SAPs using **stratified MN** (risk difference):
 
 ## Code
 
+**Simulation details:** 5,000 reps per scenario using stratified block randomization (block size 4) to match real trial practice. 
+
 All simulation code: `simulation/run_small_strata.R` in the ridge-cal repository.
