@@ -141,7 +141,7 @@ A data-driven sensitivity analysis can support the clinical pre-specification: c
 
 ### 3.1 Design
 
-We simulate a two-arm, 1:1 randomized trial with progression-free survival as the primary endpoint. The data-generating process follows a Weibull proportional hazards model with shape parameter 1.5 and scale parameter 13 (baseline median survival approximately 10 months). Administrative censoring occurs at 24 months, with additional random dropout at 3% per year.
+We simulate a two-arm, 1:1 randomized trial with progression-free survival as the primary endpoint. The data-generating process follows a Weibull proportional hazards model with shape parameter 1.5 and scale parameter 13 (baseline median survival approximately 10 months). Administrative censoring occurs at 24 months, with additional random dropout at 3% per year. Across scenarios, the expected number of events per arm ranges from 148 to 155 (mean total events 297--310 out of 400 patients).
 
 **Baseline covariates.** Twenty baseline covariates are generated, all standardized:
 - 10 continuous (age, BMI, CRP, albumin, creatinine, WBC, hemoglobin, neutrophils, platelets, LDH)
