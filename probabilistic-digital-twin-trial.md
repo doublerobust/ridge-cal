@@ -4,17 +4,6 @@
 **Date:** May 2026  
 **Status:** JBS submission-ready
 
-> **Pre-submission checklist:**
-> - [x] Liberation Serif (metrically identical to Times New Roman, 12pt)
-> - [x] Double line spacing
-> - [x] 1-inch margins
-> - [ ] Confirm all authors/affiliations per JBS format
-> - [ ] Add ORCID iD
-> - [ ] Run spell check (US English)
-> - [ ] Confirm figures at 300 DPI minimum
-> - [ ] Upload simulation code as supplementary material
-> - [ ] Verify with T&F Word template before final submission
-
 ---
 
 ## Abstract
@@ -134,7 +123,7 @@ $$\lambda(t \mid A_i, \hat{S}_i^{(cal)}) = \lambda_0(t) \exp(\beta_{trt} A_i + \
 
 with a robust sandwich variance estimator (Lin & Wei, 1989). The treatment effect is reported as $\exp(\hat{\beta}_{trt})$ with a 95% confidence interval and Wald test $p$-value.
 
-**Validity.** Because $\hat{S}^{(cal)}$ is a function of $W$ only, and $A \perp W$ by randomization, the Wald test for $H_0: \beta_{trt} = 0$ preserves asymptotic Type I error regardless of how $\hat{S}^{(cal)}$ was estimated (Schuler et al., 2022, Theorem 1). The sandwich variance estimator is consistent even when the score is estimated from the same data (Lin & Wei, 1989). Empirical verification is provided in our simulation study (Section 3).
+**Validity.** Because $\hat{S}^{(cal)}$ is a function of $W$ only, and $A \perp W$ by randomization, the Wald test for $H_0: \beta_{trt} = 0$ preserves asymptotic Type I error regardless of how $\hat{S}^{(cal)}$ was estimated (Schuler et al., 2022, Theorem 1). The robust sandwich variance estimator is consistent for the treatment effect coefficient $\beta_{trt}$ even when the score is estimated from the same data (Lin & Wei, 1989); the same guarantee does not extend to the prognostic coefficient $\beta_{prog}$, though this parameter is not of primary inferential interest. Empirical verification is provided in our simulation study (Section 3).
 
 ### 2.5 Choosing the Calibration Set $\mathcal{C}$
 
@@ -270,7 +259,7 @@ The ridge penalty makes Ridge-Cal more robust than naive recalibration (updating
 
 **Blinded calibration.** The blinded variant assumes no strong treatment-by-covariate interactions. Our simulations show minimal impact, but the control-arm variant avoids this issue at the cost of partial unblinding.
 
-**Simulation scope.** Our simulations focused on $N = 400$ with ~300 events and a Cox PH external model. The method's behavior in smaller trials ($N < 200$), under sparse events ($< 100$ events), or with non-Cox external models (random survival forests, boosting) has not been evaluated and merits further study. The calibration set size was fixed at $|\mathcal{C}| = 5$; the impact of smaller or larger calibration sets should be explored in future work.
+**Simulation scope.** Our simulations focused on $N = 400$ with ~300 events and a Cox PH external model. The method's behavior in smaller trials ($N < 200$), under sparse events ($< 100$ events), or with non-Cox external models (random survival forests, boosting) has not been evaluated and merits further study. The calibration set size was fixed at $|\mathcal{C}| = 5$; the impact of smaller or larger calibration sets should be explored in future work. Missing data in calibration covariates — common in real trials — would require imputation before the calibration step and is not addressed here.
 
 **No efficiency bound.** We have not derived the semiparametric efficiency bound for the Ridge-Cal estimator.
 
