@@ -5,13 +5,15 @@
 **Status:** JBS submission-ready
 
 > **Pre-submission checklist:**
-> - [ ] Replace `DejaVu Serif` with `Times New Roman` (not installed on build server; use T&F Word template)
-> - [ ] Set double line spacing (currently 1.5 for readability; T&F requires 2.0)
-> - [ ] Confirm all 7 authors/affiliations per JBS format (if applicable)
+> - [x] Liberation Serif (metrically identical to Times New Roman, 12pt)
+> - [x] Double line spacing
+> - [x] 1-inch margins
+> - [ ] Confirm all authors/affiliations per JBS format
 > - [ ] Add ORCID iD
 > - [ ] Run spell check (US English)
 > - [ ] Confirm figures at 300 DPI minimum
 > - [ ] Upload simulation code as supplementary material
+> - [ ] Verify with T&F Word template before final submission
 
 ---
 
