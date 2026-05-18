@@ -279,7 +279,13 @@ The ridge penalty $\lambda$ plays an analogous role to the rank $r$ in Low-Rank 
 
 **Online calibration.** In adaptive designs, the calibration could update at each interim using accumulating blinded data, with $\lambda$ scheduled to decrease over time.
 
-### 5.5 Conclusion
+### 5.5 Regulatory and Operational Considerations
+
+Ridge-Cal operates within existing regulatory frameworks for covariate adjustment. The diagnostic and calibration steps use only blinded data, preserving trial integrity and avoiding the operational complexity of unblinding. The method relies on a pre-specified calibration set $\mathcal{C}$, which aligns with regulatory expectations for prospective specification of the analysis plan. No new data collection, sample size adjustment, or unblinding is required — factors that are critical for operational feasibility in phase 2/3 trials.
+
+The primary analysis (Cox PH with the calibrated score and a robust sandwich variance estimator) is covered under existing FDA and EMA guidance on covariate adjustment (FDA, 2023; EMA, 2015). PROCOVA users can implement Ridge-Cal as a pre-specified sensitivity analysis without altering their primary analysis strategy. For trials already using PROCOVA under the EMA qualification (EMA, 2022), Ridge-Cal provides a natural sensitivity analysis for the key assumption of score calibration.
+
+### 5.6 Conclusion
 
 Ridge-Cal addresses a specific limitation of PROCOVA: the assumption that external prognostic scores remain well-calibrated for the trial population. By applying a ridge-penalized Cox model to blinded trial data, Ridge-Cal diagnoses and corrects miscalibration with respect to a pre-specified set of covariates. The ridge penalty protects against overfitting when the calibration sample is small, and cross-validated selection automates the regularization strength. In 10,000-rep simulations, Ridge-Cal improves power over PROCOVA under all forms of population shift by 3.3 to 12.4 percentage points with exact Type I error control and a minimal no-shift penalty (0.8 pp). A MAP-Cox comparison (Tables 1--2) confirms comparable or better power with far fewer parameters and blinded-data operation. We recommend Ridge-Cal as a sensitivity analysis in any PROCOVA-qualified trial.
 
