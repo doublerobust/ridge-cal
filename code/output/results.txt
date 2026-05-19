@@ -1,0 +1,16 @@
+=== 10K x 7 scenarios x 5 methods ===
+No shift | Std=0.630 Orac=0.845 LR=0.532 PRO=0.845 RCal=0.837 [3.9 min]
+  bias: PRO=0.0005 RCal=0.0055 Orac=-0.0148 lam=0.0521
+Moderate | Std=0.622 Orac=0.844 LR=0.528 PRO=0.825 RCal=0.834 [3.9 min]
+  bias: PRO=0.0091 RCal=0.0059 Orac=-0.0145 lam=0.0510
+Severe | Std=0.630 Orac=0.843 LR=0.525 PRO=0.758 RCal=0.833 [3.9 min]
+  bias: PRO=0.0348 RCal=0.0065 Orac=-0.0155 lam=0.0471
+Interaction | Std=0.631 Orac=0.865 LR=0.530 PRO=0.730 RCal=0.854 [3.9 min]
+  bias: PRO=0.0455 RCal=0.0006 Orac=-0.0244 lam=0.0477
+Null | Std=0.055 Orac=0.065 LR=0.051 PRO=0.053 RCal=0.052 [3.9 min]
+  bias: PRO=-0.0006 RCal=-0.0007 Orac=-0.0003 lam=0.0532
+Non-PH | Std=0.406 Orac=0.561 LR=0.350 PRO=0.483 RCal=0.544 [3.8 min]
+  bias: PRO=0.1124 RCal=0.0982 Orac=0.0843 lam=0.0445
+Small HR | Std=0.456 Orac=0.682 LR=0.371 PRO=0.572 RCal=0.659 [3.9 min]
+  bias: PRO=0.0304 RCal=0.0073 Orac=-0.0108 lam=0.0475
+Done.
