@@ -618,82 +618,28 @@ the pipeline.</li>
 <li><strong>Stale artifacts accumulated</strong> — explicit cleanup at
 every milestone now.</li>
 </ul>
-<h1 id="the-next-morning-survival-analysis">The Next Morning: Survival
-Analysis</h1>
-<h2 id="log-rank-vs-cox-ph-not-the-same-story">Log-rank vs Cox PH — Not
-the Same Story</h2>
-<p>We extended the investigation to <strong>time-to-event
-endpoints</strong> with realistic oncology trial simulations:</p>
-<ul>
-<li>N=500, 1:1 stratified block randomization</li>
-<li>Weibull survival (median 14mo control, HR=0.65)</li>
-<li>18-month accrual, 36-month cutoff, 5% annual dropout</li>
-<li><strong>2-look O’Brien-Fleming GSD</strong> at 70% and 100%
-information</li>
-<li><strong>Lan-DeMets spending function</strong> (correctly
-implemented!)</li>
-</ul>
-<h2 id="the-surprising-finding">The Surprising Finding</h2>
-<table>
-<colgroup>
-<col style="width: 15%" />
-<col style="width: 30%" />
-<col style="width: 53%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Method</th>
-<th style="text-align: center;">Pooling needed?</th>
-<th style="text-align: center;">Power impact (tiny strata)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong>Stratified Cox PH</strong></td>
-<td style="text-align: center;"><span class="math inline">×</span>
-No</td>
-<td style="text-align: center;"><strong>0.000</strong> diff - —
-unaffected</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Stratified Log-rank</strong></td>
-<td style="text-align: center;"><span class="math inline">∘</span>
-Slight in extreme cases</td>
-<td style="text-align: center;"><strong>+0.092</strong> gain with 1-2%
-strata</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Why the difference?</strong> Cox PH’s partial likelihood is
-multiplicative across risk sets – tiny strata contribute proportionally
-to their information. The log-rank test adds contributions linearly, and
-the hypergeometric variance approximation becomes noisy at extremely
-small counts.</p>
-<h2 id="practical-takeaway-for-elstic">Practical Takeaway for
-ELSTIC</h2>
-<ul>
-<li>With <strong>well-designed stratification</strong> (balanced
-factors, no 1-2% strata), the power impact is
-<strong>negligible</strong> for both Cox and log-rank</li>
-<li>The real solution is <strong>good stratification design</strong>,
-not pooling rules</li>
-<li>This validates the ELSTIC approach: pick factors wisely and no
-pooling is needed</li>
-</ul>
-<h2 id="the-gsdesign-bug-we-fixed">The gsDesign Bug We Fixed</h2>
-<ul>
-<li>Original code used <code>gsDesign(alpha=0.05, sfu="OF")</code> —
-incorrect!</li>
-<li>Fixed to <code>gsDesign(alpha=0.025, sfu=sfLDOF)</code> — Lan-DeMets
-OBF spending</li>
-<li>The <code>sfLDOF</code> documentation specifies
-<strong><code>alpha=0.025</code> for one-sided</strong> Type I, not
-0.05</li>
-<li>Result: Type I now controlled <strong>exactly at 0.05</strong> (was
-inflated to 0.10)</li>
-<li>Lesson: always verify against the spending function
-documentation</li>
-</ul>
+<h1 id="ai-human-collaboration-lessons">AI-Human Collaboration
+Lessons</h1>
+<h2 id="how-we-work-better-together">How We Work Better Together</h2>
+<p>This morning’s investigation became a case study in AI-human
+teamwork. Key lessons:</p>
+<p><strong>Use sub-agents for heavy computation.</strong> Long
+simulations (10K+ reps) should run in sub-agents so the AI stays
+available for discussion. The human should never ask “are you still
+there?” more than once.</p>
+<p><strong>Discuss before running big simulations.</strong> A 100-rep
+test costs seconds; a mis-specified 10K run costs 20 minutes. Check the
+design with the human first – they catch what no textbook will tell
+you.</p>
+<p><strong>Real-world context beats defaults.</strong> Real oncology
+trials use 2-look OBF at 70% IA, not 3-look at 33%. The human’s
+experience caught this immediately.</p>
+<p><strong>Listen when something looks wrong.</strong> Every time the
+human said “that doesn’t look right,” there was a real bug. Running more
+simulations doesn’t fix a wrong design.</p>
+<p><strong>Close the loop before scaling up.</strong> Present findings
+to the human before each big decision. Let their judgment guide the next
+direction.</p>
 <h1 id="the-bottom-line">The Bottom Line</h1>
 <h2 id="economics">Economics</h2>
 <ul>

@@ -193,40 +193,26 @@ All bugs fixed before delivery.
 - **Code review almost skipped** --- hard checkpoint now in the pipeline.
 - **Stale artifacts accumulated** --- explicit cleanup at every milestone now.
 
-# The Next Morning: Survival Analysis
+# AI-Human Collaboration Lessons
 
-## Log-rank vs Cox PH --- Not the Same Story
+## How We Work Better Together
 
-We extended the investigation to **time-to-event endpoints** with realistic oncology trial simulations:
+This morning's investigation became a case study in AI-human teamwork. Key lessons:
 
-- N=500, 1:1 stratified block randomization
-- Weibull survival (median 14mo control, HR=0.65)
-- 18-month accrual, 36-month cutoff, 5% annual dropout
-- **2-look O'Brien-Fleming GSD** at 70% and 100% information
-- **Lan-DeMets spending function** (correctly implemented!)
+**Use sub-agents for heavy computation.**
+Long simulations (10K+ reps) should run in sub-agents so the AI stays available for discussion. The human should never ask "are you still there?" more than once.
 
-## The Surprising Finding
+**Discuss before running big simulations.**
+A 100-rep test costs seconds; a mis-specified 10K run costs 20 minutes. Check the design with the human first -- they catch what no textbook will tell you.
 
-| Method | Pooling needed? | Power impact (tiny strata) |
-|:-------|:--------------:|:--------------------------:|
-| **Stratified Cox PH** | $\times$ No | **0.000** diff \- --- unaffected |
-| **Stratified Log-rank** | $\circ$ Slight in extreme cases | **+0.092** gain with 1-2% strata |
+**Real-world context beats defaults.**
+Real oncology trials use 2-look OBF at 70\% IA, not 3-look at 33\%. The human's experience caught this immediately.
 
-**Why the difference?** Cox PH's partial likelihood is multiplicative across risk sets -- tiny strata contribute proportionally to their information. The log-rank test adds contributions linearly, and the hypergeometric variance approximation becomes noisy at extremely small counts.
+**Listen when something looks wrong.**
+Every time the human said "that doesn't look right," there was a real bug. Running more simulations doesn't fix a wrong design.
 
-## Practical Takeaway for ELSTIC
-
-- With **well-designed stratification** (balanced factors, no 1-2% strata), the power impact is **negligible** for both Cox and log-rank
-- The real solution is **good stratification design**, not pooling rules
-- This validates the ELSTIC approach: pick factors wisely and no pooling is needed
-
-## The gsDesign Bug We Fixed
-
-- Original code used `gsDesign(alpha=0.05, sfu="OF")` --- incorrect! 
-- Fixed to `gsDesign(alpha=0.025, sfu=sfLDOF)` --- Lan-DeMets OBF spending
-- The `sfLDOF` documentation specifies **`alpha=0.025` for one-sided** Type I, not 0.05
-- Result: Type I now controlled **exactly at 0.05** (was inflated to 0.10)
-- Lesson: always verify against the spending function documentation
+**Close the loop before scaling up.**
+Present findings to the human before each big decision. Let their judgment guide the next direction.
 
 # The Bottom Line
 
