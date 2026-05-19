@@ -195,24 +195,19 @@ All bugs fixed before delivery.
 
 # AI-Human Collaboration Lessons
 
-## How We Work Better Together
+## How We Work Better Together (1/2)
 
-This morning's investigation became a case study in AI-human teamwork. Key lessons:
+- **Use sub-agents for heavy computation.** Long simulations (10K+ reps) should run in sub-agents so the AI stays available for discussion. The human should never ask "are you still there?" more than once.
 
-**Use sub-agents for heavy computation.**
-Long simulations (10K+ reps) should run in sub-agents so the AI stays available for discussion. The human should never ask "are you still there?" more than once.
+- **Discuss before running big simulations.** A 100-rep test costs seconds; a mis-specified 10K run costs 20 minutes. Check the design with the human first -- they catch what no textbook will tell you.
 
-**Discuss before running big simulations.**
-A 100-rep test costs seconds; a mis-specified 10K run costs 20 minutes. Check the design with the human first -- they catch what no textbook will tell you.
+- **Real-world context beats defaults.** Real oncology trials use 2-look OBF at 70\% IA, not 3-look at 33\%. The human's experience caught this immediately.
 
-**Real-world context beats defaults.**
-Real oncology trials use 2-look OBF at 70\% IA, not 3-look at 33\%. The human's experience caught this immediately.
+## How We Work Better Together (2/2)
 
-**Listen when something looks wrong.**
-Every time the human said "that doesn't look right," there was a real bug. Running more simulations doesn't fix a wrong design.
+- **Listen when something looks wrong.** Every time the human said "that doesn't look right," there was a real bug. Running more simulations doesn't fix a wrong design.
 
-**Close the loop before scaling up.**
-Present findings to the human before each big decision. Let their judgment guide the next direction.
+- **Close the loop before scaling up.** Present findings to the human before each big decision. Let their judgment guide the next direction.
 
 # The Bottom Line
 
