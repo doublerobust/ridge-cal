@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Generate presentation PDF using fpdf2 with DejaVu Unicode font."""
+"""Generate presentation PDF using fpdf2 with DejaVu Unicode font.
+   Yue's perspective, collaborative framing."""
 from fpdf import FPDF
 import os
 
@@ -11,7 +12,6 @@ class SlideDeck(FPDF):
         self.set_auto_page_break(False)
         self.add_font('DJ', '', f'{FONT_DIR}/DejaVuSans.ttf')
         self.add_font('DJ', 'B', f'{FONT_DIR}/DejaVuSans-Bold.ttf')
-        # self.add_font('DJ', '', ...) - no oblique available
         
     def header(self):
         pass
@@ -84,8 +84,23 @@ pdf.title_slide(
     'Yue Shentu  |  May 18, 2026'
 )
 
-# === Slide 2: The Spark ===
-pdf.section_slide('The Spark: What Started This')
+# === Slide 2: Tech Stack ===
+pdf.section_slide('The Tech Stack Journey')
+
+y = pdf.slide_start('Setting Up the Infrastructure')
+y = pdf.bullet('Configured an AI agent ("Natasha") as my research assistant, connected via Telegram', y=y)
+y = pdf.bullet('Started with local models (LM Studio) - tool calling was unreliable', y=y)
+y = pdf.bullet('Switched to DeepSeek API: cheap (~$0.15/M input), fast, reliable tool calling', y=y)
+y = pdf.bullet('Added Qwen via Ollama as a second model for independent cross-checking', y=y)
+y = pdf.bullet('Integrated Whisper so I could dictate ideas while pacing around the kitchen', y=y)
+y = y + 3
+y = pdf.bullet('Key Dependencies:', bold=True, y=y)
+y = pdf.bullet('R + glmnet/furrr (simulations) | Python + matplotlib (diagrams)', y=y)
+y = pdf.bullet('Whisper (transcription) | Pandoc + LaTeX (PDF generation)', y=y)
+y = pdf.bullet('Lesson: start with the API that works, optimize later', y=y)
+
+# === Slide 3: The Problem ===
+pdf.section_slide('The Spark: Where It Started')
 
 y = pdf.slide_start('The Problem')
 y = pdf.bullet('PROCOVA is EMA-qualified for improving trial efficiency via prognostic scores', y=y)
@@ -93,29 +108,29 @@ y = pdf.bullet('But it assumes the external score is perfectly calibrated for th
 y = pdf.bullet('Population shift is the rule, not the exception - especially in oncology', y=y)
 y = pdf.bullet('No existing method diagnoses or corrects miscalibration using blinded data', y=y)
 y = y + 4
-y = pdf.bullet('The Ridge-Cal Idea:', bold=True, y=y)
-y = pdf.bullet('Diagnose: compare C-index of score vs score + calibration covariates', y=y)
-y = pdf.bullet('Calibrate: ridge-penalized Cox on blinded data, lambda by CV', y=y)
-y = pdf.bullet('Analyze: standard Cox PH with calibrated score + robust sandwich SE', y=y)
-pdf.bullet('6 parameters, blinded data, no new data collection needed', y=y)
+y = pdf.bullet('The Ridge-Cal Idea I Had:', bold=True, y=y)
+y = pdf.bullet('Treat the external score as a pre-trained model, apply ridge-penalized Cox correction', y=y)
+y = pdf.bullet('Diagnose -> Calibrate -> Analyze. 6 parameters, blinded data, no new data collection', y=y)
 
-# === Slide 3: Timeline ===
+# === Slide 4: Timeline ===
 pdf.section_slide('The 8-Hour Journey')
 
 y = pdf.slide_start('Timeline: May 17-18, 2026')
 timeline = [
-    ('~21:00', 'Initial concept: TMLE + Bayesian MCMC (too complex)'),
+    ('~21:00', 'Initial concept brainstorm: TMLE + Bayesian MCMC (too complex, scrapped)'),
     ('~22:00', 'Pivot to ridge regression on 5 covariates'),
-    ('~23:00', 'First simulation - bug found (non-PH wrong)'),
+    ('~23:00', 'First simulation - agent found a bug (non-PH assumption)'),
     ('~00:00', '10K-rep simulation running'),
-    ('~01:00', 'MAP-Cox bug found (k applied after pooling)'),
-    ('~06:00', 'Manuscript drafted, code audit done'),
-    ('~07:00', 'Reviewer 2 (Gemini): Major Revision - 7 point fixes'),
-    ('~08:00', 'Revised, Qwen review: Major -> Minor -> Accept'),
-    ('~09:00', 'Digital twin landscape report for SVPs'),
-    ('~10:00', 'JBS formatting, Liberation Serif, all checks pass'),
-    ('~14:00', 'Small strata investigation: voice note -> white paper'),
-    ('~15:00', 'Skill refined, presentation ready'),
+    ('~01:00', 'MAP-Cox bug surfaced (k applied after pooling)'),
+    ('~02:00', 'Bug fixed, re-simulation triggered'),
+    ('~06:00', 'Manuscript drafted - agent wrote prose, I reviewed every section'),
+    ('~07:00', 'Sent to Gemini (Reviewer 2) - Major Revision, 4 issues'),
+    ('~07:15', 'Agent fixed all 4 issues per my instructions'),
+    ('~08:00', 'Sent to Qwen for independent review - 7 MORE issues surfaced'),
+    ('~09:00', 'Digital twin landscape report drafted'),
+    ('~10:00', 'JBS formatting, self-verify, corrections'),
+    ('~14:00', 'Voice note while kitchen pacing - small strata investigation'),
+    ('~15:00', 'Workflow codified into reusable skill file'),
 ]
 for time, event in timeline:
     pdf.set_font('DJ', 'B', 8); pdf.set_text_color(46,134,171)
@@ -124,73 +139,67 @@ for time, event in timeline:
     pdf.cell(200, 5, event)
     y += 5.5
 
-# === Slide 4: Deliverables ===
-y = pdf.slide_start('What Got Built')
-y = pdf.bullet('Deliverables:', bold=True, y=y)
-y = pdf.bullet('Ridge-Cal manuscript (12 pages) - submission-ready for JBS', y=y)
+# === Slide 5: Deliverables ===
+y = pdf.slide_start('What Came Out of It')
+y = pdf.bullet('Deliverables in ~8 hours of active collaboration:', bold=True, y=y)
+y = pdf.bullet('12-page Ridge-Cal manuscript - submission-ready for JBS', y=y)
 y = pdf.bullet('Response to Reviewer 2 - point-by-point rebuttal', y=y)
 y = pdf.bullet('Digital twin landscape survey (12 pages, 3 diagrams) - for SVPs', y=y)
 y = pdf.bullet('Small strata white paper with SAP language recommendations', y=y)
-y = pdf.bullet('Statistical Research Workflow skill (SKILL.md)', y=y)
-y = pdf.bullet('All simulation code and results on GitHub (public repos)', y=y)
-y = y + 3
-y = pdf.bullet('Tools Used:', bold=True, y=y)
-y = pdf.bullet('R + glmnet + furrr (simulations) | Python + matplotlib (diagrams)', y=y)
-y = pdf.bullet('Whisper (transcription) | Pandoc + LaTeX (PDF generation)', y=y)
-y = pdf.bullet('DeepSeek (writer) | Qwen (reviewer) | Gemini Pro (external review)', y=y)
+y = pdf.bullet('Research Workflow skill file (SKILL.md) - reusable', y=y)
+y = pdf.bullet('All simulation code on GitHub (public repos)', y=y)
 
-# === Slide 5: Multi-Model Review ===
+# === Slide 6: Multi-Model Review ===
 pdf.section_slide('The Multi-Model Review Loop')
-y = pdf.slide_start('Why One AI Isnt Enough')
+y = pdf.slide_start('Why Not One AI?')
 y = pdf.bullet('Same-model reviewers share the same blind spots and hallucination patterns', y=y)
 y = y + 3
-y = pdf.bullet('Internal Loop (OpenClaw, essentially free):', bold=True, y=y)
-y = pdf.bullet('Writer: DeepSeek v4 Flash | Reviewer: Qwen (different architecture)', y=y)
+y = pdf.bullet('Internal Loop (my OpenClaw agent, ~$0.15/M tokens):', bold=True, y=y)
+y = pdf.bullet('Primary work: DeepSeek v4 Flash | Independent reviewer: Qwen', y=y)
 y = pdf.bullet('Caught: Section 4 redundancy, delta justification, missing data, table headers', y=y)
 y = y + 3
-y = pdf.bullet('External Loop (separate AI platform):', bold=True, y=y)
-y = pdf.bullet('Reviewer: Gemini Pro (different company, different training)', y=y)
+y = pdf.bullet('External Loop (separate AI, separate company):', bold=True, y=y)
+y = pdf.bullet('Gemini Pro - completely different training, different blind spots', y=y)
 y = pdf.bullet('Caught: Non-collapsibility, tone, event rates, LoRA framing', y=y)
 
-# === Slide 6: Convergence ===
+# === Slide 7: Convergence ===
 y = pdf.slide_start('The Convergence', color=(25,26,46))
 pdf.set_text_color(220,220,230)
 y = pdf.bullet('Gemini: Major Revision -> Accept (1 round, 4 issues)', y=y)
 y = pdf.bullet('Qwen: Major -> Minor -> Accept (3 rounds, 7 DIFFERENT issues)', y=y)
 y = pdf.bullet('Total: 11 distinct bugs caught by 2 different AI models', y=y)
 y = y + 5
-y = pdf.bullet('Key Insight:', bold=True, y=y)
-y = pdf.bullet('Qwen caught issues Gemini COMPLETELY MISSED:', y=y)
+y = pdf.bullet('Qwen caught things Gemini completely missed:', bold=True, y=y)
 y = pdf.bullet('Section 4 redundancy, delta = 0.01 justification, table header ambiguity', y=y)
-y = pdf.bullet('MAP-Cox unfair comparison framing, sandwich variance scope', y=y)
+y = pdf.bullet('MAP-Cox unfair framing, sandwich variance scope', y=y)
 y = pdf.bullet('Missing data acknowledgment, reference formatting', y=y)
-y = pdf.bullet('This validates model-diverse review', y=y)
+y = pdf.bullet('Takeaway: model-diverse review converges faster than any single reviewer', y=y)
 
-# === Slide 7: Demo ===
-pdf.section_slide('The Demo: Voice Note to White Paper in 10 Minutes')
+# === Slide 8: Demo ===
+pdf.section_slide('Demo: Voice Note to White Paper in 10 Minutes')
 y = pdf.slide_start('The Small Strata Investigation')
-y = pdf.bullet('Input: Voice note while driving', bold=True, y=y)
-y = pdf.bullet('"Do we need to pool small strata for CMH OR/RR and MN RD methods?"', y=y)
-y = pdf.bullet('Transcribed by Whisper (tiny model, <1 min)', y=y)
+y = pdf.bullet('Input: Me pacing the kitchen, talking to my phone:', bold=True, y=y)
+y = pdf.bullet('"Do we need to pool small strata for CMH and MN methods?"', y=y)
+y = pdf.bullet('Whisper transcribed it on-device in < 1 min', y=y)
 y = y + 3
 steps = [
-    ('Step 1 (1m)', 'Problem scoping - Phase 0 research proposal'),
-    ('Step 2 (1m)', 'Independent review - Qwen (isolated) -> Weak'),
-    ('Step 3 (1m)', 'Revision - reframed as internal white paper'),
-    ('Step 4 (3m)', 'Code + 5K-rep simulation with block randomization'),
-    ('Step 5 (1m)', 'Code review v1 - caught 3 bugs (Scenario 4, RR var, Wald vs MN)'),
-    ('Step 6 (1m)', 'Code review v2 - verified fixes'),
-    ('Step 7 (1m)', 'Final review - white paper + code consistency'),
-    ('Step 8 (<1m)', 'Push to public GitHub repo'),
+    ('1m', 'Problem scoping - I dictated, agent structured into Phase 0 proposal'),
+    ('1m', 'Independent Qwen review (isolated) - caught framing weakness'),
+    ('1m', 'I directed reframing as internal white paper'),
+    ('3m', 'Agent drafted R code, I reviewed specs, agent ran 5K reps'),
+    ('1m', 'Code review v1 - Qwen caught 3 bugs in our simulation'),
+    ('1m', 'Code review v2 - agent verified fixes, I confirmed'),
+    ('1m', 'Final review - white paper compiled, ready'),
+    ('<1m', 'Pushed to public GitHub repo'),
 ]
 for step, desc in steps:
     pdf.set_font('DJ', 'B', 8); pdf.set_text_color(46,134,171)
-    pdf.set_xy(18, y); pdf.cell(28, 5, step)
+    pdf.set_xy(18, y); pdf.cell(16, 5, step)
     pdf.set_font('DJ', '', 8); pdf.set_text_color(60,60,60)
-    pdf.cell(195, 5, desc)
+    pdf.cell(200, 5, desc)
     y += 5.5
 
-# === Slide 8: Results ===
+# === Slide 9: Results Table ===
 pdf.slide_start('Small Strata Results')
 h = ['Method', 'Failure Rate', 'Type I', 'Pooling?']
 rows = [
@@ -217,87 +226,71 @@ for ri, row in enumerate(rows):
 y2 = 50 + len(rows) * 7 + 10
 pdf.set_text_color(60,60,60); pdf.set_font('DJ', '', 8)
 pdf.set_xy(22, y2); pdf.multi_cell(210, 5,
-    'Conclusion: No pooling required for any method. '
-    'Type I inflation is inherent to the methods, not caused by small strata.')
-pdf.set_font('DJ', '', 9); pdf.set_text_color(40,40,40)
-y2 = y2 + 18
-pdf.set_xy(22, y2)
-pdf.cell(210, 6, 'Code reviews caught: Scenario 4 duplicated, RR variance unstratified, Wald mislabeled as MN')
+    'Conclusion: No pooling required for any method.\n'
+    'Code reviews caught: Scenario 4 duplicated, RR variance unstratified, Wald mislabeled as MN.\n'
+    'All bugs fixed before delivery - independent AI review caught what we overlooked.')
 
-# === Slide 9: Workflow ===
-pdf.section_slide('The Emergent Workflow')
-y = pdf.slide_start('The Skill File - 8 Phases')
+# === Slide 10: Workflow ===
+pdf.section_slide('The Research Workflow That Emerged')
+y = pdf.slide_start('Codified into a Reusable Skill File - 8 Phases')
 phases = [
     ('Ph 0: Topic ID', 'Identify gap, map contradictory literature'),
-    ('Ph 1: Initial Writeup', 'Write, spawn isolated reviewer, iterate'),
-    ('Ph 2: Simulation', '2 -> 20 -> 200 -> 10,000 reps (progressive)'),
-    ('Ph 3: Multi-Agent QC', 'CODE REVIEW BEFORE BIG RUNS - DO NOT SKIP'),
-    ('Ph 4: Full Run', 'Background, cron scheduling, monitoring'),
-    ('Ph 4.5: Reproducibility', 'Verify code matches manuscript'),
-    ('Ph 5: Manuscript', 'References, PDF self-check, senior review'),
+    ('Ph 1: Writeup', 'Write, spawn isolated reviewer, iterate'),
+    ('Ph 2: Simulate', '2 -> 20 -> 200 -> 10,000 reps (progressive)'),
+    ('Ph 3: QC', 'CODE REVIEW BEFORE BIG RUNS - mandatory checkpoint'),
+    ('Ph 4: Full Run', 'Background, scheduled, monitored'),
+    ('Ph 4.5: Audit', 'Verify code matches manuscript claims'),
+    ('Ph 5: Manuscript', 'Write, verify refs, PDF self-check, senior review'),
     ('Ph 6: Revision', 'Parse -> Reconcile -> Re-sim -> Diff check'),
-    ('Ph 7: Pre-Sub Loop', 'Isolated reviewer -> Revise -> Max 3 rounds'),
+    ('Ph 7: Submit', 'Independent reviewer -> Revise -> Max 3 rounds'),
 ]
 for phase, desc in phases:
     pdf.set_font('DJ', 'B', 8); pdf.set_text_color(46,134,171)
-    pdf.set_xy(18, y); pdf.cell(30, 5, phase)
+    pdf.set_xy(18, y); pdf.cell(28, 5, phase)
     pdf.set_font('DJ', '', 8); pdf.set_text_color(60,60,60)
     pdf.cell(190, 5, desc)
     y += 5.5
 
-# === Slide 10: Key Rules ===
-y = pdf.slide_start('Key Rules That Emerged')
-y = pdf.bullet('Critical Rules (Do Not Skip):', bold=True, y=y)
-y = pdf.bullet('1. Isolate reviewers - context="isolated", no discussion history', y=y)
+# === Slide 11: Key Rules ===
+y = pdf.slide_start('Key Lessons Codified')
+y = pdf.bullet('1. Isolate reviewers - fresh sessions, no cross-contamination', y=y)
 y = pdf.bullet('2. Diversify models - different AIs catch different bugs', y=y)
-y = pdf.bullet('3. Code review BEFORE big simulations - never trust your code', y=y)
-y = pdf.bullet('4. PDF self-verify - programmatic checks before sending to human', y=y)
-y = y + 4
-y = pdf.bullet('Process Rules:', bold=True, y=y)
-y = pdf.bullet('5. Clean up cruft every iteration - stale labels, comments, files', y=y)
-y = pdf.bullet('6. Push to GitHub at milestones - enables external AI/human review', y=y)
+y = pdf.bullet('3. Code review BEFORE big simulations - trust but verify', y=y)
+y = pdf.bullet('4. PDF self-verify - programmatic checks before sending to humans', y=y)
+y = pdf.bullet('5. Clean up cruft every iteration - stale files cause confusion', y=y)
+y = pdf.bullet('6. Push to GitHub at milestones - enables external review', y=y)
 y = pdf.bullet('7. Batch deliveries - dont send incremental fixes, pace yourself', y=y)
-y = pdf.bullet('8. Commit often, push at checkpoints', y=y)
 
-# === Slide 11: What Went Wrong ===
-y = pdf.slide_start('What Went Wrong (And What We Fixed)')
-y = pdf.bullet('PDF Verification Disaster:', bold=True, y=y)
-y = pdf.bullet('5 failed attempts. Images silently failed (RGBA, code blocks, paths).', y=y)
-y = pdf.bullet('Fixed: verify_pdf.py, programmatic checks before every send.', y=y)
-y = y + 3
-y = pdf.bullet('Skipped Code Review (Initial):', bold=True, y=y)
-y = pdf.bullet('Would have delivered buggy simulation results.', y=y)
-y = pdf.bullet('Fixed: "DO NOT SKIP" warning in skill, three independent reviews.', y=y)
-y = y + 3
-y = pdf.bullet('Fast Iteration Exhausted the Human:', bold=True, y=y)
-y = pdf.bullet('Too many incremental fixes sent separately.', y=y)
-y = pdf.bullet('Fixed: batch changes, let human set the pace.', y=y)
-y = y + 3
-y = pdf.bullet('Stale Artifacts:', bold=True, y=y)
-y = pdf.bullet('Old PDFs, old labels, old comments accumulated.', y=y)
-y = pdf.bullet('Fixed: explicit cleanup at every milestone.', y=y)
-
-# === Slide 12: Economics ===
-y = pdf.slide_start('The Economics')
-y = pdf.bullet('Session Overview (8 hours of active collaboration):', bold=True, y=y)
-y = pdf.bullet('DeepSeek API tokens used: ~500K total', y=y)
-y = pdf.bullet('Estimated API cost: < $1.00 for the entire session', y=y)
+# === Slide 12: Takeaways ===
+y = pdf.slide_start('Key Takeaways')
+y = pdf.bullet('What Worked Well:', bold=True, y=y)
+y = pdf.bullet('Independent AI reviewers caught 11 bugs before human eyes saw the draft', y=y)
+y = pdf.bullet('Small tests before big runs - avoided ~5 dead ends', y=y)
+y = pdf.bullet('Human-in-the-loop essential - I directed 8 reframing cycles', y=y)
+y = pdf.bullet('The agent amplified judgment, did not replace it', y=y)
 y = y + 4
-y = pdf.bullet('What >$1.00 Bought:', bold=True, y=y)
-y = pdf.bullet('1 manuscript submission-ready for JBS', y=y)
+y = pdf.bullet('What We Would Do Differently:', bold=True, y=y)
+y = pdf.bullet('PDF generation was painful - 5 failed attempts, silent image failures', y=y)
+y = pdf.bullet('Now has a verification script baked into the pipeline', y=y)
+y = pdf.bullet('Code review almost skipped - hard checkpoint now', y=y)
+y = pdf.bullet('Stale artifacts accumulated - explicit cleanup at milestones', y=y)
+
+# === Slide 13: Economics ===
+y = pdf.slide_start('The Bottom Line')
+y = pdf.bullet('Session cost: ~500K DeepSeek tokens, well under $1.00', y=y)
+y = pdf.bullet('That bought:', bold=True, y=y)
+y = pdf.bullet('1 manuscript ready for JBS submission', y=y)
 y = pdf.bullet('1 SVP-ready digital twin report (12 pages, 3 diagrams)', y=y)
-y = pdf.bullet('1 complete simulation study with white paper + SAP language', y=y)
-y = pdf.bullet('1 research workflow skill file', y=y)
-y = pdf.bullet('3 independent AI reviews from 2 different models', y=y)
-y = pdf.bullet('3 GitHub repos with full code and documentation', y=y)
+y = pdf.bullet('1 complete simulation study + white paper + SAP language', y=y)
+y = pdf.bullet('1 reusable research workflow skill', y=y)
+y = pdf.bullet('3 independent AI reviews from 2 different model architectures', y=y)
+y = pdf.bullet('3 GitHub repos with full code', y=y)
 y = y + 4
-y = pdf.bullet('The Model Gap:', bold=True, y=y)
-y = pdf.bullet('DeepSeek v4 Flash: exceptional reasoning for the price', y=y)
-y = pdf.bullet('Qwen: thorough, catches structural issues', y=y)
-y = pdf.bullet('Gemini Pro: different blind spots, good for external review', y=y)
-y = pdf.bullet('Claude Opus: planned addition for senior reviewer perspective', y=y)
+y = pdf.bullet('Key insight:', bold=True, y=y)
+y = pdf.bullet('The agent doesnt replace the statistician - it replaces the drafting lag and review cycle', y=y)
+y = pdf.bullet('What used to take a week of calendar coordination now takes an evening', y=y)
 
-# === Slide 13: Thank You ===
+# === Slide 14: Thank You ===
 pdf.add_page()
 pdf.set_fill_color(25, 26, 46)
 pdf.rect(0, 0, 254, 190.5, 'F')
@@ -314,7 +307,7 @@ pdf.set_text_color(140,140,160)
 pdf.set_xy(15, 120)
 pdf.multi_cell(224, 6,
     'Repos:  github.com/doublerobust/ridge-cal  |  github.com/doublerobust/small-strata-pooling\n'
-    'The skill: SKILL.md in the research workflow - available on request', align='C')
+    'The skill: SKILL.md in my OpenClaw workspace - available on request', align='C')
 
 pdf.output('/home/yue-shentu/.openclaw/workspace/research-proposals/talk-slides.pdf')
 sz = os.path.getsize('/home/yue-shentu/.openclaw/workspace/research-proposals/talk-slides.pdf')
