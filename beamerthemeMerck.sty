@@ -1,0 +1,90 @@
+\mode<presentation>
+
+% Merck & Co. inspired color scheme
+\definecolor{merckgreen}{HTML}{007A73}
+\definecolor{merckdark}{HTML}{004D49}
+\definecolor{mercklight}{HTML}{E8F4F3}
+\definecolor{merckgray}{HTML}{F5F5F5}
+\definecolor{mercktext}{HTML}{333333}
+
+% Color theme
+\setbeamercolor{structure}{fg=merckgreen}
+\setbeamercolor{palette primary}{bg=merckgreen, fg=white}
+\setbeamercolor{palette secondary}{bg=merckdark, fg=white}
+\setbeamercolor{palette tertiary}{bg=mercklight, fg=merckdark}
+\setbeamercolor{frametitle}{bg=merckgreen, fg=white}
+\setbeamercolor{title}{fg=white}
+\setbeamercolor{subtitle}{fg=white!80!black}
+\setbeamercolor{author}{fg=white!70!black}
+\setbeamercolor{date}{fg=white!70!black}
+\setbeamercolor{normal text}{fg=mercktext}
+\setbeamercolor{itemize item}{fg=merckgreen}
+\setbeamercolor{itemize subitem}{fg=merckdark}
+\setbeamercolor{block title}{bg=merckgreen, fg=white}
+\setbeamercolor{block body}{bg=mercklight, fg=mercktext}
+
+% Inner theme
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{enumerate items}[circle]
+\setbeamertemplate{sections/subsections in toc}[circle]
+
+% Title slide
+\setbeamertemplate{title page}{
+  \begin{center}
+    \vfill
+    \begin{beamercolorbox}[center,sep=8pt,rounded=true,shadow=true]{block title}
+      \usebeamerfont{title}\inserttitle\par
+      \usebeamerfont{subtitle}\insertsubtitle\par
+    \end{beamercolorbox}
+    \vspace{1em}
+    \usebeamerfont{author}\insertauthor\par
+    \usebeamerfont{date}\insertdate\par
+    \vfill
+  \end{center}
+}
+
+% Frame title with "MERCK & CO." branding in header
+\setbeamertemplate{frametitle}{
+  \vbox{
+    \begin{beamercolorbox}[wd=\paperwidth,ht=2.6ex,dp=1ex,leftskip=0.5cm]{frametitle}
+      \usebeamerfont{frametitle}\insertframetitle%
+      \hfill%
+      \textsf{\textbf{\small MERCK \& CO.}}%
+      \hspace{0.3cm}
+    \end{beamercolorbox}
+  }
+}
+
+% Footer: page number on the LEFT, Merck logo bottom-right
+\setbeamertemplate{footline}{
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=.6\paperwidth,ht=2.5ex,dp=1ex,leftskip=0.3cm]{structure}%
+      \tiny\insertshorttitle
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.4\paperwidth,ht=2.5ex,dp=1ex,rightskip=0.1cm]{structure}%
+      \hfill%
+      \includegraphics[height=0.45cm,keepaspectratio]{merck-logo.png}%
+      \hspace{0.1cm}%
+      \tiny\insertframenumber/\inserttotalframenumber
+    \end{beamercolorbox}%
+  }%
+}
+
+% Remove navigation symbols
+\setbeamertemplate{navigation symbols}{}
+
+% Section slide style
+\AtBeginSection[]{
+  \begin{frame}[plain]
+    \begin{center}
+      \vfill
+      \begin{beamercolorbox}[center,sep=12pt,rounded=true,shadow=true]{block title}
+        \usebeamerfont{title}\insertsectionhead
+      \end{beamercolorbox}
+      \vfill
+    \end{center}
+  \end{frame}
+}
+
+\mode<all>

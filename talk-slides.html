@@ -1,18 +1,162 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
- "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="Yue Shentu" />
-  <meta name="date" content="2026-05-18" />
-  <title>From Concept to Submission in 8 Hours: An Agentic Research Workflow</title>
-  <style type="text/css">
+  <meta name="dcterms.date" content="2026-05-18" />
+  <title>From Concept to Submission in 8 Hours</title>
+  <style>
     /* Default styles provided by pandoc.
     ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
     */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
@@ -28,60 +172,35 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <link rel="stylesheet" type="text/css" media="screen, projection, print"
-    href="https://www.w3.org/Talks/Tools/Slidy2/styles/slidy.css" />
-  <script src="https://www.w3.org/Talks/Tools/Slidy2/scripts/slidy.js"
-    charset="utf-8" type="text/javascript"></script>
+  
 </head>
 <body>
-<div class="slide titlepage">
-  <h1 class="title">From Concept to Submission in 8 Hours: An Agentic
-Research Workflow</h1>
-  <p class="subtitle">Ridge-Cal, Digital Twins, and the Birth of a
-Statistical Research Skill</p>
-  <p class="author">
-Yue Shentu
-  </p>
-  <p class="date">May 18, 2026</p>
-</div>
-<div id="the-tech-stack-journey"
-class="title-slide slide section level1">
-<h1>The Tech Stack Journey</h1>
-
-</div>
-<div id="building-the-infrastructure-before-the-research-could-start"
-class="slide section level2">
-<h1>Building the Infrastructure Before the Research Could Start</h1>
+<header id="title-block-header">
+<h1 class="title">From Concept to Submission in 8 Hours</h1>
+<p class="subtitle">An Agentic Research Workflow</p>
+<p class="author">Yue Shentu</p>
+<p class="date">May 18, 2026</p>
+</header>
+<h1 id="the-tech-stack-journey">The Tech Stack Journey</h1>
+<h2 id="building-the-infrastructure">Building the Infrastructure</h2>
 <ul>
-<li><strong>OpenClaw setup:</strong> I configured an AI agent
-(code-named “Natasha”) as my research assistant, connected via
-Telegram</li>
-<li><strong>Local models (LM Studio):</strong> I tried running local
-LLMs first, but tool calling was unreliable — models would understand my
-requests but fail to execute tool calls consistently</li>
-<li><strong>DeepSeek API:</strong> The breakthrough. At ~$0.15/M input
-tokens, cheap enough that I could let the agent work freely</li>
-<li><strong>Qwen via Ollama:</strong> I added a second model with a
-different architecture so the agent could cross-check work — different
-AIs catch different bugs</li>
-<li><strong>Whisper:</strong> I added speech-to-text so I could dictate
-research ideas while pacing around the kitchen</li>
+<li><strong>OpenClaw setup:</strong> Configured an AI agent as my
+research assistant, connected via Telegram</li>
+<li><strong>Local models (LM Studio):</strong> Tool calling was
+unreliable — had to pivot</li>
+<li><strong>DeepSeek API:</strong> The breakthrough — cheap (~$0.15/M
+input), fast, reliable</li>
+<li><strong>Qwen via Ollama:</strong> Second model for cross-checking
+(different architecture)</li>
+<li><strong>Whisper:</strong> Speech-to-text for dictating ideas while
+pacing the kitchen</li>
 <li><strong>Dependencies:</strong> R + glmnet/furrr, Python +
-matplotlib/whisper, pandoc + LaTeX</li>
+matplotlib/whisper, Pandoc + LaTeX</li>
 </ul>
-<p><strong>Key lesson:</strong> Start with the API that works, optimize
+<p><strong>Lesson:</strong> Start with the API that works, optimize
 later.</p>
-</div>
-<div class="slide section level2">
-
-</div>
-
-<div id="the-spark" class="title-slide slide section level1">
-<h1>The Spark</h1>
-
-</div>
-<div id="the-problem-that-started-it-all" class="slide section level2">
-<h1>The Problem That Started It All</h1>
+<h1 id="the-problem">The Problem</h1>
+<h2 id="procovas-blind-spot">PROCOVA’s Blind Spot</h2>
 <ul>
 <li><strong>PROCOVA</strong> is EMA-qualified for improving trial
 efficiency via prognostic scores</li>
@@ -92,485 +211,427 @@ especially in oncology</li>
 <li><strong>No existing method</strong> diagnoses or corrects
 miscalibration using blinded trial data</li>
 </ul>
-<p><strong>The question:</strong> Can we fine-tune a prognostic score
-using only the trial’s own blinded data?</p>
-</div>
-<div id="the-ridge-cal-idea" class="slide section level2">
-<h1>The Ridge-Cal Idea</h1>
-<p>A simple insight I had: treat the external score as a
-<strong>pre-trained model</strong> and apply a <strong>regularized
-correction</strong> on blinded data:</p>
-<ol style="list-style-type: decimal">
+<h1 id="the-idea">The Idea</h1>
+<h2 id="ridge-cal">Ridge-Cal</h2>
+<p>Treat the external score as a <strong>pre-trained model</strong> and
+apply a <strong>regularized correction</strong> on blinded data:</p>
+<ul>
 <li><strong>Diagnose:</strong> Compare C-index of score alone vs. score
 + calibration covariates</li>
 <li><strong>Calibrate:</strong> Ridge-penalized Cox regression on
-blinded data, λ selected by CV</li>
+blinded data, <span class="math inline"><em>λ</em></span> by CV</li>
 <li><strong>Analyze:</strong> Standard Cox PH with calibrated score +
 robust sandwich SE</li>
-</ol>
+</ul>
 <p>6 parameters, blinded data, no additional data collection needed.</p>
-</div>
-<div class="slide section level2">
-
-</div>
-
-<div id="the-8-hour-journey" class="title-slide slide section level1">
-<h1>The 8-Hour Journey</h1>
-
-</div>
-<div id="timeline-may-17-18-2026" class="slide section level2">
-<h1>Timeline: May 17-18, 2026</h1>
+<h1 id="the-timeline">The Timeline</h1>
+<h2 id="may-1718-2026">May 17–18, 2026</h2>
 <table>
 <colgroup>
-<col width="31%" />
-<col width="68%" />
+<col style="width: 31%" />
+<col style="width: 68%" />
 </colgroup>
 <thead>
 <tr>
-<th align="center">Time</th>
-<th align="left">Milestone</th>
+<th style="text-align: center;">Time</th>
+<th style="text-align: left;">Milestone</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center">~21:00</td>
-<td align="left">Initial concept brainstorm: TMLE + Bayesian MCMC (too
-complex — scrapped)</td>
+<td style="text-align: center;">~21:00</td>
+<td style="text-align: left;">Concept brainstorm (TMLE + Bayesian MCMC —
+too complex, scrapped)</td>
 </tr>
 <tr>
-<td align="center">~22:00</td>
-<td align="left">Pivot to ridge regression on 5 covariates</td>
+<td style="text-align: center;">~22:00</td>
+<td style="text-align: left;">Pivot to ridge regression on 5
+covariates</td>
 </tr>
 <tr>
-<td align="center">~23:00</td>
-<td align="left">First simulation — agent found a bug (non-PH assumption
-violated)</td>
+<td style="text-align: center;">~23:00</td>
+<td style="text-align: left;">First simulation — agent found a bug
+(non-PH assumption)</td>
 </tr>
 <tr>
-<td align="center">~00:00</td>
-<td align="left">10K-rep simulation running in background</td>
+<td style="text-align: center;">~00:00</td>
+<td style="text-align: left;">10K-rep simulation running in
+background</td>
 </tr>
 <tr>
-<td align="center">~01:00</td>
-<td align="left">MAP-Cox bug surfaced by agent (k applied after pooling
-instead of before)</td>
+<td style="text-align: center;">~01:00</td>
+<td style="text-align: left;">MAP-Cox bug surfaced (k applied after
+pooling)</td>
 </tr>
 <tr>
-<td align="center">~02:00</td>
-<td align="left">Bug fixed, re-simulation triggered</td>
-</tr>
-<tr>
-<td align="center">~06:00</td>
-<td align="left">Manuscript drafted (agent wrote the prose; I reviewed
-and revised every section)</td>
-</tr>
-<tr>
-<td align="center">~07:00</td>
-<td align="left">I sent the draft to Gemini (Reviewer 2) — came back
-Major Revision, 4 issues</td>
-</tr>
-<tr>
-<td align="center">~07:15</td>
-<td align="left">Agent fixed all 4 issues per my instructions</td>
-</tr>
-<tr>
-<td align="center">~08:00</td>
-<td align="left">I sent the revised draft to Qwen for a second
-independent review — another 7 issues surfaced</td>
-</tr>
-<tr>
-<td align="center">~09:00</td>
-<td align="left">Digital twin landscape report drafted (agent’s first
-pass, my edits)</td>
-</tr>
-<tr>
-<td align="center">~10:00</td>
-<td align="left">JBS formatting, self-verify, corrections</td>
-</tr>
-<tr>
-<td align="center">~14:00</td>
-<td align="left">Voice note while pacing the kitchen → small strata
-investigation</td>
-</tr>
-<tr>
-<td align="center">~15:00</td>
-<td align="left">Workflow codified into a reusable skill file</td>
+<td style="text-align: center;">~02:00</td>
+<td style="text-align: left;">Bug fixed, re-simulation triggered</td>
 </tr>
 </tbody>
 </table>
-</div>
-<div id="what-came-out-of-it" class="slide section level2">
-<h1>What Came Out of It</h1>
+<h1 id="the-timeline-cont.">The Timeline (cont.)</h1>
 <table>
 <colgroup>
-<col width="43%" />
-<col width="23%" />
-<col width="33%" />
+<col style="width: 31%" />
+<col style="width: 68%" />
 </colgroup>
 <thead>
 <tr>
-<th align="left">Deliverable</th>
-<th align="left">Format</th>
-<th align="left">Audience</th>
+<th style="text-align: center;">Time</th>
+<th style="text-align: left;">Milestone</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">Ridge-Cal manuscript</td>
-<td align="left">PDF, 12 pages</td>
-<td align="left">JBS submission</td>
+<td style="text-align: center;">~06:00</td>
+<td style="text-align: left;">Manuscript drafted — agent wrote prose, I
+reviewed every section</td>
 </tr>
 <tr>
-<td align="left">Response to Reviewer 2</td>
-<td align="left">Markdown</td>
-<td align="left">Journal</td>
+<td style="text-align: center;">~07:00</td>
+<td style="text-align: left;">Sent to Gemini — Major Revision, 4
+issues</td>
 </tr>
 <tr>
-<td align="left">Digital twin landscape survey</td>
-<td align="left">PDF, 12 pages, 3 diagrams</td>
-<td align="left">Merck SVPs</td>
+<td style="text-align: center;">~08:00</td>
+<td style="text-align: left;">Sent to Qwen for independent review — 7
+MORE issues</td>
 </tr>
 <tr>
-<td align="left">Small strata white paper</td>
-<td align="left">Markdown</td>
-<td align="left">Internal stat leads</td>
+<td style="text-align: center;">~09:00</td>
+<td style="text-align: left;">Digital twin landscape report drafted</td>
 </tr>
 <tr>
-<td align="left">Research workflow skill</td>
-<td align="left">SKILL.md</td>
-<td align="left">Future projects</td>
+<td style="text-align: center;">~10:00</td>
+<td style="text-align: left;">JBS formatting, self-verify,
+corrections</td>
 </tr>
 <tr>
-<td align="left">Code + simulations</td>
-<td align="left">GitHub (public)</td>
-<td align="left">Reproducibility</td>
+<td style="text-align: center;">~14:00</td>
+<td style="text-align: left;">Voice note <span
+class="math inline">→</span> small strata investigation</td>
+</tr>
+<tr>
+<td style="text-align: center;">~15:00</td>
+<td style="text-align: left;">Workflow codified into reusable skill</td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="slide section level2">
-
-</div>
-
-<div id="the-multi-model-review-loop"
-class="title-slide slide section level1">
-<h1>The Multi-Model Review Loop</h1>
-
-</div>
-<div id="why-one-ai-isnt-enough" class="slide section level2">
-<h1>Why One AI Isn’t Enough</h1>
-<p>Same-model reviewers share the same <strong>blind spots</strong> and
-<strong>hallucination patterns</strong>.</p>
-<p><strong>My solution:</strong> Cross-review with two different AI
-architectures.</p>
-<h3 id="loop-1-internal-my-openclaw-agent">Loop 1: Internal (my OpenClaw
-agent)</h3>
-<ul>
-<li><strong>Primary work:</strong> DeepSeek v4 Flash (cost-effective,
-reliable tool calling)</li>
-<li><strong>Independent reviewer:</strong> Qwen (different architecture,
-different training blind spots)</li>
-<li><strong>Cost:</strong> ~$0.15/M tokens — pennies per review
-cycle</li>
-<li><strong>Caught:</strong> Section 4 redundancy, δ justification,
-missing data section, table header clarity</li>
-</ul>
-<h3 id="loop-2-external-google-gemini-pro">Loop 2: External (Google
-Gemini Pro)</h3>
-<ul>
-<li><strong>Reviewer:</strong> Completely separate AI, separate company,
-zero shared training</li>
-<li><strong>Cost:</strong> Free tier — I just pasted the manuscript</li>
-<li><strong>Caught:</strong> Non-collapsibility, tone issues, event rate
-concerns, LoRA framing</li>
-</ul>
-</div>
-<div id="the-convergence" class="slide section level2">
-<h1>The Convergence</h1>
+<h1 id="deliverables">Deliverables</h1>
+<h2 id="what-came-out-of-it">What Came Out of It</h2>
 <table>
 <thead>
 <tr>
-<th align="left">Round</th>
-<th align="left">Reviewer</th>
-<th align="left">Verdict</th>
-<th align="left">Issues Found</th>
+<th style="text-align: left;">Deliverable</th>
+<th style="text-align: left;">Format</th>
+<th style="text-align: left;">Audience</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">1</td>
-<td align="left">Gemini</td>
-<td align="left">Major Revision</td>
-<td align="left">4</td>
+<td style="text-align: left;">Ridge-Cal manuscript</td>
+<td style="text-align: left;">PDF, 12 pages</td>
+<td style="text-align: left;">JBS submission</td>
 </tr>
 <tr>
-<td align="left">2</td>
-<td align="left">Gemini</td>
-<td align="left"><strong>Accept</strong></td>
-<td align="left">—</td>
+<td style="text-align: left;">Response to Reviewer 2</td>
+<td style="text-align: left;">Markdown</td>
+<td style="text-align: left;">Journal</td>
 </tr>
 <tr>
-<td align="left">3</td>
-<td align="left">Qwen</td>
-<td align="left">Major Revision</td>
-<td align="left">7 (different set!)</td>
+<td style="text-align: left;">Digital twin survey</td>
+<td style="text-align: left;">PDF, 12 pages</td>
+<td style="text-align: left;">BLT (BARDS Leadership Team)</td>
 </tr>
 <tr>
-<td align="left">4</td>
-<td align="left">Qwen</td>
-<td align="left">Minor Revision</td>
-<td align="left">—</td>
+<td style="text-align: left;">Small strata white paper</td>
+<td style="text-align: left;">Markdown</td>
+<td style="text-align: left;">Internal stat leads</td>
 </tr>
 <tr>
-<td align="left">5</td>
-<td align="left">Qwen</td>
-<td align="left"><strong>Accept</strong></td>
-<td align="left">—</td>
+<td style="text-align: left;">Research Workflow skill</td>
+<td style="text-align: left;">SKILL.md</td>
+<td style="text-align: left;">Future projects</td>
+</tr>
+<tr>
+<td style="text-align: left;">Simulation code</td>
+<td style="text-align: left;">GitHub (public)</td>
+<td style="text-align: left;">Reproducibility</td>
 </tr>
 </tbody>
 </table>
-<p>Qwen caught things Gemini missed: Section 4 redundancy, δ
-justification, table header ambiguity, MAP-Cox framing, sandwich
-variance scope, missing data section, reference formatting.</p>
-<p><strong>Takeaway:</strong> Two independent AI reviewers converged
-faster and more thoroughly than any single reviewer could have.</p>
-</div>
-<div class="slide section level2">
-
-</div>
-
-<div id="the-demo-voice-note-white-paper"
-class="title-slide slide section level1">
-<h1>The Demo: Voice Note → White Paper</h1>
-
-</div>
-<div id="the-workflow-in-10-minutes" class="slide section level2">
-<h1>The Workflow in 10 Minutes</h1>
-<p><strong>Input:</strong> A voice note I recorded while pacing in the
-kitchen (transcribed by Whisper)</p>
+<h1 id="multi-model-review">Multi-Model Review</h1>
+<h2 id="why-not-one-ai">Why Not One AI?</h2>
+<p>Same-model reviewers share the same <strong>blind spots</strong>.</p>
+<p><strong>Internal Loop (my agent, ~$0.15/M tokens)</strong></p>
+<ul>
+<li>Primary: DeepSeek v4 Flash | Reviewer: Qwen</li>
+<li>Caught: Section 4 redundancy, <span
+class="math inline"><em>δ</em></span> justification, missing data, table
+headers</li>
+</ul>
+<p><strong>External Loop (separate company)</strong></p>
+<ul>
+<li>Gemini Pro — completely different training</li>
+<li>Caught: Non-collapsibility, tone, event rates, LoRA framing</li>
+</ul>
+<h1 id="the-convergence">The Convergence</h1>
+<h2 id="review-results">Review Results</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Round</th>
+<th style="text-align: left;">Reviewer</th>
+<th style="text-align: left;">Verdict</th>
+<th style="text-align: center;">Issues</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Gemini</td>
+<td style="text-align: left;">Major Revision</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Gemini</td>
+<td style="text-align: left;"><strong>Accept</strong></td>
+<td style="text-align: center;">–</td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">Qwen</td>
+<td style="text-align: left;">Major Revision</td>
+<td style="text-align: center;"><strong>7 (different)</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">Qwen</td>
+<td style="text-align: left;">Minor Revision</td>
+<td style="text-align: center;">–</td>
+</tr>
+<tr>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">Qwen</td>
+<td style="text-align: left;"><strong>Accept</strong></td>
+<td style="text-align: center;">–</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Qwen caught things Gemini missed:</strong> redundancy, <span
+class="math inline"><em>δ</em></span> justification, table headers,
+MAP-Cox framing, sandwich variance scope, missing data, references.</p>
+<p><strong>Takeaway:</strong> Model-diverse review converges faster than
+any single reviewer.</p>
+<h1 id="demo-voice-note-rightarrow-paper">Demo: Voice Note <span
+class="math inline">→</span> Paper</h1>
+<h2 id="minutes-start-to-finish">10 Minutes Start to Finish</h2>
+<p><strong>Input:</strong> Voice note while pacing the kitchen (Whisper
+transcription)</p>
 <blockquote>
 <p>“Do we need to pool small strata for CMH and MN methods?”</p>
 </blockquote>
-<p><strong>Output:</strong> A white paper with simulation results,
-proposed SAP language, and a mathematical appendix</p>
-</div>
-<div id="what-happened" class="slide section level2">
-<h1>What Happened</h1>
 <table>
-<colgroup>
-<col width="31%" />
-<col width="37%" />
-<col width="31%" />
-</colgroup>
 <thead>
 <tr>
-<th align="left">Step</th>
-<th align="center">Time</th>
-<th align="left">How</th>
+<th style="text-align: left;">Step</th>
+<th style="text-align: center;">Time</th>
+<th style="text-align: left;">How</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">Voice note → text</td>
-<td align="center">&lt; 1 min</td>
-<td align="left">Whisper (tiny model, local)</td>
+<td style="text-align: left;">Transcription</td>
+<td style="text-align: center;">&lt; 1 min</td>
+<td style="text-align: left;">Whisper</td>
 </tr>
 <tr>
-<td align="left">Problem scoping</td>
-<td align="center">1 min</td>
-<td align="left">I dictated the question, agent structured it into a
-Phase 0 proposal</td>
+<td style="text-align: left;">Problem scoping</td>
+<td style="text-align: center;">1 min</td>
+<td style="text-align: left;">I dictated, agent structured</td>
 </tr>
 <tr>
-<td align="left">Independent review</td>
-<td align="center">1 min</td>
-<td align="left">I had the agent spawn an isolated Qwen session to
-review the proposal</td>
+<td style="text-align: left;">Independent review</td>
+<td style="text-align: center;">1 min</td>
+<td style="text-align: left;">Qwen caught framing weakness</td>
 </tr>
 <tr>
-<td align="left">Revision</td>
-<td align="center">1 min</td>
-<td align="left">I directed the fix, agent refined the scope</td>
+<td style="text-align: left;">Revision</td>
+<td style="text-align: center;">1 min</td>
+<td style="text-align: left;">I directed, agent refined</td>
 </tr>
 <tr>
-<td align="left">Code + simulation</td>
-<td align="center">3 min</td>
-<td align="left">Agent drafted R code based on my specs; I reviewed;
-agent ran 5K reps</td>
+<td style="text-align: left;">Code + simulation</td>
+<td style="text-align: center;">3 min</td>
+<td style="text-align: left;">Agent drafted code, 5K reps</td>
 </tr>
 <tr>
-<td align="left">Code review v1</td>
-<td align="center">1 min</td>
-<td align="left">Qwen caught 3 bugs — Scenario 4 duplicated, RR
-variance, Wald vs MN label</td>
+<td style="text-align: left;">Code review v1</td>
+<td style="text-align: center;">1 min</td>
+<td style="text-align: left;">Qwen caught 3 bugs</td>
 </tr>
 <tr>
-<td align="left">Code review v2</td>
-<td align="center">1 min</td>
-<td align="left">Agent verified fixes, I confirmed</td>
+<td style="text-align: left;">Code review v2</td>
+<td style="text-align: center;">1 min</td>
+<td style="text-align: left;">Verified fixes</td>
 </tr>
 <tr>
-<td align="left">Final review</td>
-<td align="center">1 min</td>
-<td align="left">White paper compiled, pushed to GitHub</td>
-</tr>
-<tr>
-<td align="left"><strong>Total</strong></td>
-<td align="center"><strong>~10 min</strong></td>
-<td align="left"><strong>From an idle thought to a polished,
-peer-reviewed white paper</strong></td>
+<td style="text-align: left;">Final + push</td>
+<td style="text-align: center;">1 min</td>
+<td style="text-align: left;">White paper to GitHub</td>
 </tr>
 </tbody>
 </table>
-</div>
-<div id="the-three-code-reviews" class="slide section level2">
-<h1>The Three Code Reviews</h1>
+<h1 id="code-reviews">Code Reviews</h1>
+<h2 id="three-rounds">Three Rounds</h2>
 <table>
 <colgroup>
-<col width="24%" />
-<col width="27%" />
-<col width="48%" />
+<col style="width: 24%" />
+<col style="width: 27%" />
+<col style="width: 48%" />
 </colgroup>
 <thead>
 <tr>
-<th align="left">Review</th>
-<th align="left">Verdict</th>
-<th align="left">What It Caught</th>
+<th style="text-align: left;">Review</th>
+<th style="text-align: left;">Verdict</th>
+<th style="text-align: left;">What It Caught</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">v1</td>
-<td align="left">Minor Issues</td>
-<td align="left">Scenario 4 duplicated, CMH RR variance unstratified,
-Wald mislabeled as MN</td>
+<td style="text-align: left;">v1</td>
+<td style="text-align: left;">Minor Issues</td>
+<td style="text-align: left;">Scenario 4 duplicated, CMH RR variance
+unstratified, Wald mislabeled as MN</td>
 </tr>
 <tr>
-<td align="left">v2</td>
-<td align="left">Minor Issues</td>
-<td align="left">Scenario 4 label misleading, MN SE approximation
-(acknowledged)</td>
+<td style="text-align: left;">v2</td>
+<td style="text-align: left;">Minor Issues</td>
+<td style="text-align: left;">Scenario 4 label misleading, MN SE
+approximation</td>
 </tr>
 <tr>
-<td align="left">Final</td>
-<td align="left">Pass</td>
-<td align="left">Verified against bootstrap empirical variance</td>
+<td style="text-align: left;">Final</td>
+<td style="text-align: left;">Pass</td>
+<td style="text-align: left;">Verified against bootstrap empirical
+variance</td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="slide section level2">
-
-</div>
-
-<div id="the-emergent-workflow"
-class="title-slide slide section level1">
-<h1>The Emergent Workflow</h1>
-
-</div>
-<div id="the-skill-file-skill.md" class="slide section level2">
-<h1>The Skill File (SKILL.md)</h1>
-<p>By the end of the day, we had a codified pipeline for future research
-projects:</p>
-<h3 id="phase-0-topic-id">Phase 0: Topic ID</h3>
-<p>Identify the gap, map the literature, define “before” and “after”
-states</p>
-<h3 id="phase-1-initial-writeup">Phase 1: Initial Writeup</h3>
-<p>Write a proposal → have the agent spawn an isolated reviewer →
-iterate</p>
-<h3 id="phase-2-simulation">Phase 2: Simulation</h3>
-<p>Test (2 reps) → Validate (20 reps) → Confirm (200 reps) → Full (10K
-reps)</p>
-<h3 id="phase-3-multi-agent-qc">Phase 3: Multi-Agent QC</h3>
-<p><strong>Code review before big simulations — mandatory after we
-skipped it once and nearly delivered buggy results</strong></p>
-<h3 id="phase-4-full-run">Phase 4: Full Run</h3>
-<p>Background processing, scheduled, monitored</p>
-<h3 id="phase-4.5-reproducibility-audit">Phase 4.5: Reproducibility
-Audit</h3>
-<p>Agent verifies code matches manuscript claims</p>
-<h3 id="phase-5-manuscript">Phase 5: Manuscript</h3>
-<p>Write, verify references, PDF self-check, senior review</p>
-<h3 id="phase-6-revision">Phase 6: Revision</h3>
-<p>Critique Parser → Math Reconciliation → Re-Simulation → Diff
-Check</p>
-<h3 id="phase-7-pre-submission-loop">Phase 7: Pre-Submission Loop</h3>
-<p>Independent reviewer → Revise → Loop (max 3) until Accept</p>
-</div>
-<div id="key-lessons-codified" class="slide section level2">
-<h1>Key Lessons Codified</h1>
-<ol style="list-style-type: decimal">
-<li><strong>Isolate reviewers</strong> — Fresh sessions only, no
-cross-contamination from prior discussion</li>
-<li><strong>Diversify models</strong> — Different AIs catch different
-bugs; one is as bad as one human</li>
-<li><strong>PDF self-verify</strong> — Automated checks before anything
-reaches colleagues</li>
-<li><strong>Clean up cruft</strong> — Stale code and language
-accumulates; clean explicitly at every milestone</li>
-<li><strong>Push to GitHub at milestones</strong> — Enables external
-review access</li>
-<li><strong>Batch deliveries</strong> — Don’t send incremental fixes.
-Pace yourself.</li>
+<p>All bugs fixed before delivery.</p>
+<h1 id="the-workflow-phases">The Workflow: Phases</h1>
+<h2 id="research-skill-file">Research Skill File</h2>
+<table>
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 65%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">Phase</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Ph 0: Topic ID</strong></td>
+<td style="text-align: left;">Identify gap, map contradictory
+literature</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Ph 1: Writeup</strong></td>
+<td style="text-align: left;">Write, spawn isolated reviewer,
+iterate</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Ph 2: Simulate</strong></td>
+<td style="text-align: left;">2 <span class="math inline">→</span> 20
+<span class="math inline">→</span> 200 <span
+class="math inline">→</span> 10K reps</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Ph 3: QC</strong></td>
+<td style="text-align: left;"><strong>Code review before big runs —
+mandatory</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Ph 4: Full Run</strong></td>
+<td style="text-align: left;">Background, scheduled, monitored</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Ph 4.5: Audit</strong></td>
+<td style="text-align: left;">Verify code matches manuscript claims</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Ph 5: Manuscript</strong></td>
+<td style="text-align: left;">Write, verify refs, PDF self-check</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Ph 6: Revision</strong></td>
+<td style="text-align: left;">Parse <span class="math inline">→</span>
+Reconcile <span class="math inline">→</span> Re-sim</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Ph 7: Submit</strong></td>
+<td style="text-align: left;">Reviewer <span
+class="math inline">→</span> Revise <span class="math inline">→</span>
+Max 3</td>
+</tr>
+</tbody>
+</table>
+<h1 id="the-workflow-rules">The Workflow: Rules</h1>
+<h2 id="key-lessons-codified">Key Lessons Codified</h2>
+<ol type="1">
+<li><strong>Isolate reviewers</strong> — fresh sessions, no
+cross-contamination</li>
+<li><strong>Diversify models</strong> — different AIs catch different
+bugs</li>
+<li><strong>Code review BEFORE big simulations</strong> — trust but
+verify</li>
+<li><strong>PDF self-verify</strong> — automated checks before reaching
+humans</li>
+<li><strong>Clean up cruft</strong> — stale files cause confusion</li>
+<li><strong>Push to GitHub at milestones</strong> — enables external
+review</li>
+<li><strong>Batch deliveries</strong> — pace yourself</li>
 </ol>
-</div>
-<div class="slide section level2">
-
-</div>
-
-<div id="key-takeaways" class="title-slide slide section level1">
-<h1>Key Takeaways</h1>
-
-</div>
-<div id="what-worked-well" class="slide section level2">
-<h1>What Worked Well</h1>
+<h1 id="what-worked-well">What Worked Well</h1>
+<h2 id="results">Results</h2>
 <ul>
 <li><strong>Independent AI reviewers caught 11 bugs</strong> before
-human eyes ever saw the draft — citation errors, a broken method,
-non-collapsibility, framing weaknesses</li>
-<li><strong>Small tests before big runs</strong> — we avoided roughly 5
-dead ends this way</li>
-<li><strong>Human-in-the-loop was essential</strong> — I directed 8
-reframing cycles. Each one improved the method. The agent amplified my
-judgment, didn’t replace it.</li>
-<li><strong>The LoRA analogy</strong> resonated with both AI and human
-reviewers</li>
+human eyes saw the draft</li>
+<li><strong>Small tests before big runs</strong> — avoided ~5 dead
+ends</li>
+<li><strong>Human-in-the-loop essential</strong> — I directed 8
+reframing cycles</li>
+<li><strong>The agent amplified my judgment, did not replace
+it</strong></li>
 </ul>
-</div>
-<div id="what-wed-do-differently" class="slide section level2">
-<h1>What We’d Do Differently</h1>
+<h1 id="what-id-do-differently">What I’d Do Differently</h1>
+<h2 id="lessons-learned">Lessons Learned</h2>
 <ul>
-<li><strong>PDF generation was painful</strong> — 5 failed attempts
-before we got it right. Images silently failed (RGBA→RGB, code block
-markers, missing paths). We now have a verification script baked into
-the workflow.</li>
-<li><strong>Code review was almost skipped</strong> — would have
-delivered buggy simulation results. It’s now a hard checkpoint in the
-pipeline.</li>
-<li><strong>Stale artifacts accumulated</strong> — old PDFs, old labels,
-old comments. We now have explicit cleanup at every milestone.</li>
+<li><strong>PDF generation was painful</strong> — 5 failed attempts with
+silent image failures. Now has a verification script.</li>
+<li><strong>Code review almost skipped</strong> — hard checkpoint now in
+the pipeline.</li>
+<li><strong>Stale artifacts accumulated</strong> — explicit cleanup at
+every milestone now.</li>
 </ul>
-</div>
-<div class="slide section level2">
-
-</div>
-
-<div id="qa" class="title-slide slide section level1">
-<h1>Q&amp;A</h1>
-
-</div>
-<div id="thank-you" class="slide section level2">
-<h1>Thank You</h1>
-<p>Questions? </p>
-<p><strong>The key insight:</strong> An AI agent doesn’t replace the
-statistician. It replaces the <em>drafting lag</em> and the <em>review
-cycle</em>. I still had to think, direct, and decide — but what used to
-take a week of calendar coordination now takes an evening.</p>
-<p><strong>Repos:</strong> - Ridge-Cal:
-<code>github.com/doublerobust/ridge-cal</code> - Small strata:
-<code>github.com/doublerobust/small-strata-pooling</code></p>
-<p><strong>The skill:</strong> Lives in my OpenClaw workspace — happy to
-share.</p>
-</div>
+<h1 id="the-bottom-line">The Bottom Line</h1>
+<h2 id="economics">Economics</h2>
+<ul>
+<li><strong>Session cost:</strong> ~500K DeepSeek tokens, <strong>well
+under $1.00</strong></li>
+<li><strong>That bought:</strong> 1 manuscript, 1 BLT report, 1 white
+paper, 1 reusable skill, 3 AI reviews from 2 models, 3 GitHub repos</li>
+<li><strong>Key insight:</strong> The agent replaces the drafting lag,
+not the statistician</li>
+</ul>
+<h1 id="questions">Questions?</h1>
+<p>Thank You</p>
+<p><strong>Repos:</strong> - - </p>
+<p><strong>The skill:</strong> SKILL.md in my OpenClaw workspace —
+available on request.</p>
 </body>
 </html>

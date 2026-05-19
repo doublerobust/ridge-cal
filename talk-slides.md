@@ -1,235 +1,216 @@
 ---
-title: "From Concept to Submission in 8 Hours: An Agentic Research Workflow"
-subtitle: "Ridge-Cal, Digital Twins, and the Birth of a Statistical Research Skill"
+title: "From Concept to Submission in 8 Hours"
+subtitle: "An Agentic Research Workflow"
 author: "Yue Shentu"
 date: "May 18, 2026"
-logo: merck
+header-includes:
+  - \usepackage{tikz}
 ---
 
 # The Tech Stack Journey
 
-## Building the Infrastructure Before the Research Could Start
+## Building the Infrastructure
 
-- **OpenClaw setup:** I configured an AI agent (code-named "Natasha") as my research assistant, connected via Telegram
-- **Local models (LM Studio):** I tried running local LLMs first, but tool calling was unreliable — models would understand my requests but fail to execute tool calls consistently
-- **DeepSeek API:** The breakthrough. At ~$0.15/M input tokens, cheap enough that I could let the agent work freely
-- **Qwen via Ollama:** I added a second model with a different architecture so the agent could cross-check work — different AIs catch different bugs
-- **Whisper:** I added speech-to-text so I could dictate research ideas while pacing around the kitchen
-- **Dependencies:** R + glmnet/furrr, Python + matplotlib/whisper, pandoc + LaTeX
+- **OpenClaw setup:** Configured an AI agent as my research assistant, connected via Telegram
+- **Local models (LM Studio):** Tool calling was unreliable --- had to pivot
+- **DeepSeek API:** The breakthrough --- cheap (~\$0.15/M input), fast, reliable
+- **Qwen via Ollama:** Second model for cross-checking (different architecture)
+- **Whisper:** Speech-to-text for dictating ideas while pacing the kitchen
+- **Dependencies:** R + glmnet/furrr, Python + matplotlib/whisper, Pandoc + LaTeX
 
-**Key lesson:** Start with the API that works, optimize later.
+**Lesson:** Start with the API that works, optimize later.
 
----
+# The Problem
 
-# The Spark
-
-## The Problem That Started It All
+## PROCOVA's Blind Spot
 
 - **PROCOVA** is EMA-qualified for improving trial efficiency via prognostic scores
 - But it assumes the **external score is perfectly calibrated** for the trial population
-- **Population shift** is the rule, not the exception — especially in oncology
+- **Population shift** is the rule, not the exception --- especially in oncology
 - **No existing method** diagnoses or corrects miscalibration using blinded trial data
 
-**The question:** Can we fine-tune a prognostic score using only the trial's own blinded data?
+# The Idea
 
-## The Ridge-Cal Idea
+## Ridge-Cal
 
-A simple insight I had: treat the external score as a **pre-trained model** and apply a **regularized correction** on blinded data:
+Treat the external score as a **pre-trained model** and apply a **regularized correction** on blinded data:
 
-1. **Diagnose:** Compare C-index of score alone vs. score + calibration covariates
-2. **Calibrate:** Ridge-penalized Cox regression on blinded data, λ selected by CV
-3. **Analyze:** Standard Cox PH with calibrated score + robust sandwich SE
+- **Diagnose:** Compare C-index of score alone vs. score + calibration covariates
+- **Calibrate:** Ridge-penalized Cox regression on blinded data, $\lambda$ by CV
+- **Analyze:** Standard Cox PH with calibrated score + robust sandwich SE
 
 6 parameters, blinded data, no additional data collection needed.
 
----
+# The Timeline
 
-# The 8-Hour Journey
+## May 17--18, 2026
 
-## Timeline: May 17-18, 2026
+\small
+| Time | Milestone |
+|:---:|:----------|
+| ~21:00 | Concept brainstorm (TMLE + Bayesian MCMC --- too complex, scrapped) |
+| ~22:00 | Pivot to ridge regression on 5 covariates |
+| ~23:00 | First simulation --- agent found a bug (non-PH assumption) |
+| ~00:00 | 10K-rep simulation running in background |
+| ~01:00 | MAP-Cox bug surfaced (k applied after pooling) |
+| ~02:00 | Bug fixed, re-simulation triggered |
+
+# The Timeline (cont.)
 
 | Time | Milestone |
 |:---:|:----------|
-| ~21:00 | Initial concept brainstorm: TMLE + Bayesian MCMC (too complex — scrapped) |
-| ~22:00 | Pivot to ridge regression on 5 covariates |
-| ~23:00 | First simulation — agent found a bug (non-PH assumption violated) |
-| ~00:00 | 10K-rep simulation running in background |
-| ~01:00 | MAP-Cox bug surfaced by agent (k applied after pooling instead of before) |
-| ~02:00 | Bug fixed, re-simulation triggered |
-| ~06:00 | Manuscript drafted (agent wrote the prose; I reviewed and revised every section) |
-| ~07:00 | I sent the draft to Gemini (Reviewer 2) — came back Major Revision, 4 issues |
-| ~07:15 | Agent fixed all 4 issues per my instructions |
-| ~08:00 | I sent the revised draft to Qwen for a second independent review — another 7 issues surfaced |
-| ~09:00 | Digital twin landscape report drafted (agent's first pass, my edits) |
+| ~06:00 | Manuscript drafted --- agent wrote prose, I reviewed every section |
+| ~07:00 | Sent to Gemini --- Major Revision, 4 issues |
+| ~08:00 | Sent to Qwen for independent review --- 7 MORE issues |
+| ~09:00 | Digital twin landscape report drafted |
 | ~10:00 | JBS formatting, self-verify, corrections |
-| ~14:00 | Voice note while pacing the kitchen → small strata investigation |
-| ~15:00 | Workflow codified into a reusable skill file |
+| ~14:00 | Voice note $\rightarrow$ small strata investigation |
+| ~15:00 | Workflow codified into reusable skill |
+\normalsize
+
+# Deliverables
 
 ## What Came Out of It
 
-\small
 | Deliverable | Format | Audience |
 |:------------|:------|:---------|
 | Ridge-Cal manuscript | PDF, 12 pages | JBS submission |
 | Response to Reviewer 2 | Markdown | Journal |
-| Digital twin landscape survey | PDF, 12 pages, 3 diagrams | BARDS leadership |
+| Digital twin survey | PDF, 12 pages | BLT (BARDS Leadership Team) |
 | Small strata white paper | Markdown | Internal stat leads |
-| Research workflow skill | SKILL.md | Future projects |
-| Code + simulations | GitHub (public) | Reproducibility |
-\normalsize
+| Research Workflow skill | SKILL.md | Future projects |
+| Simulation code | GitHub (public) | Reproducibility |
 
----
+# Multi-Model Review
 
-# The Multi-Model Review Loop
+## Why Not One AI?
 
-## Why One AI Isn't Enough
+Same-model reviewers share the same **blind spots**.
 
-Same-model reviewers share the same **blind spots** and **hallucination patterns**.
+\vspace{0.5em}
 
-**My solution:** Cross-review with two different AI architectures.
+**Internal Loop (my agent, ~\$0.15/M tokens)**
 
-### Loop 1: Internal (my OpenClaw agent)
-- **Primary work:** DeepSeek v4 Flash (cost-effective, reliable tool calling)
-- **Independent reviewer:** Qwen (different architecture, different training blind spots)
-- **Cost:** ~$0.15/M tokens — pennies per review cycle
-- **Caught:** Section 4 redundancy, δ justification, missing data section, table header clarity
+- Primary: DeepSeek v4 Flash \quad | \quad Reviewer: Qwen
+- Caught: Section 4 redundancy, $\delta$ justification, missing data, table headers
 
-### Loop 2: External (Google Gemini Pro)
-- **Reviewer:** Completely separate AI, separate company, zero shared training
-- **Cost:** Free tier — I just pasted the manuscript
-- **Caught:** Non-collapsibility, tone issues, event rate concerns, LoRA framing
+\vspace{0.5em}
 
-## The Convergence
+**External Loop (separate company)**
 
-\centering
-\small
-| Round | Reviewer | Verdict | Issues Found |
-|:-----|:---------|:-------|:-------------|
+- Gemini Pro --- completely different training
+- Caught: Non-collapsibility, tone, event rates, LoRA framing
+
+# The Convergence
+
+## Review Results
+
+| Round | Reviewer | Verdict | Issues |
+|:-----|:---------|:-------|:------:|
 | 1 | Gemini | Major Revision | 4 |
-| 2 | Gemini | **Accept** | — |
-| 3 | Qwen | Major Revision | 7 (different set!) |
-| 4 | Qwen | Minor Revision | — |
-| 5 | Qwen | **Accept** | — |
-\normalsize
+| 2 | Gemini | **Accept** | -- |
+| 3 | Qwen | Major Revision | **7 (different)** |
+| 4 | Qwen | Minor Revision | -- |
+| 5 | Qwen | **Accept** | -- |
 
-\raggedright
-\small *Qwen caught things Gemini missed: Section 4 redundancy, δ justification, table header ambiguity, MAP-Cox framing, sandwich variance scope, missing data section, reference formatting.
+**Qwen caught things Gemini missed:** redundancy, $\delta$ justification, table headers, MAP-Cox framing, sandwich variance scope, missing data, references.
 
-**Takeaway:** Two independent AI reviewers converged faster and more thoroughly than any single reviewer could have.
+**Takeaway:** Model-diverse review converges faster than any single reviewer.
 
----
+# Demo: Voice Note $\rightarrow$ Paper
 
-# The Demo: Voice Note → White Paper
+## 10 Minutes Start to Finish
 
-## The Workflow in 10 Minutes
-
-**Input:** A voice note I recorded while pacing in the kitchen (transcribed by Whisper)
+**Input:** Voice note while pacing the kitchen (Whisper transcription)
 
 > "Do we need to pool small strata for CMH and MN methods?"
 
-**Output:** A white paper with simulation results, proposed SAP language, and a mathematical appendix
-
-## What Happened
-
 | Step | Time | How |
-|:----|:----:|:----|
-| Voice note → text | < 1 min | Whisper (tiny model, local) |
-| Problem scoping | 1 min | I dictated the question, agent structured it into a Phase 0 proposal |
-| Independent review | 1 min | I had the agent spawn an isolated Qwen session to review the proposal |
-| Revision | 1 min | I directed the fix, agent refined the scope |
-| Code + simulation | 3 min | Agent drafted R code based on my specs; I reviewed; agent ran 5K reps |
-| Code review v1 | 1 min | Qwen caught 3 bugs — Scenario 4 duplicated, RR variance, Wald vs MN label |
-| Code review v2 | 1 min | Agent verified fixes, I confirmed |
-| Final review | 1 min | White paper compiled, pushed to GitHub |
-| **Total** | **~10 min** | **From an idle thought to a polished, peer-reviewed white paper** |
+|:----|:----:|:-----|
+| Transcription | < 1 min | Whisper |
+| Problem scoping | 1 min | I dictated, agent structured |
+| Independent review | 1 min | Qwen caught framing weakness |
+| Revision | 1 min | I directed, agent refined |
+| Code + simulation | 3 min | Agent drafted code, 5K reps |
+| Code review v1 | 1 min | Qwen caught 3 bugs |
+| Code review v2 | 1 min | Verified fixes |
+| Final + push | 1 min | White paper to GitHub |
 
-## The Three Code Reviews
+# Code Reviews
 
-\small
+## Three Rounds
+
 | Review | Verdict | What It Caught |
 |:-------|:--------|:---------------|
 | v1 | Minor Issues | Scenario 4 duplicated, CMH RR variance unstratified, Wald mislabeled as MN |
-| v2 | Minor Issues | Scenario 4 label misleading, MN SE approximation (acknowledged) |
+| v2 | Minor Issues | Scenario 4 label misleading, MN SE approximation |
 | Final | Pass | Verified against bootstrap empirical variance |
-\normalsize
 
----
+All bugs fixed before delivery.
 
-# The Emergent Workflow
+# The Workflow: Phases
 
-## The Skill File (SKILL.md)
+## Research Skill File
 
-By the end of the day, we had a codified pipeline for future research projects:
+| Phase | Description |
+|:------|:------------|
+| **Ph 0: Topic ID** | Identify gap, map contradictory literature |
+| **Ph 1: Writeup** | Write, spawn isolated reviewer, iterate |
+| **Ph 2: Simulate** | 2 $\rightarrow$ 20 $\rightarrow$ 200 $\rightarrow$ 10K reps |
+| **Ph 3: QC** | **Code review before big runs --- mandatory** |
+| **Ph 4: Full Run** | Background, scheduled, monitored |
+| **Ph 4.5: Audit** | Verify code matches manuscript claims |
+| **Ph 5: Manuscript** | Write, verify refs, PDF self-check |
+| **Ph 6: Revision** | Parse $\rightarrow$ Reconcile $\rightarrow$ Re-sim |
+| **Ph 7: Submit** | Reviewer $\rightarrow$ Revise $\rightarrow$ Max 3 |
 
-### Phase 0: Topic ID
-Identify the gap, map the literature, define "before" and "after" states
-
-### Phase 1: Initial Writeup
-Write a proposal → have the agent spawn an isolated reviewer → iterate
-
-### Phase 2: Simulation
-Test (2 reps) → Validate (20 reps) → Confirm (200 reps) → Full (10K reps)
-
-### Phase 3: Multi-Agent QC
-**Code review before big simulations — mandatory after we skipped it once and nearly delivered buggy results**
-
-### Phase 4: Full Run
-Background processing, scheduled, monitored
-
-### Phase 4.5: Reproducibility Audit
-Agent verifies code matches manuscript claims
-
-### Phase 5: Manuscript
-Write, verify references, PDF self-check, senior review
-
-### Phase 6: Revision
-Critique Parser → Math Reconciliation → Re-Simulation → Diff Check
-
-### Phase 7: Pre-Submission Loop
-Independent reviewer → Revise → Loop (max 3) until Accept
+# The Workflow: Rules
 
 ## Key Lessons Codified
 
-1. **Isolate reviewers** — Fresh sessions only, no cross-contamination from prior discussion
-2. **Diversify models** — Different AIs catch different bugs; one is as bad as one human
-3. **PDF self-verify** — Automated checks before anything reaches colleagues
-4. **Clean up cruft** — Stale code and language accumulates; clean explicitly at every milestone
-5. **Push to GitHub at milestones** — Enables external review access
-6. **Batch deliveries** — Don't send incremental fixes. Pace yourself.
+1. **Isolate reviewers** --- fresh sessions, no cross-contamination
+2. **Diversify models** --- different AIs catch different bugs
+3. **Code review BEFORE big simulations** --- trust but verify
+4. **PDF self-verify** --- automated checks before reaching humans
+5. **Clean up cruft** --- stale files cause confusion
+6. **Push to GitHub at milestones** --- enables external review
+7. **Batch deliveries** --- pace yourself
 
----
+# What Worked Well
 
-# Key Takeaways
+## Results
 
-## What Worked Well
+- **Independent AI reviewers caught 11 bugs** before human eyes saw the draft
+- **Small tests before big runs** --- avoided ~5 dead ends
+- **Human-in-the-loop essential** --- I directed 8 reframing cycles
+- **The agent amplified my judgment, did not replace it**
 
-- **Independent AI reviewers caught 11 bugs** before human eyes ever saw the draft — citation errors, a broken method, non-collapsibility, framing weaknesses
-- **Small tests before big runs** — we avoided roughly 5 dead ends this way
-- **Human-in-the-loop was essential** — I directed 8 reframing cycles. Each one improved the method. The agent amplified my judgment, didn't replace it.
-- **The LoRA analogy** resonated with both AI and human reviewers
+# What I'd Do Differently
 
-## What We'd Do Differently
+## Lessons Learned
 
-- **PDF generation was painful** — 5 failed attempts before we got it right. Images silently failed (RGBA→RGB, code block markers, missing paths). We now have a verification script baked into the workflow.
-- **Code review was almost skipped** — would have delivered buggy simulation results. It's now a hard checkpoint in the pipeline.
-- **Stale artifacts accumulated** — old PDFs, old labels, old comments. We now have explicit cleanup at every milestone.
+- **PDF generation was painful** --- 5 failed attempts with silent image failures. Now has a verification script.
+- **Code review almost skipped** --- hard checkpoint now in the pipeline.
+- **Stale artifacts accumulated** --- explicit cleanup at every milestone now.
 
----
+# The Bottom Line
 
-# Q&A
+## Economics
 
-## Thank You
+- **Session cost:** ~500K DeepSeek tokens, **well under \$1.00**
+- **That bought:** 1 manuscript, 1 BLT report, 1 white paper, 1 reusable skill, 3 AI reviews from 2 models, 3 GitHub repos
+- **Key insight:** The agent replaces the drafting lag, not the statistician
+
+# Questions?
 
 \centering
-\Huge Questions?
+\Large Thank You
+
+\vspace{1em}
 \normalsize
-
-\vfill
-
-**The key insight:** An AI agent doesn't replace the statistician. It replaces the *drafting lag* and the *review cycle*. I still had to think, direct, and decide — but what used to take a week of calendar coordination now takes an evening.
-
+\raggedright
 **Repos:**
-- Ridge-Cal: `github.com/doublerobust/ridge-cal`
-- Small strata: `github.com/doublerobust/small-strata-pooling`
+- \texttt{github.com/doublerobust/ridge-cal}
+- \texttt{github.com/doublerobust/small-strata-pooling}
 
-**The skill:** Lives in my OpenClaw workspace — happy to share.
+**The skill:** SKILL.md in my OpenClaw workspace --- available on request.
