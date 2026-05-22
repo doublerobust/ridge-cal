@@ -1,8 +1,7 @@
 # Ridge-Cal: Efficient Regularized Calibration of External Prognostic Scores Using Blinded Trial Data
 
 **Author:** Yue Shentu  
-**Date:** May 2026  
-**Status:** JBS submission-ready
+**Date:** May 2026
 
 ---
 
@@ -12,7 +11,7 @@
 
 **Methods.** We propose Ridge-Cal, a two-step procedure that (1) diagnoses miscalibration by comparing predictive accuracy of the score alone versus the score plus a small set of pre-specified calibration covariates, and (2) recalibrates the score via ridge-penalized Cox regression on the trial's blinded data. The ridge penalty — which controls the strength of recalibration — is selected automatically by cross-validation within the trial.
 
-**Results.** In simulations under severe population shift, Ridge-Cal recovers 7.5 percentage points of power over standard covariate adjustment with an external prognostic score (0.758 vs 0.833), reduces bias by 80% (0.035 vs 0.007), and maintains nominal Type I error. When no shift is present, the power penalty is minimal (−0.8%) and the diagnostic correctly indicates no recalibration is needed.
+**Results.** In Cox-model simulations under severe population shift, Ridge-Cal recovers 7.5 percentage points of power over uncalibrated external-score adjustment (0.758 vs 0.833), reduces bias by 80%, and maintains nominal Type I error. When no shift is present, the power penalty is minimal (−0.8%). In score-stratified log-rank testing, Ridge-Cal stays robust across miscalibration severities up to 3× baseline without degradation below standard stratified tests, though discretizing the continuous score incurs a ~10–13% efficiency loss versus continuous Cox models.
 
 **Conclusion.** Ridge-Cal provides a framework for recalibrating external prognostic scores using only blinded trial data. It works with any black-box score, requires no unblinding, and selects its regularization strength automatically via cross-validation within the trial.
 
@@ -41,6 +40,8 @@ Several approaches exist to handle population shift:
 - **Bayesian dynamic borrowing** uses power priors (Ibrahim & Chen, 2000), commensurate priors (Hobbs et al., 2011; 2012), or meta-analytic predictive priors (Schmidli et al., 2014) to down-weight historical control data when it conflicts with the current trial. These methods borrow patient-level data; they do not update the prognostic model itself.
 
 - **Domain adaptation** methods (Pan & Yang, 2010) adjust predictive models for covariate shift but are rarely applied to survival outcomes in clinical trials.
+
+- **Elastic Net and tree-based stratification** (Mehrotra, 2021; Marceau West et al., 2021) use penalized regression on blinded trial data to construct risk strata. The 5-STAR algorithm (Mehrotra, 2021) further refines these via conditional inference trees and amalgamation. These methods build a prognostic model from scratch, rather than calibrating an existing external score.
 
 - **Liao et al. (2025)** proposed using external prognostic scores in doubly-robust estimators, but without a calibration step for population shift.
 
@@ -225,11 +226,45 @@ MAP-Cox achieves comparable power to Ridge-Cal across most scenarios, including 
 
 **Diagnostic C-index.** Under severe shift, the C-index increases from 0.716 (score only) to 0.744 (score $+$ calibration covariates), correctly detecting miscalibration. Under no shift, the C-index is flat (0.741 vs 0.744), correctly indicating no calibration needed. The CV-selected ridge penalty is consistently $\lambda \approx 0.05$, providing moderate regularization across scenarios.
 
-### 3.3 Sensitivity Analyses
+### 3.3 Extension to Score-Stratified Log-Rank Test
+
+While the Cox PH model is the standard estimation framework for hazard ratios, the primary hypothesis test in many oncology trials remains the stratified log-rank test. To evaluate whether Ridge-Cal's efficiency gains translate to this testing framework, we conducted a dedicated simulation (10,000 replicates per scenario) incorporating the prognostic score into the log-rank test via score-stratified quartiles alongside conventional factors (ECOG, region).
+
+We compared five log-rank methods across all seven scenarios: standard log-rank (no score), external-score-stratified, Ridge-Cal-calibrated-score-stratified, ENET-Quartile (elastic net on blinded trial data → quartiles), and oracle-score-stratified.
+
+**Table 3: Empirical power for score-stratified log-rank tests (10,000 replicates).**
+
+| Method | Null | No shift | Severe | Interact | Non-PH | Smaller |
+|--------|:---:|:--------:|:------:|:--------:|:-----:|:-------:|
+| Standard LR | 0.054 | 0.529 | 0.528 | 0.539 | 0.357 | 0.368 |
+| External-score LR | 0.053 | 0.762 | 0.685 | 0.693 | 0.440 | 0.509 |
+| Ridge-Cal LR | 0.051 | 0.754 | 0.748 | 0.761 | 0.468 | 0.565 |
+| ENET-Quartile ¹ | 0.053 | 0.728 | 0.728 | 0.738 | 0.442 | 0.542 |
+| Oracle LR | 0.051 | 0.764 | 0.761 | 0.792 | 0.488 | 0.575 |
+
+*¹ ENET-Quartile uses elastic net variable selection on blinded trial data → quartile-based strata. This captures the variable-selection step of methods like 5-STAR (Mehrotra, 2021) but uses fixed quantile boundaries rather than conditional inference trees and amalgamation. The continuous Cox counterparts (Table 1) are not directly comparable to these log-rank results — see the discretization efficiency discussion below.*
+
+All methods preserved nominal Type I error (Table 3, null column). Under severe shift, Ridge-Cal LR (0.748) substantially outperformed both standard LR (0.528) and external-score LR (0.685). The external-score LR degraded under miscalibration (0.762 → 0.685), while Ridge-Cal LR remained stable across shift levels.
+
+**Discretization efficiency.** Discretizing a continuous score to quartiles for stratification incurs a measurable power loss. The continuous Cox models (Table 1) provide a useful baseline: Ridge-Cal Cox achieves 0.852 under severe shift versus 0.748 for Ridge-Cal LR, yielding an efficiency ratio of 1.14 (~13% power penalty). The oracle ratio is similar (1.12), confirming this is inherent to discretization. This trade-off should be weighed when choosing between the stratified log-rank and covariate-adjusted Cox as the primary analysis.
+
+### 3.4 Miscalibration Threshold Analysis
+
+To evaluate how Ridge-Cal performs as miscalibration becomes increasingly severe, we conducted a sweep of the severe shift scenario at eight severity levels (multiplier 0–3×, 2,000 replicates each). The external score's standardized mean difference from the trial population ranged from ΔC = 0.03 (no shift) to ΔC = 0.30 (3×).
+
+![Figure 1: Score-stratified log-rank power versus miscalibration severity. Ridge-Cal (solid blue) maintains power ~0.73–0.76 across all levels; uncalibrated external score (dotted orange) degrades from 0.76 to 0.56; standard LR (dashed grey) remains ~0.53. ΔC ranges from 0.03 (no shift) to 0.30 (3×).](figures/threshold-sweep.png)
+
+**Figure 1:** Score-stratified log-rank power versus miscalibration severity. Ridge-Cal LR maintained power within a narrow band (0.73–0.76) across all severity levels. The uncalibrated external-score LR degraded steadily from 0.759 to 0.563. Standard LR stayed constant at ~0.53.
+
+Ridge-Cal power never dropped below standard LR, even at 3× the baseline shift (ΔC = 0.30). At the extreme end (2–3×), Ridge-Cal and ENET-Quartile converged to similar power (~0.74), indicating that when the external score carries little useful signal, learning from trial data alone produces comparable results.
+
+These results confirm that Ridge-Cal recalibration provides a safety margin across realistic miscalibration ranges. The diagnostic C-index comparison (§2.2) provides a trial-specific check: if ΔC exceeds ~0.15, the score is substantially miscalibrated and Ridge-Cal recalibration is indicated rather than optional.
+
+### 3.5 Sensitivity Analyses
 
 **Misspecified calibration set.** To assess the penalty of including non-shifting covariates in $\mathcal{C}$, we augmented the calibration set with two strong prognostic covariates that do not shift between populations (age and hemoglobin). Under severe shift (2000 reps), the correct $\mathcal{C} = \{\text{sex, marker\_x, CRP, albumin, LDH}\}$ yields Ridge-Cal power 0.826 and bias 0.007. The over-specified set $\mathcal{C}_{noise} = \mathcal{C} \cup \{\text{age, hgb}\}$ yields power 0.822 and bias 0.008 — a penalty of only 0.4 pp. Under the interaction scenario, the penalty is 0.8 pp (0.861 to 0.853). The ridge penalty effectively shrinks the non-shifting covariates toward zero, confirming that pre-specifying a slightly over-inclusive $\mathcal{C}$ is safe.
 
-**Score-stratified log-rank test.** Because many oncology trials use the stratified log-rank as the primary testing framework, we evaluated whether Ridge-Cal's efficiency gains translate to this setting. The external or calibrated score quantiles were added as an additional stratification factor in the log-rank test, alongside conventional factors (ECOG, region). We compared five testing methods across all scenarios: standard log-rank (no score), external-score-stratified, Ridge-Cal-stratified, ordered trend test, and oracle-score-stratified. Results (10,000 reps) are summarized in a supplementary table. Across all scenarios, the score-stratified log-rank preserved nominal Type I error. Under severe shift, the Ridge-Cal-stratified log-rank recovered a 5--6 pp power gain over standard stratification, approximately 70% of the Cox-model gain — the attenuation reflects the discretization of the continuous score into strata. External-score stratification (without calibration) recovered only 2--3 pp under severe shift, confirming that Ridge-Cal recalibration provides meaningful benefit even in the discrete testing framework. The ordered trend test (Tarone, 1975) captured additional power by using the ordinal information in score quantiles rather than treating them as nominal categories.
+
 
 **Covariate distribution diagnostics.** The calibration set selection procedure described in §2.5 uses standardized mean differences between external and trial populations to flag candidate covariates. We note that covariate distribution shift is not necessarily equivalent to a change in prognostic value — a covariate may shift in distribution without altering its relationship with the outcome, and vice versa. However, in practice the two are highly correlated, and standardized mean differences provide a useful screening tool when combined with clinical judgment.
 
@@ -247,7 +282,7 @@ MAP-Cox achieves comparable power to Ridge-Cal across most scenarios, including 
 
 We have proposed Ridge-Cal, a two-step procedure for diagnosing and correcting miscalibration of external prognostic scores using a trial's own blinded data. The method is inspired by parameter-efficient fine-tuning: the pre-trained score is frozen, and a small, regularized correction is learned for a pre-specified subset of covariates. The strength of the correction is selected automatically by cross-validation.
 
-In simulations with 10,000 replicates under severe population shift, Ridge-Cal recovers 7.5 percentage points of power over standard external-score adjustment (0.758 vs 0.833), reduces bias by 80% (0.035 vs 0.007), and maintains nominal Type I error. The gain is larger under treatment-by-covariate interactions (+12.4 pp) and smaller effect sizes (+8.7 pp under HR = 0.75). When no shift is present, the power penalty is minimal (−0.8%) and the diagnostic correctly indicates no recalibration is needed.
+In Cox-model simulations with 10,000 replicates under severe population shift, Ridge-Cal recovers 7.5 percentage points of power over standard external-score adjustment (0.758 vs 0.833), reduces bias by 80% (0.035 vs 0.007), and maintains nominal Type I error. The gain is larger under treatment-by-covariate interactions (+12.4 pp) and smaller effect sizes (+8.7 pp under HR = 0.75). When no shift is present, the power penalty is minimal (−0.8%) and the diagnostic correctly indicates no recalibration is needed. In a dedicated score-stratified log-rank testing simulation (Section 3.3), Ridge-Cal preserved nominal Type I error and remained robust across a miscalibration threshold sweep up to 3× baseline severity (Section 3.4), maintaining stable power (0.73–0.76) while the uncalibrated external score degraded to 0.56. Ridge-Cal never performed worse than standard stratified analysis, even at extreme miscalibration.
 
 ### 4.2 Relationship to Existing Methods
 
@@ -270,6 +305,10 @@ The ridge penalty makes Ridge-Cal more robust than naive recalibration (updating
 **Estimand interpretation.** As noted in §2.4, the Ridge-Cal estimator targets a conditional hazard ratio conditioned on both the randomization strata and the calibrated prognostic score, which is technically distinct from the conditional hazard ratio conditioned on strata alone (standard stratified Cox). All simulation comparisons are made under a constant treatment effect across strata and covariate levels, ensuring both estimators are consistent for the same parameter. In practice, when treatment effect heterogeneity is present, the choice of conditioning set should be pre-specified in the statistical analysis plan, and investigators should be aware that different conditioning sets target distinct estimands. This is consistent with the recommendations of the ASA Oncology Estimand Working Group (2025).
 
 **Blinded calibration.** The blinded variant assumes no strong treatment-by-covariate interactions. Our simulations show minimal impact, but the control-arm variant avoids this issue at the cost of partial unblinding.
+
+**Discretization loss in testing frameworks.** While Ridge-Cal extends naturally to the stratified log-rank test via score stratification (§3.3), discretizing the continuous score into quartiles incurs a ~13% power loss compared to the continuous Cox model (efficiency ratio ~1.14). This is not unique to Ridge-Cal — the oracle score shows a similar ratio (1.12) — but investigators designing studies should account for this when choosing between the stratified log-rank and covariate-adjusted Cox as the primary analysis.
+
+**Comparison with ENET-based strata.** Our ENET-Quartile comparator (elastic net selection → quartile strata) approximates the variable-selection step of methods such as 5-STAR (Mehrotra, 2021) but does not implement the full tree-based strata formation and amalgamation. The convergence of Ridge-Cal and ENET-Quartile at extreme miscalibration (§3.4) suggests that when the external score carries minimal signal, the value of the external data diminishes and purely trial-based strata perform similarly. A full comparison with the 5-STAR algorithm is a topic for future work.
 
 **Simulation scope.** Our simulations focused on $N = 400$ with ~300 events and a Cox PH external model. The method's behavior in smaller trials ($N < 200$), under sparse events ($< 100$ events), or with non-Cox external models (random survival forests, boosting) has not been evaluated and merits further study. The calibration set size was fixed at $|\mathcal{C}| = 5$; the impact of smaller or larger calibration sets should be explored in future work. Missing data in calibration covariates — common in real trials — would require imputation before the calibration step and is not addressed here.
 
