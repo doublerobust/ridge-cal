@@ -1,0 +1,82 @@
+=== Score-Stratified Log-Rank Simulation Results ===
+
+Replicates: 500
+
+
+--- Power (p < 0.05) ---
+
+Scenario               Standard   ExtScore      RCCal      Trend     Oracle     CoxExt     CoxCal
+-------------------------------------------------------------------------------------------------
+No shift                 0.5160     0.7300     0.7080     0.0000     0.7480     0.8340     0.8140
+Moderate                 0.5160     0.7380     0.7400     0.0000     0.7680     0.8020     0.8080
+Severe                   0.5400     0.6920     0.7560     0.0020     0.7800     0.7360     0.8520
+Interaction              0.4760     0.6740     0.7440     0.0020     0.7880     0.7320     0.8580
+Null                     0.0440     0.0400     0.0520     0.0000     0.0480     0.0400     0.0420
+Non-PH                   0.3600     0.4000     0.4280     0.0020     0.4620     0.4520     0.5040
+Smaller effect           0.3840     0.5060     0.5500     0.0000     0.5680     0.5620     0.6460
+
+
+--- Cox-to-Log-Rank Efficiency Ratios ---
+
+Scenario               Ext Cox/LR   Cal Cox/LR   Orc Cox/LR   Std Cox/LR
+--------------------------------------------------------------------
+No shift                    1.142        1.150        1.115        1.112
+Moderate                    1.087        1.092        1.068        1.163
+Severe                      1.064        1.127        1.115        1.130
+Interaction                 1.086        1.153        1.109        1.256
+Null                        1.000        0.808        0.708        0.955
+Non-PH                      1.130        1.178        1.186        1.022
+Smaller effect              1.111        1.175        1.201        1.068
+
+
+--- Trend Test Supplementary ---
+
+Scenario              Trend(prog)   Trend(ext)   Trend(cal)  Strat(true)
+--------------------------------------------------------------------
+No shift                   0.0000       0.0000       0.0000       0.0000
+Moderate                   0.0000       0.0000       0.0000       0.0000
+Severe                     0.0020       0.0000       0.0020       0.0020
+Interaction                0.0020       0.0000       0.0000       0.0020
+Null                       0.0000       0.0000       0.0000       0.0000
+Non-PH                     0.0020       0.0020       0.0000       0.0020
+Smaller effect             0.0000       0.0000       0.0000       0.0000
+
+
+--- Sparse Strata Diagnostics ---
+
+Scenario                 Ext score strata          Cal score strata
+                       N strata min events     N strata min events
+------------------------------------------------------------
+No shift                   16.0       4.9         16.0       5.1
+Moderate                   16.0       4.8         16.0       4.9
+Severe                     16.0       4.4         16.0       4.5
+Interaction                16.0       4.6         16.0       4.7
+Null                       16.0       4.6         16.0       4.7
+Non-PH                     16.0       4.5         16.0       4.7
+Smaller effect             16.0       4.9         16.0       4.9
+
+
+--- Sparsity Rate (>0 arms with <2 events) ---
+
+Scenario                  Ext %      Cal %      Ora %
+No shift                    0.4        0.6        0.4
+Moderate                    1.2        0.4        0.6
+Severe                      2.0        2.4        1.0
+Interaction                 0.6        0.6        0.6
+Null                        2.2        2.0        1.4
+Non-PH                      1.0        1.0        0.8
+Smaller effect              1.0        0.6        1.0
+
+
+--- Type I Error (Scenario 5: Null) ---
+
+Target: 0.05 one-sided
+Precision (n=500 reps): +/- 0.0191
+  Standard     0.0440
+  ExtScore     0.0400
+  RCCal        0.0520
+  Trend        0.0000
+  Oracle       0.0480
+  Cox-Std      0.0420
+  Cox-Ext      0.0400
+  Cox-Cal      0.0420
