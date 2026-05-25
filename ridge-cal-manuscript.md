@@ -196,15 +196,14 @@ The external model is a Cox PH fit on all 20 covariates, treated as a black box 
 **Table 1: Empirical power (10,000 replicates per scenario).**
 
 | Scenario | Cox-Std | Full Model | LR | Score-adj | Ridge-Cal | Gain |
-|:------------------------------|:----:|:---------:|:--:|:-------:|:-------:|:--------:|:----:|
-|:------------------------------|:----:|:-----:|:--:|:-------:|:-------:|:--------:|:----:|
-| 1. No shift | 0.630 | 0.845 | 0.532 | 0.845 | 0.834 | **0.837** | -0.008 |
-| 2. Moderate | 0.622 | 0.844 | 0.528 | 0.825 | 0.834 | **0.834** | +0.009 |
-| **3. Severe** | **0.630** | **0.843** | **0.525** | **0.758** | **0.832** | **0.833** | **+0.075** |
-| 4. Interaction | 0.631 | 0.865 | 0.530 | 0.730 | 0.856 | **0.854** | +0.124 |
-| 5. Null | 0.055 | 0.065 | 0.051 | 0.053 | 0.059 | **0.052** | --- |
-| 6. Non-PH (2mo delay) | 0.408 | 0.554 | 0.347 | 0.501 | 0.550 | **0.551** | +0.050 |
-| 7. Smaller effect (0.75) | 0.456 | 0.682 | 0.371 | 0.572 | 0.665 | **0.659** | **+0.087** |
+|:------------------------------|:----:|:---------:|:--:|:-------:|:--------:|:----:|
+| 1. No shift | 0.630 | 0.845 | 0.532 | 0.845 | **0.837** | -0.008 |
+| 2. Moderate | 0.622 | 0.844 | 0.528 | 0.825 | **0.834** | +0.009 |
+| **3. Severe** | **0.630** | **0.843** | **0.525** | **0.758** | **0.833** | **+0.075** |
+| 4. Interaction | 0.631 | 0.865 | 0.530 | 0.730 | **0.854** | +0.124 |
+| 5. Null | 0.055 | 0.065 | 0.051 | 0.053 | **0.052** | --- |
+| 6. Non-PH (2mo delay) | 0.408 | 0.554 | 0.347 | 0.501 | **0.551** | +0.050 |
+| 7. Smaller effect (0.75) | 0.456 | 0.682 | 0.371 | 0.572 | **0.659** | **+0.087** |
 
 **Note.** The full model (20-covariate Cox matching the data-generating model) is the theoretical upper bound, not achievable in practice due to regulatory constraints on model complexity (FDA, 2023; EMA, 2015). Ridge-Cal uses only 6 parameters versus the full model's 21. The Non-PH scenario uses a 2-month delay, which reflects a realistic treatment onset lag.
 
@@ -215,14 +214,14 @@ The external model is a Cox PH fit on all 20 covariates, treated as a black box 
 **Table 2: Bias on the log-HR scale (10,000 replicates).**
 
 | Scenario | Score-adj bias | Ridge-Cal bias | Full model bias |
-|----------|:----------:|:-----------:|:-------------:|:----------:|
-| 1. No shift | 0.001 | -0.015 | 0.006 | -0.015 |
-| 2. Moderate | 0.009 | -0.014 | 0.006 | -0.015 |
-| **3. Severe** | **0.035** | **-0.016** | **0.007** | **-0.016** |
-| 4. Interaction | 0.046 | -0.024 | 0.001 | -0.024 |
-| 5. Null | -0.001 | -0.000 | -0.001 | -0.000 |
-| 6. Non-PH | 0.105 | 0.084 | 0.098 | 0.092 |
-| 7. Smaller effect | 0.030 | -0.011 | 0.007 | -0.011 |
+|----------|:----------:|:----------:|:-------------:|
+| 1. No shift | 0.001 | -0.015 | -0.015 |
+| 2. Moderate | 0.009 | -0.014 | -0.015 |
+| **3. Severe** | **0.035** | **0.007** | **-0.016** |
+| 4. Interaction | 0.046 | 0.001 | -0.024 |
+| 5. Null | -0.001 | -0.001 | -0.000 |
+| 6. Non-PH | 0.105 | 0.098 | 0.092 |
+| 7. Smaller effect | 0.030 | 0.007 | -0.011 |
 
 **Diagnostic C-index.** Under severe shift, the C-index increases from 0.716 (score only) to 0.744 (score $+$ calibration covariates), correctly detecting miscalibration. Under no shift, the C-index is flat (0.741 vs 0.744), correctly indicating no calibration needed. The CV-selected ridge penalty is consistently $\lambda \approx 0.05$, providing moderate regularization across scenarios.
 
