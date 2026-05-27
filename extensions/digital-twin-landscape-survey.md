@@ -118,43 +118,29 @@ The digital twin space in clinical development has four segments:
 
 #### Segment 1: DTaaS (Digital Twin as a Service)
 
-**Unlearn.AI** (San Francisco)
-- **What they do:** Market leader for synthetic control arms. Train hierarchical Bayesian models on historical trial data to predict each patient's placebo outcome.
-- **Technology:** Neural Boltzmann Machines + PROCOVA. Deep generative models trained on historical trial databases.
-- **Regulatory status:** EMA qualified (2022), FDA acknowledged (2024). PROCOVA covered under existing covariate adjustment guidance.
-- **Pricing:** $500K–$2M per trial, depending on indication complexity.
-- **Limitations:** 
-  - Requires abundant historical placebo data → doesn't work well for novel mechanisms or pandemic scenarios
-  - Statistical (not mechanistic) → less generalizable
-  - PROCOVA assumes perfect calibration → simulations show this fails under population shift
-  - Not transparent about the generative model architecture or validation data
-
-**Altis Labs** (Toronto)
-- **What they do:** AI-powered external control arms using imaging data matching.
-- **Recent:** Presented at ISPOR 2025 — matching real-world imaging digital twins to create ECAs for Phase 3 NSCLC trials.
-- **Differentiator:** Focus on imaging biomarkers as matching variables → potentially higher fidelity matching.
-- **Status:** Early-stage, limited published validation.
-
-**Phesi** (Boston/London)
-- **What they do:** Digital trial arm services, protocol optimization.
-- **Recent:** Published cGvHD digital twin proof-of-concept in *Bone Marrow Transplantation* (2024) — >2,000 virtual patients, matched historical ORR (52.7%).
-- **Approach:** Real-world clinical data → virtual digital twin → "can potentially replace a control arm."
-- **Limitations:** Proof of concept only; hasn't been used in a prospective regulatory submission.
+| Company | Core Offering | Technology | Regulatory Status | Key Limitations |
+|---------|--------------|------------|------------------|----------------|
+| **Unlearn.AI** (San Francisco) | Synthetic control arms via hierarchical Bayesian models predicting placebo outcomes | Neural Boltzmann Machines + PROCOVA; deep generative models on historical trial databases | EMA qualified (2022); FDA acknowledged (2024); PROCOVA covered under covariate adjustment guidance | Requires abundant historical placebo data → limited for novel mechanisms or pandemic scenarios. Statistical (not mechanistic) → less generalizable. PROCOVA assumes perfect calibration → simulations show failure under population shift. Not transparent about generative model architecture or validation data. Pricing: $500K–$2M per trial. |
+| **Altis Labs** (Toronto) | AI-powered external control arms using imaging data matching | Imaging AI biomarker matching | Early-stage | Limited published validation. Presented at ISPOR 2025 for Phase 3 NSCLC. Still establishing evidence base. |
+| **Phesi** (Boston/London) | Digital trial arm services, protocol optimization | Real-world clinical data matching to construct virtual patients | Proof-of-concept only (cGvHD digital twin published in *Bone Marrow Transplantation*, 2024) | Never used in a prospective regulatory submission. >2,000 virtual patients matched historical ORR (52.7%) but no regulatory precedent. |
 
 #### Segment 2: MIDD Software Platforms
 
-**Certara, Simulations Plus, Pumas-AI, Rosa & Co**
-- **What they sell:** Software enabling pharma pharmacometricians to build/submit MIDD models.
-- **Revenue model:** Software licenses + consulting + training.
-- **Moat:** Deep regulatory relationships; existing EDC integration.
-- **Weakness:** Requires in-house pharmacometricians → poor accessibility for small biotechs.
+| Company | Offering | Revenue Model | Moat | Weakness |
+|---------|----------|--------------|------|----------|
+| **Certara** | Pharmacometrics/QSP software (Phoenix, Simcyp) | Licenses + consulting + training | Deep regulatory relationships; EDC integration | Requires in-house pharmacometricians → poor accessibility for small biotechs |
+| **Simulations Plus** | PBPK, PK/PD modeling (GastroPlus, DILIsym) | Licenses + consulting | Regulatory endorsement for PBPK | Same — requires specialized in-house expertise |
+| **Pumas-AI** | Next-gen pharmacometrics (Julia-based, cloud-native) | Licenses + cloud | Modern architecture; tech-forward | Smaller ecosystem than incumbents |
+| **Rosa & Co** | Quantitative systems pharmacology | Consulting + licenses | Mechanistic model expertise | Consulting-heavy model limits scalability |
 
 #### Segment 3: CRO-Embedded Modeling
 
-**IQVIA (MIDD practice), Parexel (Quantitative Solutions), Labcorp (Covance), PPD (Thermo Fisher)**
-- **What they sell:** Integrated modeling + clinical execution — one-stop shop.
-- **Revenue:** $500–$2,000/hour for senior pharmacometricians, embedded in multi-year CRO contracts.
-- **Moat:** Regulatory filing experience; access to proprietary historical databases.
+| Company | Offering | Revenue Model | Moat |
+|---------|----------|--------------|------|
+| **IQVIA** (MIDD practice) | Integrated modeling + clinical execution | $500–$2,000/hr for senior pharmacometricians, embedded in CRO contracts | Regulatory filing experience; proprietary historical databases |
+| **Parexel** (Quantitative Solutions) | Pharmacometric consulting | Same | Same |
+| **Labcorp** (Covance) | Integrated modeling services | Same | Same |
+| **PPD** (Thermo Fisher) | Integrated modeling services | Same | Same |
 
 ### 3.3 What the Vendors Are NOT Saying
 
@@ -180,7 +166,7 @@ Critical gaps that vendors underemphasize:
 
 ### 4.2 PROCOVA in Detail
 
-Since PROCOVA is the most advanced DT methodology, it deserves close examination.
+Since PROCOVA is the most prominently presented and marketed DT methodology, it deserves close examination.
 
 **How it works:**
 1. Historical data → train prognostic model → produces score S(W) for any patient
@@ -200,12 +186,14 @@ Since PROCOVA is the most advanced DT methodology, it deserves close examination
 - **No adaptation.** The score is fixed — no mechanism to update it using trial data.
 - **Sensitive to strong confounders.** If unmeasured confounders differ, bias can be substantial.
 
-### 4.3 MAP Prior Borrowing (Schmidli 2014)
+### 4.3 MAP Prior Borrowing
 
-- Uses a Bayesian mixture prior: historical information + vague component
-- Borrowing strength controlled by mixture weight
-- Requires patient-level historical data (not just a score)
-- Limited by commensurability — if historical and trial populations differ, the prior is down-weighted but the model doesn't adapt
+The Meta-Analytic Predictive (MAP) prior approach (Neuenschwander et al., 2010) uses summary statistics from historical trials to construct an informative prior for the current trial's control group. The Robust MAP extension (Schmidli et al., 2014) adds a vague component via mixture to protect against prior-data conflict.
+
+- Constructs a Bayesian prior from historical trial evidence (aggregate-level, not patient-level)
+- Borrowing strength is controlled by the heterogeneity across historical trials — more consistent historical data yields stronger borrowing
+- Does not require patient-level data from historical trials; operates on summary statistics
+- Limited by commensurability — if historical and current trial populations differ, the vague component absorbs the conflict but power gains are reduced
 
 ### 4.4 Synthetic Control Arms (ECAs)
 
@@ -256,7 +244,9 @@ Based on vendor marketing, industry press, and consulting reports:
 
 ### 6.2 What the Evidence Actually Shows
 
-![Hype vs Reality](figures/hype-reality.png)
+> **Note on the figure below:** The hype-reality comparison chart is a qualitative, illustrative assessment based on the author's synthesis of the vendor claims and published evidence reviewed in this survey. The numerical values shown are not derived from a formal empirical study and should be interpreted as directional estimates for discussion purposes.
+
+![Hype vs Reality — Illustrative Assessment](figures/hype-reality.png)
 
 | Claim | Reality Check |
 |-------|--------------|
@@ -352,9 +342,10 @@ Work is underway to develop and validate this calibration framework.
 - Schuler A, et al. (2021). *Increasing the power of randomized clinical trials using prognostic scores.* International Journal of Biostatistics.
 - Schuler A, et al. (2022). *PROCOVA: A framework for prognostic covariate adjustment.* Journal of Biopharmaceutical Statistics.
 - Hajage D, et al. (2018). *On the use of propensity scores in clinical trials.* Statistics in Medicine.
+- Neuenschwander B, Capkun-Niggli G, Branson M, Spiegelhalter DJ (2010). *Summarizing historical information on controls in clinical trials.* Clinical Trials, 7(1):5-18. PMID: 20156954.
 - Ibrahim JG, Chen M-H (2000). *Power prior distributions for regression models.* Statistical Science.
 - Hobbs BP, et al. (2011; 2012). *Commensurate priors for incorporating historical information in clinical trials.* Biometrics.
-- Schmidli H, et al. (2014). *Robust meta-analytic-predictive priors in clinical trials.* Statistics in Medicine.
+- Schmidli H, Gsteiger S, Roychoudhury S, O'Hagan A, Spiegelhalter DJ, Neuenschwander B (2014). *Robust meta-analytic-predictive priors in clinical trials with historical control information.* Biometrics, 70(4):1023-1032. PMID: 25355546.
 - Lin DY, Wei LJ (1989). *The robust inference for the Cox proportional hazards model.* JASA.
 - Friedman J, et al. (2010). *Regularization paths for generalized linear models via coordinate descent.* JSS.
 - Hu EJ, et al. (2022). *LoRA: Low-Rank Adaptation of Large Language Models.* ICLR.
