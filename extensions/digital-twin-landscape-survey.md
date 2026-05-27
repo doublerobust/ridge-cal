@@ -176,7 +176,7 @@ Since PROCOVA is the most prominently presented and marketed DT methodology, it 
 
 **Strengths:**
 - Statistically principled (special case of ANCOVA)
-- Preserves Type I error (by randomization, S(W) ⟂ A)
+- Preserves Type I error (by randomization, S(W) \perp A)
 - EMA qualified, FDA acknowledged
 - Flexible — any predictive model can generate the score
 
@@ -220,7 +220,7 @@ The Meta-Analytic Predictive (MAP) prior approach (Neuenschwander et al., 2010) 
 
 ### 5.2 Simulation Evidence
 
-Three simulation studies are particularly relevant:
+Two simulation studies are particularly relevant:
 
 1. **Schuler et al. (2021)** — PROCOVA proof of concept. 1,000 reps, limited scenarios. Showed power gains under ideal conditions (no shift).
 
